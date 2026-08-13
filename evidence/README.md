@@ -12,10 +12,10 @@ since it entered monitoring).
 - The measured inputs (`data/measurements.json`) and every evidence line.
 - The evaluator and tests — the scoring is fully reproducible from the
   versioned inputs, byte-for-byte.
-- One pinned receipt with full SHA-256 hashes and its executable query:
-  [receipts-2026-08-12-codex-c6c7.md](receipts-2026-08-12-codex-c6c7.md)
-  (the query script lives in agent-sessions:
-  `scripts/session_bench/receipt_codex_c6c7.py`).
+- One pinned receipt with full SHA-256 hashes:
+  [receipts-2026-08-12-codex-c6c7.md](receipts-2026-08-12-codex-c6c7.md),
+  with its executable query beside it:
+  [receipt_codex_c6c7.py](receipt_codex_c6c7.py).
 
 ## What is not public yet
 
@@ -24,8 +24,8 @@ since it entered monitoring).
 - Corpus query transcripts behind the corpus statistics (e.g. per-store
   content-share numbers).
 
-An observation is therefore auditable on inspection but not yet
-independently reproducible end to end. **v1.0** closes that gap:
+An observation is therefore documented — identity-pinned and
+query-published — but not yet independently reproducible end to end. **v1.0** closes that gap:
 sanitized immutable probe fixtures, archived extraction outputs tied to
 hashes, and per-event classifiers. Until then, this benchmark describes
 itself as: scores mechanically generated from published measurements and

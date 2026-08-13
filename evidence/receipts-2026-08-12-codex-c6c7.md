@@ -9,7 +9,8 @@ only — text that merely mentions a field name does not count.
 
 The artifact set is pinned by filename and full SHA-256. The raw
 files are private local session data; identity and query are
-published so the counts are auditable on inspection. Byte snapshots of
+published; the observation is documented but not independently
+reproducible until sanitized snapshots are archived (a v1.0 milestone). Byte snapshots of
 the five files, exactly as hashed here, are archived locally (private)
 so these counts remain reproducible even though the live session files
 keep growing; public archival of sanitized copies is part of the

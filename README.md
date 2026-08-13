@@ -35,9 +35,12 @@ no comparable store-size figure, or an observation window too short to
 judge stability); that gate is *not run*, drops out of the denominator,
 and the rank is provisional within a stated best/worst range.
 
-Regenerate from the versioned inputs:
+Regenerate from the versioned inputs (clean clone):
 
 ```
+git clone https://github.com/jazzyalex/session-bench
+cd session-bench
+python3 -m pip install -r requirements.txt
 python3 scripts/evaluate.py \
     --measurements data/measurements.json \
     --checklist data/verdicts.yml \

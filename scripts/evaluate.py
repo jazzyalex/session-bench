@@ -3,7 +3,8 @@
 
 Reads a measurements manifest (probe + corpus numbers) and the manual-gate
 checklist, computes the Signal gates from thresholds, merges verdicts, and
-emits docs/_data/session_bench.yml — the file the /bench/ page renders.
+emits data/leaderboard.yml — the generated result the README and the
+live report card render.
 
 The scores file is generated, never hand-edited. To dispute a score, dispute
 a measurement or a checklist evidence line and re-run this.

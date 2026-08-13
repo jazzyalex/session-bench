@@ -60,7 +60,6 @@ verdicts:
     C7: {state: pass, evidence: "structured records in the pinned 5-rollout set: 164 payload.type==sub_agent_activity records and 3 records whose payload carries a parent_thread_id key (session_meta) — subagent runs recoverable via first-class records. Receipt with hashes + query: evidence/receipts-2026-08-12-codex-c6c7.md (CORRECTED from fail 2026-08-12; counts corrected same day from substring to structured matching)"}
     T1: {state: pass, evidence: "ledger: ~6 additive drifts, envelope unchanged; observed 2026-03-31 → 2026-08-04 (full window)"}
     T2: {state: fail, evidence: "stamps only cli_version — an application version identifying the writer, not a schema version an external reader can dispatch on (rescored in v0.3)"}
-    T3: {state: pass, evidence: "cli_version matches installed CLI"}
     O1: {state: pass, evidence: "plain JSONL"}
     O2: {state: pass, evidence: "single rollout file, appended live"}
     O3: {state: fail, evidence: "no rollout-file format documentation found; the published schema covers the app-server protocol, a different surface (re-verified 2026-08-12)"}
@@ -77,7 +76,6 @@ verdicts:
     C7: {state: pass, evidence: "parentUuid DAG + subagents/*.jsonl artifacts"}
     T1: {state: pass, evidence: "ledger: 15+ additive changes, zero breaking; observed 2026-03-31 → 2026-08-04 (full window)"}
     T2: {state: fail, evidence: "per-line version field carries the application version, not a schema version (rescored in v0.3)"}
-    T3: {state: pass, evidence: "version matches installed CLI"}
     O1: {state: pass, evidence: "plain JSONL"}
     O2: {state: pass, evidence: "single session file, appended live"}
     O3: {state: fail, evidence: "no persisted-session format documentation found (re-verified 2026-08-12)"}
@@ -94,7 +92,6 @@ verdicts:
     C7: {state: fail, evidence: "linear id→parentId chain, no branch structure"}
     T1: {state: fail, evidence: "ledger: v1.0 storage-layout break (flat → subdirs), runtime patch f77040f"}
     T2: {state: fail, evidence: "data.copilotVersion is an application version, not a schema version (rescored in v0.3)"}
-    T3: {state: pass, evidence: "copilotVersion matches installed CLI"}
     O1: {state: pass, evidence: "plain JSONL (encryptedContent is one field, container readable)"}
     O2: {state: pass, evidence: "events.jsonl appended live"}
     O3: {state: pass, evidence: "config-dir reference documents session-state/events.jsonl; SDK docs enumerate persisted event types, and the type names in our measured CLI events.jsonl (session.start, assistant.message, tool.execution_start/complete, session.shutdown) match that documented set — artifact-to-docs comparison, same event vocabulary; no single official page ties the SDK contract to the CLI file, so this is the weakest O3 pass and is flagged as such. CORRECTED 2026-08-12: originally scored fail in error"}
@@ -127,7 +124,6 @@ verdicts:
     C7: {state: fail, evidence: "subagent identity only via title regex '(@x subagent)'"}
     T1: {state: fail, evidence: "ledger: JSON tree → SQLite migration in window"}
     T2: {state: fail, evidence: "session.version tracks the application version, not a schema version (rescored in v0.3)"}
-    T3: {state: pass, evidence: "version tracks app version"}
     O1: {state: pass, evidence: "standard SQLite, JSON columns readable"}
     O2: {state: fail, evidence: "database rows; nothing to tail"}
     O3: {state: fail, evidence: "SQLite table definitions exist in the public source but are not published as documentation or a stable contract (re-verified 2026-08-12)"}
