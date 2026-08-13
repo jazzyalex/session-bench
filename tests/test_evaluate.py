@@ -1,7 +1,8 @@
 """Minimal evaluator tests: determinism, tie handling, input validation.
 
-Run: python3 -m pytest scripts/session_bench/test_evaluate.py -q
+Run: python3 -m pytest tests/ -q
 """
+import hashlib
 import json
 import subprocess
 import sys
@@ -123,3 +124,30 @@ def test_t2_not_run_makes_t3_not_run(tmp_path):
     assert cursor["results"]["T2"] == "not_run"
     assert cursor["results"]["T3"] == "not_run"
     assert "unresolved" in cursor["notes"]["T3"]
+
+
+def test_codex_receipt_query_counts_structured_records_only(tmp_path):
+    artifact = tmp_path / "rollout.jsonl"
+    rows = [
+        {"payload": {"type": "reasoning", "summary": [
+            {"type": "summary_text", "text": "stored summary"}
+        ]}},
+        {"payload": {"type": "reasoning", "summary": []}},
+        {"payload": {"type": "sub_agent_activity"}},
+        {"payload": {"type": "session_meta", "parent_thread_id": "parent"}},
+        {"payload": {"type": "message", "text":
+                     "mentions sub_agent_activity and parent_thread_id only"}},
+    ]
+    artifact.write_text("\n".join(json.dumps(row) for row in rows) + "\n")
+
+    script = REPO / "evidence" / "receipt_codex_c6c7.py"
+    result = subprocess.run(
+        [sys.executable, str(script), str(artifact)],
+        capture_output=True, text=True, cwd=REPO)
+
+    assert result.returncode == 0, result.stderr
+    assert hashlib.sha256(artifact.read_bytes()).hexdigest() in result.stdout
+    assert "reasoning records 2" in result.stdout
+    assert "summary_text 1 (50%)" in result.stdout
+    assert "sub_agent_activity records 1" in result.stdout
+    assert "parent_thread_id-keyed records 1" in result.stdout

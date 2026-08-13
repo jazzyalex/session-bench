@@ -9,7 +9,7 @@ exact query so the observation is auditable the moment the artifacts are
 shared or spot-checked.
 
 Usage:
-  python3 scripts/session_bench/receipt_codex_c6c7.py <rollout.jsonl>... > receipt.md
+  python3 evidence/receipt_codex_c6c7.py <rollout.jsonl>... > receipt.md
 """
 from __future__ import annotations
 
@@ -68,8 +68,8 @@ def main(argv: list[str]) -> int:
     print()
     print("The artifact set is pinned by filename and full SHA-256. The raw")
     print("files are private local session data; identity and query are")
-    print("published; the observation is documented but not independently
-reproducible until sanitized snapshots are archived (a v1.0 milestone).")
+    print("published; the observation is documented but not independently")
+    print("reproducible until sanitized snapshots are archived (a v1.0 milestone).")
     print()
     for r in rows:
         print(f"- `{r['file']}`")
