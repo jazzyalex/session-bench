@@ -1,6 +1,6 @@
-# Methodology — Session Bench v0.3
+# Methodology — Session-Bench v0.3
 
-Session Bench scores each harness's CLI session format on **19 scored
+Session-Bench scores each harness's CLI session format on **19 scored
 pass/fail gates** (one further gate is defined but unscored). No partial
 credit. Every verdict cites evidence in `data/verdicts.yml` or is computed
 by `scripts/evaluate.py` from `data/measurements.json`.

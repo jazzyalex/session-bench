@@ -1,4 +1,4 @@
-# Session Bench — public corrections and rescoring
+# Session-Bench — public corrections and rescoring
 
 The bench treats its own record the way it grades others': every score
 change is public, dated, and attributed.

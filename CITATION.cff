@@ -1,6 +1,6 @@
 cff-version: 1.2.0
-message: "If you cite Session Bench, please use this metadata."
-title: "Session Bench: the coding-agent session-format benchmark"
+message: "If you cite Session-Bench, please use this metadata."
+title: "Session-Bench: the coding-agent session-format benchmark"
 type: dataset
 authors:
   - family-names: Malakhov
@@ -12,5 +12,5 @@ repository-code: "https://github.com/jazzyalex/session-bench"
 abstract: >-
   A pass/fail benchmark of coding-agent session formats: whether harnesses
   preserve a useful, inspectable, stable, and open record of their work.
-  SWE-bench measures whether the agent completed the work; Session Bench
+  SWE-bench measures whether the agent completed the work; Session-Bench
   measures what the harness preserved after the work was done.

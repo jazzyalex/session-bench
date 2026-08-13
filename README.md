@@ -1,11 +1,11 @@
-# Session Bench
+# Session-Bench
 
 **The coding-agent session-format benchmark.**
 
 A vendor report card for how useful, inspectable, stable, and open
 coding-agent session records are.
 
-SWE-bench measures whether the agent completed the work. Session Bench
+SWE-bench measures whether the agent completed the work. Session-Bench
 measures what the harness preserved after the work was done: the session
 files written to disk that determine whether work can be searched, audited,
 priced, resumed, migrated, and consumed by tools outside the original
@@ -97,7 +97,7 @@ classifiers.
 
 ## Relationship to Agent Sessions
 
-Session Bench is maintained by the author of
+Session-Bench is maintained by the author of
 [Agent Sessions](https://github.com/jazzyalex/agent-sessions), a macOS
 browser that parses all ten of these formats in production — that parsing
 work is where the gate evidence comes from. The benchmark's purpose is
