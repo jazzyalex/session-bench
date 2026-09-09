@@ -1,4 +1,4 @@
-# Session-Bench manual-gate checklist. Signal gates (S1-S3) are computed by
+# Session-Bench manual-gate checklist. Signal gates (S1-S4) are computed by
 # evaluate.py from measurements-*.json; every verdict here is a checklist item
 # with its evidence. P2 is globally untested (excluded from scoring) until a
 # cross-harness truncation experiment exists.
@@ -13,6 +13,8 @@ gates:
      desc: "Strings under a published list of content-like keys (text, content, message, thinking, output, result, …) are ≥ 25% of stored bytes (corpus measurement). This heuristic captures real work product — messages, reasoning, tool output — but also counts bookkeeping stored under those keys, noted per-agent where known (Codex world_state, Copilot system prompt). Format-specific per-event classifiers are a 1.0 milestone."}
   - {id: S3, area: Signal, name: No fixed-cost dumps, computed: true,
      desc: "No single per-session bookkeeping record over 25 KB (system-prompt dumps, tool-catalog snapshots, context snapshots) in recent real sessions."}
+  - {id: S4, area: Signal, name: Superseded share, computed: true,
+     desc: "The share of stored bytes a final-state-lossless collapse would remove stays ≤ 20% on the real corpus; evidence names the rule per source and says what the collapse discards (added in v0.4 — S1-S3 cannot see superseded copies of live data under content keys). Final-state-lossless means every byte of final content survives and surviving events keep the timestamps C1 scores; only metadata on superseded copies (e.g. intermediate snapshot timestamps) may be lost, and the evidence must say so. A rule must hold for an ENTIRE source: OpenCode keep-newest-snapshot-per-message qualifies; Grok tool-call folding does not — its prefix property holds for only 66% of tool-call groups, so it is not even final-state-lossless there, and a collapse that must be re-proven per file is an audit, not a format property. Waste in stores outside the session store itself (tracing logs, upgrade snapshots) does not score this gate. Sources with no qualifying measured rule score not_run."}
   - {id: C1, area: Completeness, name: Per-event timestamps,
      desc: "Every event carries a timestamp."}
   - {id: C2, area: Completeness, name: Model attributable,
@@ -60,6 +62,7 @@ verdicts:
     C7: {state: pass, evidence: "structured records in the pinned 5-rollout set: 164 payload.type==sub_agent_activity records and 3 records whose payload carries a parent_thread_id key (session_meta) — subagent runs recoverable via first-class records. Receipt with hashes + query: evidence/receipts-2026-08-12-codex-c6c7.md (CORRECTED from fail 2026-08-12; counts corrected same day from substring to structured matching)"}
     T1: {state: pass, evidence: "ledger: ~6 additive drifts, envelope unchanged; observed 2026-03-31 → 2026-08-04 (full window)"}
     T2: {state: fail, evidence: "stamps only cli_version — an application version identifying the writer, not a schema version an external reader can dispatch on (rescored in v0.3)"}
+    T3: {state: pass, evidence: "cli_version matches installed CLI"}
     O1: {state: pass, evidence: "plain JSONL"}
     O2: {state: pass, evidence: "single rollout file, appended live"}
     O3: {state: fail, evidence: "no rollout-file format documentation found; the published schema covers the app-server protocol, a different surface (re-verified 2026-08-12)"}
@@ -76,6 +79,7 @@ verdicts:
     C7: {state: pass, evidence: "parentUuid DAG + subagents/*.jsonl artifacts"}
     T1: {state: pass, evidence: "ledger: 15+ additive changes, zero breaking; observed 2026-03-31 → 2026-08-04 (full window)"}
     T2: {state: fail, evidence: "per-line version field carries the application version, not a schema version (rescored in v0.3)"}
+    T3: {state: pass, evidence: "version matches installed CLI"}
     O1: {state: pass, evidence: "plain JSONL"}
     O2: {state: pass, evidence: "single session file, appended live"}
     O3: {state: fail, evidence: "no persisted-session format documentation found (re-verified 2026-08-12)"}
@@ -92,6 +96,7 @@ verdicts:
     C7: {state: fail, evidence: "linear id→parentId chain, no branch structure"}
     T1: {state: fail, evidence: "ledger: v1.0 storage-layout break (flat → subdirs), runtime patch f77040f"}
     T2: {state: fail, evidence: "data.copilotVersion is an application version, not a schema version (rescored in v0.3)"}
+    T3: {state: pass, evidence: "copilotVersion matches installed CLI"}
     O1: {state: pass, evidence: "plain JSONL (encryptedContent is one field, container readable)"}
     O2: {state: pass, evidence: "events.jsonl appended live"}
     O3: {state: pass, evidence: "config-dir reference documents session-state/events.jsonl; SDK docs enumerate persisted event types, and the type names in our measured CLI events.jsonl (session.start, assistant.message, tool.execution_start/complete, session.shutdown) match that documented set — artifact-to-docs comparison, same event vocabulary; no single official page ties the SDK contract to the CLI file, so this is the weakest O3 pass and is flagged as such. CORRECTED 2026-08-12: originally scored fail in error"}
@@ -124,6 +129,7 @@ verdicts:
     C7: {state: fail, evidence: "subagent identity only via title regex '(@x subagent)'"}
     T1: {state: fail, evidence: "ledger: JSON tree → SQLite migration in window"}
     T2: {state: fail, evidence: "session.version tracks the application version, not a schema version (rescored in v0.3)"}
+    T3: {state: pass, evidence: "version tracks app version"}
     O1: {state: pass, evidence: "standard SQLite, JSON columns readable"}
     O2: {state: fail, evidence: "database rows; nothing to tail"}
     O3: {state: fail, evidence: "SQLite table definitions exist in the public source but are not published as documentation or a stable contract (re-verified 2026-08-12)"}

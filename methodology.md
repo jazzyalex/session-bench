@@ -1,6 +1,6 @@
-# Methodology — Session-Bench v0.3
+# Methodology — Session-Bench v0.4
 
-Session-Bench scores each harness's CLI session format on **19 scored
+Session-Bench scores each harness's CLI session format on **20 scored
 pass/fail gates** (one further gate is defined but unscored). No partial
 credit. Every verdict cites evidence in `data/verdicts.yml` or is computed
 by `scripts/evaluate.py` from `data/measurements.json`.
@@ -37,6 +37,16 @@ the missing cells is ranked).
 - **S3 No fixed-cost dumps** (computed): no single per-session
   bookkeeping record over 25 KB (system-prompt dumps, tool-catalog
   snapshots, context snapshots).
+- **S4 Superseded share** (computed, added in v0.4): a *final-state-lossless*
+  collapse — keep the newest snapshot per message — would remove ≤ 20% of
+  stored bytes. The gate is deliberately **not** "provably lossless": the
+  qualifying rule drops the timestamps of superseded intermediate
+  snapshots, which C1 rewards storing, so the stronger wording would make
+  S4 and C1 unsatisfiable together. A format with no evaluated collapse
+  rule scores *not run*, never a pass. Waste that lives outside the
+  session store (tracing databases, migration leftovers, upgrade
+  snapshots) is out of scope: it is store-maintenance state a reader can
+  change on their own machine, not a property of the format.
 
 ### Completeness — can you audit what happened and what it cost?
 - **C1** per-event timestamps · **C2** model attributable per assistant
@@ -81,5 +91,8 @@ Comparability-breaking changes bump the bench version:
 - v0.1 → v0.2: T3 conditional on T2; per-harness observation windows;
   two Codex verdicts corrected on pinned evidence.
 - v0.2 → v0.3: T2 restricted to true format versions.
+- v0.3 → v0.4: added S4 (superseded share), from community discussion #54
+  and PR #61 in the agent-sessions repo. Only OpenCode's denominator
+  changed (11/17 → 11/18); no verdict on another gate moved.
 
 Full history: [CHANGELOG.md](CHANGELOG.md).

@@ -3,6 +3,31 @@
 The bench treats its own record the way it grades others': every score
 change is public, dated, and attributed.
 
+## 2026-08-24 — v0.4: added S4, the superseded-share gate
+A twentieth scored gate: a final-state-lossless collapse (keep the newest
+snapshot per message) must remove no more than 20% of stored bytes.
+Contributed through discussion #54 and PR #61 in the agent-sessions repo.
+
+- **OpenCode fails at 95.8%.** Its event table stores a full message
+  snapshot per streaming update: 17,940 `message.updated.1` rows for 4,639
+  distinct messages, 378 MB where keeping the newest per message is 16 MB.
+  Upstream: anomalyco/opencode#33356. Only its denominator moved
+  (11/17 → 11/18); no other verdict changed.
+- **Codex is `not_run`, not a fail.** Its measured freelist waste sits in a
+  separate tracing store (`~/.codex/sqlite/logs_2.sqlite`), plus a
+  superseded pre-migration copy — store-maintenance state outside the
+  session-store contract, which one `PRAGMA incremental_vacuum` on the
+  reader's machine would change with no vendor action.
+- **Wording is load-bearing:** the gate is *final-state-lossless*, not
+  *provably lossless*. The qualifying rule drops superseded snapshot
+  timestamps, which C1 rewards storing.
+- Extractor hardening: the collapse measurement now fails closed when its
+  filter matches no rows instead of reporting a flattering 0%, and
+  freelist share is computed from `PRAGMA page_count` on the same
+  connection (main-file size is unbounded on a live WAL store).
+
+Receipt: [evidence/receipts-2026-08-22-s4.md](evidence/receipts-2026-08-22-s4.md).
+
 ## 2026-08-13 — repository published
 Methodology, data, evaluator, and tests extracted to this standalone
 repository. The website remains the readable report card.

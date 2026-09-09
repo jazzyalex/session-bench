@@ -15,25 +15,29 @@ Readable report card: **https://jazzyalex.github.io/agent-sessions/bench/**
 This repository is the technical source: methodology, data, evaluator,
 evidence notes, and the public correction history.
 
-## Current leaderboard — v0.3, corrected 2026-08-12
+Planned work, including cross-surface local-storage coverage, is tracked in
+[BACKLOG.md](BACKLOG.md).
+
+## Current leaderboard — v0.4, corrected 2026-08-23
 
 | # | Harness | Version | Gates cleared |
 |---|---------|---------|---------------|
-| 1 | Pi | 0.83.0 | 18 / 19 |
+| 1† | Pi | 0.83.0 | 18 / 19 |
 | 2† | OpenClaw | 2026.6.11 | 17 / 18 |
-| 3 | Claude Code | 2.1.220 | 12 / 18 |
-| 3 | Codex | 0.146.0 | 12 / 18 |
-| 5† | OpenCode | 1.18.11 | 11 / 17 |
-| 6† | Kimi Code | 0.31.1 | 11 / 18 |
+| 3† | Claude Code | 2.1.220 | 12 / 18 |
+| 3† | Codex | 0.146.0 | 12 / 18 |
+| 5† | Kimi Code | 0.31.1 | 11 / 18 |
+| 5† | OpenCode | 1.18.11 | 11 / 18 |
 | 7† | Hermes | 0.17.0 | 10 / 17 |
-| 8 | Copilot CLI | 1.0.77 | 10 / 18 |
-| 9 | Antigravity | 1.1.1 | 9 / 18 |
-| 10 | Cursor Agent | 2026.7.20 | 7 / 18 |
+| 8† | Copilot CLI | 1.0.77 | 10 / 18 |
+| 9† | Antigravity | 1.1.1 | 9 / 18 |
+| 10† | Cursor Agent | 2026.7.20 | 7 / 18 |
 
 † A measurement could not be taken (broken headless runtime, auth failure,
-no comparable store-size figure, or an observation window too short to
-judge stability); that gate is *not run*, drops out of the denominator,
-and the rank is provisional within a stated best/worst range.
+no comparable store-size figure, an observation window too short to judge
+stability, or no evaluated collapse rule for the superseded-share gate);
+that gate is *not run*, drops out of the denominator, and the rank is
+provisional within a stated best/worst range.
 
 Regenerate from the versioned inputs (clean clone):
 
@@ -51,7 +55,7 @@ python3 -m pytest tests/ -q
 `data/leaderboard.yml` is generated — never hand-edited. To dispute a
 score, dispute a measurement or an evidence line and re-run the evaluator.
 
-## Scope and honesty notes (v0.3)
+## Scope and honesty notes (v0.4)
 
 - **CLI session stores only.** Desktop apps and IDE plugins can use
   different stores; they are candidates for their own rows later.
@@ -68,6 +72,14 @@ score, dispute a measurement or an evidence line and re-run the evaluator.
 - **Observation windows differ per harness** (2026-03-31 for the
   longest-observed; Kimi from 2026-07-25). Every stability verdict states
   its own window.
+- **S4 is final-state-lossless, not "provably lossless."** The qualifying
+  collapse rule keeps the newest snapshot per message; the timestamps of
+  superseded intermediate snapshots are lost, which is why the stronger
+  wording would make S4 and C1 unsatisfiable together.
+- **Waste outside the session store does not score.** Codex's measured
+  freelist waste sits in a separate tracing store, so its S4 is *not run*
+  rather than a fail: one `PRAGMA incremental_vacuum` on the reader's own
+  machine would change the number with no vendor change.
 
 ## Challenging or updating a result
 
@@ -88,7 +100,7 @@ Every correction so far came from exactly this kind of challenge. The
 
 ## Versioning
 
-The **bench version** (v0.3) is the rubric — gates, thresholds, scoring
+The **bench version** (v0.4) is the rubric — gates, thresholds, scoring
 rules — and bumps only on comparability-breaking changes. The **data
 dates** identify when observations were taken. **v1.0** is reserved for
 end-to-end reproducibility: harness execution to archived artifacts to
