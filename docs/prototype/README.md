@@ -2,13 +2,13 @@
 
 Implementation authorized on 2026-09-10. This is a measurement-system prototype, not a v1 benchmark edition or a vendor result. v0.4 remains unchanged and current. No live acquisition, personal stores, purchases, or benchmark release is authorized by this milestone. The user separately authorized committing/pushing this prototype for Oracle Sol Pro review.
 
-Local acceptance: **98 tests passed**, including all 24 historical tests; **eight copied-bundle cases** reproduced identically. See [acceptance metadata](acceptance.json). Oracle Sol Pro review is pending.
+Local acceptance: **104 tests passed**, including all 24 historical tests; **ten copied-bundle cases** reproduced identically. See [acceptance metadata](acceptance.json). Oracle Sol Pro review is pending.
 
 The prototype validates evidence, decodes two **constructed** storage families, evaluates independently specified assertions, and renders a report with field-level findings and native locators. Both families encode the same synthetic work. They are intentionally named `constructed-jsonl-v1` and `constructed-sqlite-v1`; neither is an adapter for Codex, Claude, Goose, or another product.
 
 ## Run locally
 
-Run from the repository root. The prototype runtime uses only the Python standard library. The verified runtime is recorded in the [reproduction receipt](evidence/reproduction-receipt.json); legacy tests still use the existing `requirements.txt` dependencies. No installation or network is required for these commands.
+Run from the repository root. The prototype runtime uses only the Python standard library. The verified runtime is recorded in the [reproduction receipt](evidence-attachment-fix/reproduction-receipt.json); legacy tests still use the existing `requirements.txt` dependencies. No installation or network is required for these commands.
 
 ```sh
 python3 scripts/session-bench make-fixture --format constructed-jsonl-v1 --out /tmp/sb-example
@@ -33,7 +33,7 @@ Choose unused output directories. Commands refuse to overwrite existing evaluati
 | O2 Registry and schemas | Closed JSON schemas and dependency-free validator for the explicitly used subset; distinct surface, artifact, assertion, result, run/capture/evaluation identities | `schemas/v1/`, `registry/prototype.json`, `tests/test_v1_validation.py` |
 | O3 Constructed fixtures | Equivalent JSONL and SQLite + attachment packs; executable known-defect workload with before/after snapshots, fail/edit/pass test; two sessions, three accepted turns, explicit tool/helper mappings, branches | `session_bench/fixtures.py`, `tests/test_v1_fixtures.py`, [fixture packs](../../fixtures/v1/README.md) |
 | O4 Decoder/evaluator | Native-only process; strict field comparisons, provenance locators, field outcomes, declared assertion denominators; native omission separated from reader omission | `tests/test_v1_evaluation.py`, decoder/fixture/validation tests; positive and derived negative controls |
-| O5 Offline reproduction | Copied source and copied bundles, Python `-I -S`, OS denial probes, semantic-output equality | [Receipt](evidence/reproduction-receipt.json), `tests/test_v1_offline.py` |
+| O5 Offline reproduction | Copied source and copied bundles, Python `-I -S`, OS denial probes, semantic-output equality | [Receipt](evidence-attachment-fix/reproduction-receipt.json), `tests/test_v1_offline.py` |
 
 The source launcher and `python3 -m session_bench` expose the same commands. A result’s `evaluation_id` binds its manifest, decoded output, evaluator result, and an implementation digest covering Python modules and schemas. Results retain the implementation and decoded digests separately. The manifest inventory binds observations and frozen assertions; a new evaluation never silently changes an old output directory.
 
@@ -48,6 +48,7 @@ JSONL locators bind file digest, line/byte position, and raw record digest. SQLi
 - Intact facts reconstruct; removal from all native representations does not get repaired from observer data.
 - Changed status yields a contradicted field and failed assertion. A located fact omitted by an injected faulty decoder yields `retained_decoder_incomplete`, rather than a writer-loss claim.
 - Duplicate logical records fail; dangling tool/branch references and cyclic lineage remain unresolved.
+- Attachment references are checked against the delivered companion digest and size, including same-size payload changes.
 - Unknown records and malformed payloads are accounted for explicitly. Correctly inventoried corrupt data can remain valid capture evidence with unresolved reconstruction.
 - Undelivered companions, missing bundles, digest mismatch, path escape, undeclared files, and symlinks are evidence errors. Correctly represented empty native capture is valid evidence and does not pass absent assertions automatically.
 - Observer/answer-key changes leave native decoding byte-identical. OS tests also deny answer-key file reads and network access. The decoder worker receives only staged `__init__.py`/`decoders.py` and native artifacts; fixture-generation source is excluded because it contains constructed answers.
@@ -55,6 +56,8 @@ JSONL locators bind file digest, line/byte position, and raw record digest. SQLi
 Independent inspection metadata is a supplied evidence claim, not an oracle. A constructed absence control includes a transformation receipt and baseline manifest digest; arbitrary real-world absence still needs an independently reviewed coverage/inspection procedure. Hashes establish identity, not honest acquisition.
 
 ## Reproduction boundaries and remaining work
+
+The [initial eight-case receipt](evidence/reproduction-receipt.json) is retained unchanged; the current ten-case receipt adds the attachment-payload negative control and a new implementation identity.
 
 The recorded reproduction is a fresh local process using copied source and evidence, with no site packages and denied access to original source/evidence paths and network. It uses the same host OS/interpreter. It is **not** an independent person's reproduction, a second operating-system validation, or a live-writer attestation. The macOS backend runs decoder and evaluator as separate sandboxed stages because nested sandbox initialization is not supported by this execution path. Each case records denial probes and equality of the entire canonical result, including locators and evaluation identity.
 

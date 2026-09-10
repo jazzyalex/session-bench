@@ -28,6 +28,7 @@ _MUTATIONS = {
     "missing_companion",
     "empty_native",
     "captured_corruption",
+    "attachment_payload",
     "branch_dangling",
     "branch_cycle",
 }
@@ -223,6 +224,7 @@ def build_fixture(root: Path, format: str = _JSONL_FORMAT, mutation: str | None 
         raise ValueError(f"unsupported fixture mutation: {mutation}")
     if root.exists() and any(root.iterdir()):
         raise ValueError("fixture root must be new or empty")
+    root.parent.mkdir(parents=True, exist_ok=True)
     baseline_manifest_sha = None
     if mutation is not None:
         with tempfile.TemporaryDirectory(dir=str(root.parent), prefix=f".{root.name}-baseline-") as temp:
@@ -272,6 +274,9 @@ def build_fixture(root: Path, format: str = _JSONL_FORMAT, mutation: str | None 
         data = native_path.read_bytes()
         native_path.write_bytes((b"not-a-sqlite-database\x00" + data[16:]) if format == _SQLITE_FORMAT else data.replace(b'{', b'[', 1))
         detail["transformation"] = "corrupt native header or first JSON record after capture"
+    if mutation == "attachment_payload":
+        attachment.write_bytes(b"wrong attachment payload\n")
+        detail["transformation"] = "replace attachment bytes while retaining original native reference digest"
     if mutation == "missing_companion":
         attachment.unlink()
         detail["transformation"] = "remove declared attachment companion"

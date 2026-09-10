@@ -126,3 +126,12 @@ def test_missing_companion_is_declared_invalid_but_native_decoder_diagnoses(tmp_
         validate_bundle(bundle)
     decoded = decode_native(bundle / "native")
     assert any(item["code"] in {"missing_artifact", "missing_dependency"} for item in decoded["diagnostics"])
+
+
+@pytest.mark.parametrize('fmt',['constructed-jsonl-v1','constructed-sqlite-v1'])
+def test_attachment_payload_control_with_new_parent(tmp_path,fmt):
+    bundle=build_fixture(tmp_path/'new-parent'/fmt,fmt,mutation='attachment_payload')
+    validate_bundle(bundle)
+    result,_=evaluate_bundle(bundle,decoder=decode_native)
+    row=next(r for r in result['rows'] if r['id']=='event.attachment-1')
+    assert row['state']=='fail' and 'attachment_payload_mismatch' in row['findings']

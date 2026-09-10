@@ -48,7 +48,7 @@ print('native readable; answer key and network denied')
 
 def test_copied_bundle_reproduction_with_originals_and_network_denied(tmp_path):
     receipt=reproduce(tmp_path/'reproduction')
-    assert len(receipt['cases'])==8
+    assert len(receipt['cases'])==10
     for case in receipt['cases']:
         assert case['identical_semantic_output']
         assert case['denial_probes']=={'network':'denied','original_bundle':'denied','original_code':'denied','site_loaded':False}

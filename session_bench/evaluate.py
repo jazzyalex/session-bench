@@ -119,6 +119,15 @@ def evaluate_decoded(manifest, expected, decoded, manifest_sha):
                     if len(targets)!=1:
                         state,outcome='unresolved','unresolved'
                         findings.append('unresolved_join')
+            if event['kind']=='attachment':
+                path=event['fields'].get('path')
+                targets=[a for a in manifest['artifacts'] if a['role']=='native' and a['path']=='native/'+str(path)]
+                if len(targets)!=1:
+                    state,outcome='unresolved','unresolved'
+                    findings.append('unresolved_attachment')
+                elif any(key in event['fields'] and event['fields'][key]!=targets[0][key] for key in ('sha256','size_bytes')):
+                    state,outcome='fail','unresolved'
+                    findings.append('attachment_payload_mismatch')
             if event['kind']=='branch':
                 branches={e['id']:e for e in decoded['events'] if e['kind']=='branch' and e['session_id']==event['session_id']}
                 visited=set()

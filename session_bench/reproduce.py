@@ -32,7 +32,7 @@ def reproduce(out):
         shutil.copytree(repo/'session_bench',kit/'session_bench',ignore=shutil.ignore_patterns('__pycache__'))
         shutil.copytree(repo/'schemas',kit/'schemas')
         for fmt in ['constructed-jsonl-v1','constructed-sqlite-v1']:
-            for mutation in [None,'remove_fact','wrong_status','captured_corruption']:
+            for mutation in [None,'remove_fact','wrong_status','captured_corruption','attachment_payload']:
                 name=fmt.removeprefix('constructed-')+'-'+(mutation or 'intact')
                 original=workspace/'originals'/name
                 build_fixture(original,fmt,mutation)

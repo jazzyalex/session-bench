@@ -127,3 +127,24 @@ def test_wrong_jsonl_coordinates_cannot_support_a_pass(tmp_path):
         return result
     with pytest.raises(ValueError,match='JSONL range'):
         evaluate_bundle(bundle,decoder=bad_decoder)
+
+
+@pytest.mark.parametrize('fmt',['constructed-jsonl-v1','constructed-sqlite-v1'])
+@pytest.mark.parametrize('replacement',[b'wrong attachment payload\n',b'value = 9\n'])
+def test_changed_companion_payload_cannot_pass_old_native_reference(tmp_path,fmt,replacement):
+    bundle=build_fixture(tmp_path/fmt,fmt)
+    attachment=bundle/'native/attachments/target.txt'
+    attachment.write_bytes(replacement)
+    index=json.loads((bundle/'native/decode.json').read_text())
+    entry=next(x for x in index['artifacts'] if x['id']=='attachment-target')
+    entry.update(sha256=digest(attachment.read_bytes()),size_bytes=attachment.stat().st_size)
+    (bundle/'native/decode.json').write_bytes(canonical(index))
+    manifest=json.loads((bundle/'manifest.json').read_text())
+    for entry in manifest['artifacts']:
+        data=(bundle/entry['path']).read_bytes()
+        entry.update(sha256=digest(data),size_bytes=len(data))
+    (bundle/'manifest.json').write_bytes(canonical(manifest))
+    result,_=evaluate_bundle(bundle,decoder=decode_native)
+    row=next(r for r in result['rows'] if r['id']=='event.attachment-1')
+    assert row['state']=='fail'
+    assert 'attachment_payload_mismatch' in row['findings']
