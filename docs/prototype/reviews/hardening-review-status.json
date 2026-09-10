@@ -1,0 +1,11 @@
+{
+  "session": "use-connected-github-for-a",
+  "target_commit": "c4807214ffeedffb404cd84ff73ceab82c615322",
+  "status": "running",
+  "requested_model": "gpt-5.6-sol",
+  "requested_thinking_time": "extra-high",
+  "observed_thinking_time": "Pro",
+  "selection_verified": false,
+  "limitation": "Oracle follow-up inherited prior Pro effort despite explicit extra-high flag; prompt already submitted, no duplicate run started. This is not a verified Extra High review.",
+  "conversation_url": "https://chatgpt.com/c/6aa33476-6308-83e8-a5ab-49de90c53403"
+}

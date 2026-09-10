@@ -1,6 +1,6 @@
 {
   "milestone": "O1-O5",
-  "status": "hardening checks passed; Sol Extra High verification pending",
+  "status": "hardening checks passed; external verification running (Oracle inherited Pro despite requested Extra High)",
   "tested_at": "2026-09-10T23:30:31.754876+00:00",
   "python": "3.14.7",
   "sqlite": "3.53.4",
@@ -26,6 +26,11 @@
     "skip_reason": "macOS sandbox tests; no Linux OS-isolation claim"
   },
   "ci": {
-    "status": "pending for hardening revision"
+    "url": "https://github.com/jazzyalex/session-bench/actions/runs/34542485591",
+    "commit": "c4807214ffeedffb404cd84ff73ceab82c615322",
+    "status": "success",
+    "passed": 130,
+    "skipped": 2,
+    "skip_reason": "macOS OS isolation tests not available on Linux"
   }
 }
