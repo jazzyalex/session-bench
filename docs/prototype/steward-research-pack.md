@@ -84,4 +84,4 @@ The constructed prototype can prove evaluator behavior, such as detecting a remo
 
 Archive and recovery are separate qualifications. A readable or portable archive may be reported without native continuation or crash evidence. Lifecycle recovery requires C05/C06 evidence; C06 has no product-specific exemption. If the persistence process cannot be isolated, the recovery qualification remains incomplete rather than passing by exception. Process-termination evidence is not a power-loss guarantee.
 
-This pack is a reusable draft for recipients selected by the user. It records an invitation and an evidence contract only; no invitation, live run, external contact, publication, or broad campaign has occurred.
+This pack is a reusable draft for recipients selected by the user. It records an invitation and an evidence contract only; other than the linked willingness/access invitation, no live run, collection, publication, or broad campaign has occurred.

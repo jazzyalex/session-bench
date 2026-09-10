@@ -1,36 +1,30 @@
 {
   "milestone": "O1-O5",
-  "status": "hardening checks passed; external verification running (Oracle inherited Pro despite requested Extra High)",
-  "tested_at": "2026-09-10T23:30:31.754876+00:00",
+  "status": "row evidence and outcome hardening checks passed; fresh Sol Extra High review pending",
+  "tested_at": "2026-09-10T23:52:22.983446+00:00",
   "python": "3.14.7",
   "sqlite": "3.53.4",
   "os": "15.7.9",
-  "implementation_sha256": "5fb20aaa3c2d44aed0ada28fac2c8907d3b61587c7645091c9c32e0eb5556a52",
+  "implementation_sha256": "76dc38d7d65f37ecb881665b389bca46517b28825ec1cf1b223c798c89f8c72f",
   "test_command": "python3 -m pytest tests/ -q",
-  "tests_passed": 132,
+  "tests_passed": 138,
   "historical_test_count": 24,
-  "prototype_test_count": 108,
+  "prototype_test_count": 114,
   "reproduced_cases": 10,
   "live_runs": 0,
   "independent_person_reproduction": false,
   "next_gate": "L0/F0 requires separate live authorization",
-  "reproduction_receipt": "evidence-hardening/reproduction-receipt.json",
-  "previous_reproduction_receipt": "evidence-attachment-fix/reproduction-receipt.json",
+  "reproduction_receipt": "evidence-row-contract/reproduction-receipt.json",
+  "previous_reproduction_receipt": "evidence-hardening/reproduction-receipt.json",
   "previous_ci": {
-    "url": "https://github.com/jazzyalex/session-bench/actions/runs/34539893506",
-    "commit": "b2803f40ce5e22a97c3a91cb1cda0f2054c0aa8b",
-    "platform": "ubuntu-latest",
-    "python": "3.12.14",
-    "passed": 102,
-    "skipped": 2,
-    "skip_reason": "macOS sandbox tests; no Linux OS-isolation claim"
-  },
-  "ci": {
     "url": "https://github.com/jazzyalex/session-bench/actions/runs/34542485591",
     "commit": "c4807214ffeedffb404cd84ff73ceab82c615322",
     "status": "success",
     "passed": 130,
     "skipped": 2,
     "skip_reason": "macOS OS isolation tests not available on Linux"
+  },
+  "ci": {
+    "status": "pending for row-contract revision"
   }
 }

@@ -1,11 +1,22 @@
 {
   "session": "use-connected-github-for-a",
   "target_commit": "c4807214ffeedffb404cd84ff73ceab82c615322",
-  "status": "running",
+  "status": "completed",
   "requested_model": "gpt-5.6-sol",
   "requested_thinking_time": "extra-high",
   "observed_thinking_time": "Pro",
   "selection_verified": false,
   "limitation": "Oracle follow-up inherited prior Pro effort despite explicit extra-high flag; prompt already submitted, no duplicate run started. This is not a verified Extra High review.",
-  "conversation_url": "https://chatgpt.com/c/6aa33476-6308-83e8-a5ab-49de90c53403"
+  "conversation_url": "https://chatgpt.com/c/6aa33476-6308-83e8-a5ab-49de90c53403",
+  "invocation_diagnosis": {
+    "oracle_version": "0.20.0",
+    "evidence": [
+      "dist/src/cli/followup.js:52-70 copies stored browser configuration",
+      "dist/bin/oracle-cli.js:1349-1350 returns stored followup config before building CLI browser config"
+    ],
+    "consequence": "--browser-thinking-time extra-high does not override the parent Pro config on this installed followup path",
+    "next_review": "Use fresh session without --followup and verify actual Extra High selection; no installed-tool modification performed"
+  },
+  "verdict": "NOT READY: passing result evidence references and reverse outcome semantics",
+  "source_access": "confirmed exact c480721 via connected GitHub; source-only review, no local execution"
 }

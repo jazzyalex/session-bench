@@ -50,12 +50,33 @@ def _field_matches(field: dict) -> bool:
     return False
 
 
+def _validate_locator_shape(locator: dict) -> None:
+    def sha(value):
+        return isinstance(value, str) and len(value)==64 and all(c in '0123456789abcdef' for c in value)
+    if not isinstance(locator, dict) or not isinstance(locator.get('artifact_id'), str) or not locator['artifact_id']:
+        raise ValueError('native source locator requires artifact identity')
+    if not sha(locator.get('sha256')) or not sha(locator.get('record_sha256')):
+        raise ValueError('native source locator requires artifact and record digests')
+    if 'line' in locator:
+        values=[locator.get(key) for key in ('line','byte_start','byte_end')]
+        if any(type(value) is not int for value in values) or values[0]<1 or not 0<=values[1]<values[2]:
+            raise ValueError('native source locator requires valid JSONL coordinates')
+    elif locator.get('table')=='events' and locator.get('column')=='payload' and type(locator.get('row_key')) is int:
+        dependencies=locator.get('dependency_sha256')
+        if not isinstance(dependencies,list) or not all(sha(value) for value in dependencies):
+            raise ValueError('native source locator requires SQLite dependency digests')
+    else:
+        raise ValueError('native source locator requires supported coordinates')
+
+
 def _row_state(row: dict) -> str:
     row_state = row.get("state")
     fields = row.get("fields")
     findings = row.get("findings")
     if not isinstance(fields, list) or not isinstance(findings, list):
         raise ValueError(f"row {row.get('id', '<unknown>')} has malformed fields/findings")
+    for locator in row.get("locators", []):
+        _validate_locator_shape(locator)
     field_states = []
     for field in fields:
         if not isinstance(field, dict):
@@ -80,6 +101,23 @@ def _row_state(row: dict) -> str:
             raise ValueError(f"row {row.get('id', '<unknown>')} passes with blocking findings")
         if row.get("outcome") != "retained_and_reconstructed":
             raise ValueError(f"row {row.get('id', '<unknown>')} pass has inconsistent outcome")
+    outcome = row.get("outcome")
+    if row_state == "pass":
+        if not row.get("locators"):
+            raise ValueError("pass row requires native source locator")
+        if not row.get("observation_ids"):
+            raise ValueError("pass row requires observation reference")
+    if outcome == "retained_and_reconstructed" and row_state != "pass":
+        raise ValueError("retained-and-reconstructed outcome requires pass state")
+    if row_state == "unresolved" and outcome != "unresolved":
+        raise ValueError("unresolved row requires unresolved outcome")
+    if outcome in {"retained_decoder_incomplete", "verified_absent"}:
+        if row_state != "fail":
+            raise ValueError("causal failure outcome requires fail state")
+        if not row.get("observation_ids") or not row.get("inspection_evidence_ids"):
+            raise ValueError("causal failure outcome requires observation and inspection evidence")
+        if outcome == "retained_decoder_incomplete" and not row.get("locators"):
+            raise ValueError("retained decoder failure requires native locator")
     if "fail" in field_states and row_state != "fail":
         raise ValueError(f"row {row.get('id', '<unknown>')} has a failing field but is not fail")
     if "unresolved" in field_states and row_state == "pass":

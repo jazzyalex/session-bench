@@ -275,8 +275,8 @@ def build_fixture(root: Path, format: str = _JSONL_FORMAT, mutation: str | None 
         native_path.write_bytes((b"not-a-sqlite-database\x00" + data[16:]) if format == _SQLITE_FORMAT else data.replace(b'{', b'[', 1))
         detail["transformation"] = "corrupt native header or first JSON record after capture"
     if mutation == "attachment_payload":
-        attachment.write_bytes(b"wrong attachment payload\n")
-        detail["transformation"] = "replace attachment bytes while retaining original native reference digest"
+        attachment.write_bytes(b"value = 9\n")
+        detail["transformation"] = "replace same-size attachment bytes while retaining original native reference digest"
     if mutation == "missing_companion":
         attachment.unlink()
         detail["transformation"] = "remove declared attachment companion"

@@ -61,6 +61,8 @@ def test_metric_state_precedence_and_pass_row_safety(tmp_path):
     result = _result(tmp_path)
     broken = copy.deepcopy(result)
     broken["rows"][0]["state"] = "fail"
+    broken["rows"][0]["outcome"] = "unresolved"
+    broken["rows"][0]["findings"] = ["synthetic_failure"]
     broken["metrics"] = [copy.deepcopy(metric) for metric in result["metrics"]]
     broken["evaluation_id"] = expected_evaluation_id(broken)
     with pytest.raises(ValueError, match="population/count/state"):
@@ -116,6 +118,44 @@ def test_render_rejects_stale_result_even_when_receiptless(tmp_path):
         render(stale)
 
 
+@pytest.mark.parametrize("evidence_key", ["locators", "observation_ids"])
+def test_pass_row_requires_evidence_arrays(tmp_path, evidence_key):
+    result = _result(tmp_path)
+    broken = copy.deepcopy(result)
+    row = next(row for row in broken["rows"] if row["state"] == "pass")
+    row[evidence_key] = []
+    broken["evaluation_id"] = expected_evaluation_id(broken)
+    receipt = {"semantic_sha256": semantic_sha256(broken)}
+    with pytest.raises(ValueError, match="evidence|locator|observation"):
+        render(broken, receipt)
+
+
+def test_fail_row_cannot_claim_retained_reconstruction(tmp_path):
+    result = _result(tmp_path)
+    broken = copy.deepcopy(result)
+    row = next(row for row in broken["rows"] if row["state"] == "pass")
+    row["state"] = "fail"
+    row["outcome"] = "retained_and_reconstructed"
+    row["findings"] = ["synthetic_failure"]
+    broken["evaluation_id"] = expected_evaluation_id(broken)
+    receipt = {"semantic_sha256": semantic_sha256(broken)}
+    with pytest.raises(ValueError, match="outcome|state"):
+        render(broken, receipt)
+
+
+def test_unresolved_row_cannot_claim_verified_absence(tmp_path):
+    result = _result(tmp_path)
+    broken = copy.deepcopy(result)
+    row = next(row for row in broken["rows"] if row["state"] == "pass")
+    row["state"] = "unresolved"
+    row["outcome"] = "verified_absent"
+    row["findings"] = ["synthetic_uncertainty"]
+    broken["evaluation_id"] = expected_evaluation_id(broken)
+    receipt = {"semantic_sha256": semantic_sha256(broken)}
+    with pytest.raises(ValueError, match="outcome|state"):
+        render(broken, receipt)
+
+
 def test_invalid_evidence_cannot_have_passing_rows(tmp_path):
     result = _result(tmp_path)
     result['evidence_state'] = 'invalid'
@@ -132,3 +172,13 @@ def test_empty_metric_still_requires_assertion_units(tmp_path):
     result['evaluation_id'] = expected_evaluation_id(result)
     with pytest.raises(ValueError, match='assertion units'):
         validate_result_contract(result)
+
+
+@pytest.mark.parametrize('locator',[{}, {'artifact_id':'native-session'}])
+def test_nonempty_but_invalid_locator_cannot_support_pass(tmp_path,locator):
+    from session_bench.__main__ import render
+    result = _result(tmp_path)
+    result['rows'][0]['locators'] = [locator]
+    result['evaluation_id'] = expected_evaluation_id(result)
+    with pytest.raises(ValueError, match='native source locator'):
+        render(result, {'semantic_sha256':semantic_sha256(result)})

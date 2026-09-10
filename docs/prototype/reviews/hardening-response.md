@@ -17,3 +17,10 @@ The earlier attachment correction at `b2803f40ce5e22a97c3a91cb1cda0f2054c0aa8b` 
 The checked-in synthetic packs are regenerated with explicit population roles. Prior commits and reproduction receipt directories remain historical evidence tied to their own implementation digests. New copied-bundle evidence must bind the final hardening implementation digest. v0.4 source, data, historical artifacts and historical tests remain unchanged.
 
 Limits remain explicit: unscored populations are declared, not inferred; hashes establish identity rather than honest acquisition; copied reproduction uses the same local host/interpreter, not an independent person. No vendor adapter, private-store access, live run, purchase, or benchmark publication is part of this patch. O1–O5 acceptance remains pending verification of this revision, and L0/F0 remains separately gated.
+
+
+## Follow-up result-contract correction
+
+The [second source review](hardening-review.md) confirmed the previous changes and identified one remaining acceptance blocker: passing rows could lose their evidence references and still render after recomputing the ID and receipt. The new contract requires native locators and observation references for passing rows, validates locator structure, and checks state/outcome consistency in both directions. Causal failure outcomes additionally require observation and inspection references. Regression tests deliberately recompute IDs and receipts before expecting semantic rejection, including empty locator objects.
+
+The stale research-pack statement about external contact is corrected. The copied attachment mutation now changes bytes without changing size, extending digest-only verification into both copied reproduction families. Full local validation passes 138 tests; ten copied cases match exactly under denied original source/bundle/network access. Fresh Sol Extra High verification remains pending. The earlier follow-up actually ran Pro because installed Oracle 0.20.0 reused the parent configuration; its execution metadata records that limitation, and the next review uses a fresh session.
