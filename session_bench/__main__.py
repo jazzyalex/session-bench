@@ -9,6 +9,7 @@ from .bundle import canonical, digest, read_json, validate_bundle, validate_regi
 from .evaluate import evaluate_bundle
 from .fixtures import build_fixture
 from .isolation import isolated_decode
+from .result_contract import semantic_sha256
 
 
 def write_output(out, files, source=None):
@@ -22,13 +23,19 @@ def write_output(out, files, source=None):
         (out/name).write_bytes(value if isinstance(value, bytes) else value.encode('utf-8'))
 
 
-def render(result):
+def render(result, receipt=None):
     validate_result(result)
+    receipt_label = 'receiptless; semantic result unverified.'
+    if receipt is not None:
+        if not isinstance(receipt, dict) or receipt.get('semantic_sha256') != semantic_sha256(result):
+            raise ValueError('receipt semantic digest mismatch')
+        receipt_label = f"verified (semantic_sha256 `{receipt['semantic_sha256']}`)."
     def escape(s):
         return str(s).replace('&','&amp;').replace('<','&lt;').replace('>','&gt;').replace('|','\\|').replace('\n',' ')
     lines=['# Constructed measurement-system report', '',
            '**No vendor result or qualification.**', '',
            f"Evaluation: `{result['evaluation_id']}`", '',
+           f"Receipt: **{receipt_label}**", '',
            f"Capture: `{escape(result['capture_id'])}`; evidence: **{result['evidence_state']}**; origin: **{result['origin']}**.", '',
            '| Scenario | Reconstructed assertions / declared assertions | State |', '|---|---:|---|']
     for m in result['metrics']:
@@ -72,15 +79,21 @@ def main(argv=None):
             write_output(args.out,{'decoded.json':canonical(decoded)+b'\n'},args.input)
         elif args.command=='evaluate':
             result,decoded=evaluate_bundle(args.input)
+            receipt = {'semantic_sha256': semantic_sha256(result),
+                       'evaluation_id': result['evaluation_id'],
+                       'manifest_sha256': result['manifest_sha256'],
+                       'implementation_sha256': result['implementation_sha256']}
             write_output(args.out,{'results.json':canonical(result)+b'\n','decoded.json':canonical(decoded)+b'\n',
-                                   'report.md':render(result),'receipt.json':canonical({'semantic_sha256':digest(canonical(result)),
-                                   'evaluation_id':result['evaluation_id'],'manifest_sha256':result['manifest_sha256'],
-                                   'implementation_sha256':result['implementation_sha256']})+b'\n'},args.input)
+                                   'report.md':render(result, receipt),
+                                   'receipt.json':canonical(receipt)+b'\n'},args.input)
             print(json.dumps({'evaluation_id':result['evaluation_id'],'evidence_state':result['evidence_state']},sort_keys=True))
             # Valid measured failures are successful evaluations, not broken evidence.
             return 0 if result['evidence_state']=='valid' else 2
         elif args.command=='render':
-            write_output(args.out,{'report.md':render(read_json(args.input))},args.input.parent)
+            result = read_json(args.input)
+            receipt_path = args.input.parent / 'receipt.json'
+            receipt = read_json(receipt_path) if receipt_path.exists() else None
+            write_output(args.out,{'report.md':render(result, receipt)},args.input.parent)
         return 0
     except (ValueError,OSError,KeyError,TypeError,RecursionError) as exc:
         print(f'session-bench: {exc}',file=sys.stderr)

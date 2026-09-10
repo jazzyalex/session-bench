@@ -34,6 +34,11 @@ def test_builds_equivalent_constructed_bundle(tmp_path, fmt):
     assert any(row["fields"].get("text", "").endswith("🙂") for row in rows)
     assert any("  \n```" in row["fields"].get("text", "") for row in rows)
     assert json.loads((bundle / "expected/assertions.json").read_text())["schema_version"] == "1.0-prototype"
+    observer = json.loads((bundle / "observer/events.json").read_text())["events"]
+    assertions = json.loads((bundle / "expected/assertions.json").read_text())["assertions"]
+    assert all(event["population_role"] == "primary_scored" for event in observer if event["id"].startswith("obs-0"))
+    assert sum(assertion["assertion_role"] == "primary" for assertion in assertions) == len([event for event in observer if event["population_role"] == "primary_scored"])
+    assert sum(assertion["assertion_role"] == "relationship" for assertion in assertions) == 1
 
 
 @pytest.mark.parametrize("mutation", ["remove_fact", "wrong_status", "duplicate", "missing_join", "unknown_event", "empty_native", "branch_dangling", "branch_cycle"])

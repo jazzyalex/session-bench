@@ -15,6 +15,13 @@
             "type": "string",
             "minLength": 1
           },
+          "population_role": {
+            "enum": [
+              "primary_scored",
+              "supporting",
+              "unscored"
+            ]
+          },
           "boundary": {
             "enum": [
               "accepted",
@@ -48,6 +55,7 @@
         },
         "required": [
           "id",
+          "population_role",
           "boundary",
           "event_id",
           "session_id",

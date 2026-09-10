@@ -104,34 +104,30 @@ def dependencies(artifacts):
         visit(aid)
 
 
+def validate_constructed_subject(subject, format):
+    expected = {'harness':'constructed','version':'1','surface':'cli',
+                'mode':'offline-fixture','os':'synthetic','model':'none',
+                'configuration':'default','artifact_family':format,'schema_version':'1'}
+    if format not in ('constructed-jsonl-v1','constructed-sqlite-v1') or subject != expected:
+        raise ValueError('prototype requires exact constructed subject and artifact family')
+
+
 def validate_registry(registry):
     validate_named(registry, 'registry')
     unique(registry['surfaces'], 'id', 'registry')
     for row in registry['surfaces']:
-        if row['status'] == 'measured' and row['live_tested_at'] is None:
-            raise ValueError('measured surface requires live_tested_at')
+        if row['status'] != 'constructed_only':
+            raise ValueError('candidate or measured surface unsupported by offline prototype')
+        validate_constructed_subject(row['subject'], row['id'])
+        if any(row[key] is not None for key in ('source_inspected_at','live_tested_at','next_inspection_due')):
+            raise ValueError('constructed registry cannot claim inspection or live dates')
     return registry
 
 
 def validate_result(result):
+    from .result_contract import validate_result_semantics
     validate_named(result, 'result')
-    unique(result['rows'], 'id', 'result')
-    ids = {r['id'] for r in result['rows']}
-    by_id = {r['id']: r for r in result['rows']}
-    for m in result['metrics']:
-        if len(set(m['assertion_ids'])) != len(m['assertion_ids']):
-            raise ValueError('duplicate metric assertion IDs')
-        if not set(m['assertion_ids']) <= ids:
-            raise ValueError('metric references unknown assertion')
-        selected = [by_id[x] for x in m['assertion_ids']]
-        if m['unit'] != 'assertions':
-            raise ValueError('prototype aggregate metrics require assertion units; fields remain per-row')
-        total, passed = len(selected), sum(r['state']=='pass' for r in selected)
-        state = 'unresolved' if not total or any(r['state']=='unresolved' for r in selected) else 'pass' if passed==total else 'fail'
-        if (m['denominator'],m['numerator'],m['state']) != (total,passed,state):
-            raise ValueError('metric population/count/state mismatch (zero denominator cannot pass)')
-        if m['scope'] != 'all' and any(r['scenario']!=m['scope'] for r in selected):
-            raise ValueError('metric scope differs from population')
+    validate_result_semantics(result)
     return result
 
 
@@ -147,6 +143,7 @@ def validate_bundle(root):
     # The offline prototype deliberately has no vendor adapter or live-evidence claim path.
     if manifest['origin'] == 'native_live':
         raise ValueError('native_live evidence unsupported by constructed prototype adapters')
+    validate_constructed_subject(manifest['subject'], manifest['decoder']['format'])
     provenance = manifest['provenance']
     if manifest['origin'] == 'derived_mutation':
         if not provenance['source_manifest_sha256'] or not provenance['transformation']:
@@ -218,6 +215,36 @@ def validate_bundle(root):
         raise ValueError('native_sessions differs from independently specified observed session population')
     if manifest['execution']['scenario_runs'] != 1:
         raise ValueError('prototype bundle represents one constructed scenario-run fixture pack')
+    # Every primary observation must be represented exactly once in the scored
+    # population. Supporting helper/file observations are deliberately separate.
+    primary = {oid for oid, o in obs.items() if o['population_role']=='primary_scored'}
+    membership = {oid: [] for oid in primary}
+    primary_keys = set()
+    for assertion in expected['assertions']:
+        if any(oid not in obs for oid in assertion['observation_ids']):
+            raise ValueError('dangling observation ID')
+        if assertion['assertion_role']=='primary':
+            key=(assertion['session_id'],assertion['event_id'],assertion['boundary'])
+            if key in primary_keys:
+                raise ValueError('duplicate primary assertion for observed event boundary')
+            primary_keys.add(key)
+            primary_refs = set(assertion['observation_ids']) & primary
+            if not primary_refs:
+                raise ValueError('primary assertion requires primary scored observation')
+            for oid in primary_refs:
+                membership[oid].append(assertion['id'])
+    if any(len(owners)!=1 for owners in membership.values()):
+        raise ValueError('primary observation population requires exactly one primary assertion')
+    # Conflicts among primary observations cannot be hidden by selecting a source.
+    observed_fields = {}
+    for o in obs.values():
+        if o['population_role']!='primary_scored':
+            continue
+        for name, value in o['fields'].items():
+            key=(o['session_id'],o['event_id'],o['boundary'],name)
+            if key in observed_fields and canonical(observed_fields[key])!=canonical(value):
+                raise ValueError('conflicting primary observations')
+            observed_fields[key]=value
     for a in expected['assertions']:
         unique(a['fields'], 'name', f"assertion {a['id']}")
         if a['subject'] == 'writer_behavior':
@@ -235,6 +262,8 @@ def validate_bundle(root):
             candidates = [o['fields'][name] for o in referenced if name in o['fields']]
             if name in ('id','session_id'):
                 candidates += [o['event_id' if name=='id' else name] for o in referenced]
+            if len({canonical(c) for c in candidates})>1:
+                raise ValueError('conflicting observations for scored field')
             if a['execution']=='valid' and not any(canonical(c)==canonical(f['expected']) for c in candidates):
                 raise ValueError(f"expectation not grounded in observation: {a['id']} {name}")
         inspection = a['inspection']
@@ -248,4 +277,6 @@ def validate_bundle(root):
         for loc in inspection['locators']:
             if loc.get('artifact_id') not in by_id or by_id[loc['artifact_id']]['role']!='native':
                 raise ValueError('inspection locator lacks native source')
+    from .locators import validate_inspections
+    validate_inspections(root, manifest, expected)
     return manifest, expected, observer

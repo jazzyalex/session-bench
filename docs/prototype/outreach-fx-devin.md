@@ -1,0 +1,11 @@
+@thedavidweng — would you and your agent be interested in a small, optional Session-Bench research contribution for **Devin CLI**, **fx (vercel-labs)**, or whichever is easier?
+
+We are expanding Session-Bench to measure how faithfully an independent reader can reconstruct an agent's work from the record it leaves. Your fx 0.0.8 investigation is a good example of why actual native sessions matter: a working reader or a green format check alone cannot prove that the right records were captured.
+
+The useful next contribution would eventually be a couple of **fresh synthetic sessions**: conversation plus a correction (C01), and a tiny inspect → failing test → edit → rerun workflow (C02), with independent observations and the native companion files. This is separate from your existing fx reader PR work and from normal steward duties—no obligation, deadline, or effect on stewardship if you decline.
+
+**For now, could you just let us know whether you would be willing, which agent/build and launch mode you could use, and what operator-time / request-or-token / spend limits you would be comfortable with?** Documentation or format clues are also useful if running anything is inconvenient. We will agree on the exact small recipe, isolated scratch project, capture boundaries and stop limits before asking you to run it. Please don't install or upgrade anything, buy credits, or start paid runs for this request now.
+
+Please keep existing/private histories private and do not paste raw sessions into this thread. Any later contribution would use purpose-made harmless content, with your review and explicit sharing permission; the benchmark would not publish your personal sessions or credentials. A redacted steward sample can help with schema research, but we would not present it as unmodified native evidence for measured preservation.
+
+The [optional research pack](https://github.com/jazzyalex/session-bench/blob/b2803f40ce5e22a97c3a91cb1cda0f2054c0aa8b/docs/prototype/steward-research-pack.md) has the response form and proposed evidence checklist. The current prototype only tests constructed JSONL/SQLite fixtures—it does not yet contain Devin/fx adapters or claim live results. Happy to keep the first step to a short reply here, and “not now” is completely fine. Any contribution would be credited as you prefer.

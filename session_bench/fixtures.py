@@ -132,7 +132,7 @@ def _observer(rows: list[dict[str, Any]]) -> dict[str, Any]:
     for sequence, row in enumerate(rows, 1):
         fields = {"id": row["id"], "session_id": row["session_id"], "kind": row["kind"]}
         fields.update({f"fields.{key}": value for key, value in row["fields"].items()})
-        events.append({"id": f"obs-{sequence:03d}", "boundary": "constructed", "event_id": row["id"],
+        events.append({"id": f"obs-{sequence:03d}", "population_role": "primary_scored", "boundary": "constructed", "event_id": row["id"],
                        "session_id": row["session_id"], "fields": fields,
                        "source": "constructed-independent-spec", "sequence": sequence})
     extra = [
@@ -147,7 +147,7 @@ def _observer(rows: list[dict[str, Any]]) -> dict[str, Any]:
         ("obs-test-pass", "file_observed", "tc-4", {"action": "test", "path": "fixture_project/test_target.py", "exit_code": 0, "outcome": "success"}),
     ]
     for ident, boundary, event_id, fields in extra:
-        events.append({"id": ident, "boundary": boundary, "event_id": event_id, "session_id": "session-1",
+        events.append({"id": ident, "population_role": "supporting", "boundary": boundary, "event_id": event_id, "session_id": "session-1",
                        "fields": fields, "source": "constructed-independent-spec", "sequence": len(events) + 1})
     return {"schema_version": "1.0-prototype", "events": events}
 
@@ -165,7 +165,7 @@ def _expectations(rows: list[dict[str, Any]], mutation: str | None = None) -> di
         for name, value in sorted(row["fields"].items()):
             comparison = "text_lf" if isinstance(value, str) else "json" if isinstance(value, (dict, list)) else "exact"
             fields.append({"name": f"fields.{name}", "expected": value, "comparison": comparison})
-        assertions.append({"id": f"event.{row['id']}", "scenario": scenario.get(row["kind"], "C04"),
+        assertions.append({"id": f"event.{row['id']}", "assertion_role": "primary", "scenario": scenario.get(row["kind"], "C04"),
                            "subject": "decoder_correctness", "applicability": "required", "execution": "valid",
                            "observation_ids": [f"obs-{rows.index(row) + 1:03d}"], "session_id": row["session_id"],
                            "event_id": row["id"], "fields": fields,
@@ -175,7 +175,7 @@ def _expectations(rows: list[dict[str, Any]], mutation: str | None = None) -> di
         target = next(assertion for assertion in assertions if assertion["id"] == "event.tr-2")
         target["inspection"] = {"state": "absent", "locators": [], "evidence_ids": ["provenance-mutation.json"]}
         target["reason"] = "derived mutation removes the native fact; decoder must not infer absence"
-    assertions.append({"id": "relationship.tool-envelope-helper", "scenario": "C02", "subject": "decoder_correctness",
+    assertions.append({"id": "relationship.tool-envelope-helper", "assertion_role": "relationship", "scenario": "C02", "subject": "decoder_correctness",
                        "applicability": "required", "execution": "valid",
                        "observation_ids": ["obs-h1", "obs-h2"],
                        "session_id": "session-1", "event_id": "tc-1", "fields": [

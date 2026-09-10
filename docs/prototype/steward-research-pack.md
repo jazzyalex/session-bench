@@ -1,6 +1,6 @@
 # Optional steward research pack
 
-Status: draft invitation and response form; ready for user-selected recipients. Nothing has been sent. This pack is optional research coordination, not a collection authorization, implementation claim, or production readiness statement.
+Status: draft invitation and response form; ready for user-selected recipients. A tailored invitation covering fx and Devin CLI was sent to their shared steward, @thedavidweng, in [Agent Sessions PR #63](https://github.com/jazzyalex/agent-sessions/pull/63#issuecomment-5626554122). This document remains the reusable pack; no live run has been requested without a prior bounded plan. This pack is optional research coordination, not a collection authorization, implementation claim, or production readiness statement.
 
 Session-Bench currently has a constructed offline prototype. Constructed JSONL/SQLite fixtures can qualify the decoder, evaluator, mutation controls, and reporting contract. They cannot establish that a vendor writer preserves a real session. Observed-writer proof requires an authorized live run, an independently recorded trigger, a coherent native capture, and the exact build/configuration identity. The current prototype has no production suite or vendor adapter ready to claim.
 
@@ -56,7 +56,6 @@ The steward does not authorize a run by replying to this pack. A later run plan 
 
 - [ ] C01: three accepted turns including a correction; accepted user text and visible assistant blocks captured independently.
 - [ ] C02: inspect a known defect; run the deterministic failing test; perform an edit; retry/rerun to a passing result when the operation occurs.
-- [ ] Native session bookkeeping records two sessions for C04, even when the selected run is otherwise linear.
 - [ ] C02 actions identify inspect/edit/test, project-relative target, arguments, outcomes, and relevant before/after file digests.
 - [ ] All performed operations and failures are retained; skipped operations are marked unexercised rather than invented.
 
@@ -68,6 +67,10 @@ The steward does not authorize a run by replying to this pack. A later run plan 
 - [ ] Decoder input is native-only; observer records and expected answers enter only the evaluator.
 - [ ] Default configuration is distinguished from enhanced logging/diagnostic settings.
 - [ ] Artifact paths, hashes, IDs, and capture procedure are recorded; public-by-construction synthetic data is preferred.
+
+### Later C04 expansion
+
+C04 is a later discovery/portable-bundle expansion, not a requirement of the initial one-CLI C01+C02 gate. When exercised, the native fixture must record two sessions and the copied bundle must enumerate and attribute both without original paths or backend access.
 
 ### Donation and licensing
 

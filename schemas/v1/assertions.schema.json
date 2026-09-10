@@ -15,6 +15,12 @@
             "type": "string",
             "minLength": 1
           },
+          "assertion_role": {
+            "enum": [
+              "primary",
+              "relationship"
+            ]
+          },
           "scenario": {
             "enum": [
               "C01",
@@ -144,6 +150,7 @@
         },
         "required": [
           "id",
+          "assertion_role",
           "scenario",
           "subject",
           "applicability",

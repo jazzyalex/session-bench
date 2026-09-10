@@ -5,6 +5,7 @@ from . import __version__
 from .bundle import canonical, digest, validate_bundle, validate_result
 from .isolation import isolated_decode
 from .locators import validate_sources
+from .result_contract import evaluation_id
 
 MISSING = object()
 
@@ -50,11 +51,11 @@ def evaluate_bundle(root, *, decoder=isolated_decode):
     after, _, _ = validate_bundle(root)
     if canonical(after)!=canonical(manifest) or (root/'manifest.json').read_bytes()!=manifest_bytes:
         raise ValueError('evidence changed during evaluation')
-    result = evaluate_decoded(manifest, expected, decoded, digest(manifest_bytes))
+    result = evaluate_decoded(manifest, expected, decoded, digest(manifest_bytes), observer=observer)
     return result, decoded
 
 
-def evaluate_decoded(manifest, expected, decoded, manifest_sha):
+def evaluate_decoded(manifest, expected, decoded, manifest_sha, *, observer=None):
     # The CLI never accepts user-supplied decoded output. Tests can inject decoder
     # faults to prove the distinction between preservation and decoder correctness.
     rows = []
@@ -102,6 +103,7 @@ def evaluate_decoded(manifest, expected, decoded, manifest_sha):
             if inspection['state']=='present':
                 outcome = 'retained_decoder_incomplete'
                 findings.append('decoder_mismatch')
+                locators = inspection['locators']
             else:
                 # Value disagreement is established; its writer/decoder cause is not.
                 findings.append('contradicted')
@@ -117,13 +119,13 @@ def evaluate_decoded(manifest, expected, decoded, manifest_sha):
                 if ref is not None:
                     targets = [e for e in decoded['events'] if e['id']==ref and e['session_id']==event['session_id'] and (required_kind is None or e['kind']==required_kind)]
                     if len(targets)!=1:
-                        state,outcome='unresolved','unresolved'
+                        state,outcome=('fail' if state=='fail' else 'unresolved'),'unresolved'
                         findings.append('unresolved_join')
             if event['kind']=='attachment':
                 path=event['fields'].get('path')
                 targets=[a for a in manifest['artifacts'] if a['role']=='native' and a['path']=='native/'+str(path)]
                 if len(targets)!=1:
-                    state,outcome='unresolved','unresolved'
+                    state,outcome=('fail' if state=='fail' else 'unresolved'),'unresolved'
                     findings.append('unresolved_attachment')
                 elif any(key in event['fields'] and event['fields'][key]!=targets[0][key] for key in ('sha256','size_bytes')):
                     state,outcome='fail','unresolved'
@@ -134,7 +136,7 @@ def evaluate_decoded(manifest, expected, decoded, manifest_sha):
                 current=event['id']
                 while current in branches:
                     if current in visited:
-                        state,outcome='unresolved','unresolved'
+                        state,outcome=('fail' if state=='fail' else 'unresolved'),'unresolved'
                         findings.append('branch_cycle')
                         break
                     visited.add(current)
@@ -144,6 +146,23 @@ def evaluate_decoded(manifest, expected, decoded, manifest_sha):
                      'boundary':assertion['boundary'],'state':state,'outcome':outcome,'findings':sorted(set(findings)),
                      'fields':fields,'locators':locators,'observation_ids':assertion['observation_ids'],
                      'inspection_evidence_ids':inspection['evidence_ids']})
+    if observer is not None and manifest['observation']['complete']:
+        population = {(o['session_id'],o['event_id']) for o in observer['events']
+                      if o['population_role'] in ('primary_scored','unscored')}
+        sessions = {o['session_id'] for o in observer['events']}
+        for event in decoded['events']:
+            if event['kind'] not in {'session','message','tool_call','tool_result','branch','attachment'}:
+                continue
+            if (event['session_id'],event['id']) in population:
+                continue
+            findings=['unexpected_native_event']
+            if event['session_id'] not in sessions:
+                findings.append('native_session_population_mismatch')
+            rows.append({'id':'population.unexpected.'+digest(canonical(event)),
+                         'scenario':'extended','subject':'decoder_correctness',
+                         'applicability':'required','execution':'valid','boundary':'constructed',
+                         'state':'fail','outcome':'unresolved','findings':findings,'fields':[],
+                         'locators':[event['locator']],'observation_ids':[], 'inspection_evidence_ids':[]})
     # All predeclared assertions remain in denominator, including missing data.
     metrics = []
     for scenario in sorted({r['scenario'] for r in rows}):
@@ -151,7 +170,7 @@ def evaluate_decoded(manifest, expected, decoded, manifest_sha):
         passed=sum(r['state']=='pass' for r in selected)
         total=len(selected)
         metrics.append({'scope':scenario,'unit':'assertions','numerator':passed,'denominator':total,
-                        'state':'unresolved' if not total or any(r['state']=='unresolved' for r in selected) else 'pass' if passed==total else 'fail',
+                        'state':'fail' if any(r['state']=='fail' for r in selected) else 'unresolved' if not total or any(r['state']=='unresolved' for r in selected) else 'pass',
                         'assertion_ids':[r['id'] for r in selected]})
     if not rows:
         metrics.append({'scope':'all','unit':'assertions','numerator':0,'denominator':0,'state':'unresolved','assertion_ids':[]})
@@ -161,6 +180,6 @@ def evaluate_decoded(manifest, expected, decoded, manifest_sha):
             'claim_scope':'constructed measurement-system test; no vendor qualification',
             'capture_status':manifest['capture']['status'],'evidence_state':'valid' if capture_valid else 'invalid',
             'rows':rows,'metrics':metrics,'diagnostics':decoded['diagnostics'],'unknown_records':decoded['unknown_records']}
-    result['evaluation_id']='eval-'+digest(canonical({'result':result,'implementation_sha256':implementation_digest(),'decoded_sha256':digest(canonical(decoded))}))
+    result['evaluation_id']=evaluation_id(result)
     validate_result(result)
     return result

@@ -1,14 +1,14 @@
 # Bounded offline prototype (O1–O5)
 
-Implementation authorized on 2026-09-10. This is a measurement-system prototype, not a v1 benchmark edition or a vendor result. v0.4 remains unchanged and current. No live acquisition, personal stores, purchases, or benchmark release is authorized by this milestone. The user separately authorized committing/pushing this prototype for Oracle Sol Pro review.
+Implementation authorized on 2026-09-10. This is a measurement-system prototype, not a v1 benchmark edition or a vendor result. v0.4 remains unchanged and current. No live acquisition, personal stores, purchases, or benchmark release is authorized by this milestone. The user separately authorized committing/pushing this prototype for Oracle review. The first review used Sol Pro; follow-up reviews use Sol Extra High.
 
-Local acceptance: **104 tests passed**, including all 24 historical tests; **ten copied-bundle cases** reproduced identically. See [acceptance metadata](acceptance.json). Oracle Sol Pro review is pending.
+Local acceptance: **132 tests passed**, including all 24 historical tests; **ten copied-bundle cases** reproduced identically. See [acceptance metadata](acceptance.json). The preceding commit passed 102 tests on GitHub CI/Linux and skipped two macOS isolation tests; CI for this hardening revision is pending. The completed [Sol Pro review](reviews/sol-pro-review.md) found offline acceptance blockers; the hardening patch and focused follow-up review are in progress.
 
 The prototype validates evidence, decodes two **constructed** storage families, evaluates independently specified assertions, and renders a report with field-level findings and native locators. Both families encode the same synthetic work. They are intentionally named `constructed-jsonl-v1` and `constructed-sqlite-v1`; neither is an adapter for Codex, Claude, Goose, or another product.
 
 ## Run locally
 
-Run from the repository root. The prototype runtime uses only the Python standard library. The verified runtime is recorded in the [reproduction receipt](evidence-attachment-fix/reproduction-receipt.json); legacy tests still use the existing `requirements.txt` dependencies. No installation or network is required for these commands.
+Run from the repository root. The prototype runtime uses only the Python standard library. The verified runtime is recorded in the [reproduction receipt](evidence-hardening/reproduction-receipt.json); legacy tests still use the existing `requirements.txt` dependencies. No installation or network is required for these commands.
 
 ```sh
 python3 scripts/session-bench make-fixture --format constructed-jsonl-v1 --out /tmp/sb-example
@@ -33,7 +33,7 @@ Choose unused output directories. Commands refuse to overwrite existing evaluati
 | O2 Registry and schemas | Closed JSON schemas and dependency-free validator for the explicitly used subset; distinct surface, artifact, assertion, result, run/capture/evaluation identities | `schemas/v1/`, `registry/prototype.json`, `tests/test_v1_validation.py` |
 | O3 Constructed fixtures | Equivalent JSONL and SQLite + attachment packs; executable known-defect workload with before/after snapshots, fail/edit/pass test; two sessions, three accepted turns, explicit tool/helper mappings, branches | `session_bench/fixtures.py`, `tests/test_v1_fixtures.py`, [fixture packs](../../fixtures/v1/README.md) |
 | O4 Decoder/evaluator | Native-only process; strict field comparisons, provenance locators, field outcomes, declared assertion denominators; native omission separated from reader omission | `tests/test_v1_evaluation.py`, decoder/fixture/validation tests; positive and derived negative controls |
-| O5 Offline reproduction | Copied source and copied bundles, Python `-I -S`, OS denial probes, semantic-output equality | [Receipt](evidence-attachment-fix/reproduction-receipt.json), `tests/test_v1_offline.py` |
+| O5 Offline reproduction | Copied source and copied bundles, Python `-I -S`, OS denial probes, semantic-output equality | [Receipt](evidence-hardening/reproduction-receipt.json), `tests/test_v1_offline.py` |
 
 The source launcher and `python3 -m session_bench` expose the same commands. A result’s `evaluation_id` binds its manifest, decoded output, evaluator result, and an implementation digest covering Python modules and schemas. Results retain the implementation and decoded digests separately. The manifest inventory binds observations and frozen assertions; a new evaluation never silently changes an old output directory.
 
@@ -47,7 +47,7 @@ JSONL locators bind file digest, line/byte position, and raw record digest. SQLi
 
 - Intact facts reconstruct; removal from all native representations does not get repaired from observer data.
 - Changed status yields a contradicted field and failed assertion. A located fact omitted by an injected faulty decoder yields `retained_decoder_incomplete`, rather than a writer-loss claim.
-- Duplicate logical records fail; dangling tool/branch references and cyclic lineage remain unresolved.
+- Duplicate logical records fail. Dangling tool/branch references and cyclic lineage retain an unresolved attribution finding, while any confirmed field contradiction remains a failure. Failure takes precedence over uncertainty in row and scenario states.
 - Attachment references are checked against the delivered companion digest and size, including same-size payload changes.
 - Unknown records and malformed payloads are accounted for explicitly. Correctly inventoried corrupt data can remain valid capture evidence with unresolved reconstruction.
 - Undelivered companions, missing bundles, digest mismatch, path escape, undeclared files, and symlinks are evidence errors. Correctly represented empty native capture is valid evidence and does not pass absent assertions automatically.
@@ -57,7 +57,11 @@ Independent inspection metadata is a supplied evidence claim, not an oracle. A c
 
 ## Reproduction boundaries and remaining work
 
-The [initial eight-case receipt](evidence/reproduction-receipt.json) is retained unchanged; the current ten-case receipt adds the attachment-payload negative control and a new implementation identity.
+Primary scored observations require exactly one primary assertion per event/boundary. Supporting helper/file observations and explicitly unscored events have separate roles. Extra known native events under complete observation create failed population checks, including unexpected native sessions. These checks are included as assertions in the extended metric. Conflicting observations for a scored field are rejected; the evaluator cannot select whichever source agrees with an answer.
+
+Persisted present-inspection claims must resolve native bytes, identity, and all scored fields through verified locators. Report rendering checks the result identity, exact per-scenario metric partition, row consistency, and the adjacent receipt when present. A receiptless render is labelled unverified. Hash/receipt consistency is not an independent attestation of acquisition or authorship. Registry and bundle subjects are restricted to the two constructed profiles; measured/live labels cannot be introduced by supplying a date.
+
+The [initial eight-case receipt](evidence/reproduction-receipt.json) is retained unchanged; the [attachment-fix receipt](evidence-attachment-fix/reproduction-receipt.json) is also retained. The current ten-case receipt binds the hardened implementation and explicit population roles.
 
 The recorded reproduction is a fresh local process using copied source and evidence, with no site packages and denied access to original source/evidence paths and network. It uses the same host OS/interpreter. It is **not** an independent person's reproduction, a second operating-system validation, or a live-writer attestation. The macOS backend runs decoder and evaluator as separate sandboxed stages because nested sandbox initialization is not supported by this execution path. Each case records denial probes and equality of the entire canonical result, including locators and evaluation identity.
 

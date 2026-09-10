@@ -1,19 +1,31 @@
 {
   "milestone": "O1-O5",
-  "status": "local checks passed; external review pending",
-  "tested_at": "2026-09-10T22:56:56.480515+00:00",
+  "status": "hardening checks passed; Sol Extra High verification pending",
+  "tested_at": "2026-09-10T23:30:31.754876+00:00",
   "python": "3.14.7",
   "sqlite": "3.53.4",
   "os": "15.7.9",
-  "implementation_sha256": "917c99714592f9541431c63e8f058d3c8bd2a6b4eaf2d77b373c730e3956406d",
+  "implementation_sha256": "5fb20aaa3c2d44aed0ada28fac2c8907d3b61587c7645091c9c32e0eb5556a52",
   "test_command": "python3 -m pytest tests/ -q",
-  "tests_passed": 104,
+  "tests_passed": 132,
   "historical_test_count": 24,
-  "prototype_test_count": 80,
+  "prototype_test_count": 108,
   "reproduced_cases": 10,
   "live_runs": 0,
   "independent_person_reproduction": false,
   "next_gate": "L0/F0 requires separate live authorization",
-  "reproduction_receipt": "evidence-attachment-fix/reproduction-receipt.json",
-  "previous_reproduction_receipt": "evidence/reproduction-receipt.json"
+  "reproduction_receipt": "evidence-hardening/reproduction-receipt.json",
+  "previous_reproduction_receipt": "evidence-attachment-fix/reproduction-receipt.json",
+  "previous_ci": {
+    "url": "https://github.com/jazzyalex/session-bench/actions/runs/34539893506",
+    "commit": "b2803f40ce5e22a97c3a91cb1cda0f2054c0aa8b",
+    "platform": "ubuntu-latest",
+    "python": "3.12.14",
+    "passed": 102,
+    "skipped": 2,
+    "skip_reason": "macOS sandbox tests; no Linux OS-isolation claim"
+  },
+  "ci": {
+    "status": "pending for hardening revision"
+  }
 }

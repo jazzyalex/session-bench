@@ -1,0 +1,12 @@
+{
+  "session": "session-bench-offline-pro-review",
+  "target_commit": "98ab5ab213398e7efcee98fd459a5d818ae4e3ac",
+  "requested_model": "gpt-5.6-sol",
+  "requested_thinking_time": "pro",
+  "verified_picker_label": "GPT-5.6 Sol",
+  "oracle_log_thinking_time": "Pro",
+  "status": "completed",
+  "source_access": "Review confirmed connected GitHub access to target commit and diff; no test execution by reviewer",
+  "followup_commit": "b2803f40ce5e22a97c3a91cb1cda0f2054c0aa8b",
+  "verdict": "NOT READY for O1-O5 acceptance"
+}
