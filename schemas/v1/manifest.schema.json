@@ -1,0 +1,333 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Session-Bench offline prototype manifest",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0-prototype"
+    },
+    "protocol_version": {
+      "const": "1.0-prototype"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capture_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "origin": {
+      "enum": [
+        "constructed",
+        "derived_mutation",
+        "native_live"
+      ]
+    },
+    "track": {
+      "enum": [
+        "native_local",
+        "explicit_export"
+      ]
+    },
+    "subject": {
+      "type": "object",
+      "properties": {
+        "harness": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "surface": {
+          "enum": [
+            "cli",
+            "desktop",
+            "ide"
+          ]
+        },
+        "mode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "os": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1
+        },
+        "configuration": {
+          "enum": [
+            "default",
+            "enhanced"
+          ]
+        },
+        "artifact_family": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema_version": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "harness",
+        "version",
+        "surface",
+        "mode",
+        "os",
+        "model",
+        "configuration",
+        "artifact_family",
+        "schema_version"
+      ],
+      "additionalProperties": false
+    },
+    "capture": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "valid",
+            "invalid"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "roots_complete": {
+          "type": "boolean"
+        },
+        "procedure": {
+          "type": "string",
+          "minLength": 1
+        },
+        "captured_at": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "status",
+        "reason",
+        "roots_complete",
+        "procedure",
+        "captured_at"
+      ],
+      "additionalProperties": false
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "role": {
+            "enum": [
+              "native",
+              "observer",
+              "expected",
+              "provenance",
+              "workload"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "size_bytes": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "id",
+          "role",
+          "path",
+          "sha256",
+          "size_bytes",
+          "depends_on"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "decoder": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "enum": [
+            "constructed-jsonl-v1",
+            "constructed-sqlite-v1"
+          ]
+        },
+        "version": {
+          "const": "0.1.0"
+        }
+      },
+      "required": [
+        "format",
+        "version"
+      ],
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "workload": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "license": {
+          "type": "string",
+          "minLength": 1
+        },
+        "privacy_review": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_manifest_sha256": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "transformation": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "workload",
+        "observer",
+        "license",
+        "privacy_review",
+        "source_manifest_sha256",
+        "transformation"
+      ],
+      "additionalProperties": false
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "enum": [
+            "valid",
+            "not_run",
+            "invalid",
+            "not_exercised"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "scenario_runs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "native_sessions": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "state",
+        "reason",
+        "attempt",
+        "scenario_runs",
+        "native_sessions"
+      ],
+      "additionalProperties": false
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "complete": {
+          "type": "boolean"
+        },
+        "blind_spots": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "required": [
+        "complete",
+        "blind_spots"
+      ],
+      "additionalProperties": false
+    },
+    "expectations_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observer_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "native_package": {
+      "const": "native"
+    }
+  },
+  "required": [
+    "schema_version",
+    "protocol_version",
+    "run_id",
+    "capture_id",
+    "origin",
+    "track",
+    "subject",
+    "capture",
+    "artifacts",
+    "decoder",
+    "provenance",
+    "execution",
+    "observation",
+    "expectations_path",
+    "observer_path",
+    "native_package"
+  ],
+  "additionalProperties": false
+}

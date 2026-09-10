@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0-prototype",
+  "surfaces": [
+    {
+      "id": "constructed-jsonl-v1",
+      "subject": {
+        "harness": "constructed",
+        "version": "1",
+        "surface": "cli",
+        "mode": "offline-fixture",
+        "os": "synthetic",
+        "model": "none",
+        "configuration": "default",
+        "artifact_family": "constructed-jsonl-v1",
+        "schema_version": "1"
+      },
+      "status": "constructed_only",
+      "maintenance_owner": "Session-Bench prototype maintainers",
+      "source_inspected_at": null,
+      "live_tested_at": null,
+      "next_inspection_due": null
+    },
+    {
+      "id": "constructed-sqlite-v1",
+      "subject": {
+        "harness": "constructed",
+        "version": "1",
+        "surface": "cli",
+        "mode": "offline-fixture",
+        "os": "synthetic",
+        "model": "none",
+        "configuration": "default",
+        "artifact_family": "constructed-sqlite-v1",
+        "schema_version": "1"
+      },
+      "status": "constructed_only",
+      "maintenance_owner": "Session-Bench prototype maintainers",
+      "source_inspected_at": null,
+      "live_tested_at": null,
+      "next_inspection_due": null
+    }
+  ]
+}

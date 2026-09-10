@@ -1,0 +1,292 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Session-Bench offline prototype result",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0-prototype"
+    },
+    "evaluation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capture_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "decoder_version": {
+      "const": "0.1.0"
+    },
+    "evaluator_version": {
+      "const": "0.1.0"
+    },
+    "origin": {
+      "enum": [
+        "constructed",
+        "derived_mutation",
+        "native_live"
+      ]
+    },
+    "claim_scope": {
+      "const": "constructed measurement-system test; no vendor qualification"
+    },
+    "capture_status": {
+      "enum": [
+        "valid",
+        "invalid"
+      ]
+    },
+    "evidence_state": {
+      "enum": [
+        "valid",
+        "invalid"
+      ]
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scenario": {
+            "type": "string",
+            "minLength": 1
+          },
+          "subject": {
+            "enum": [
+              "representability",
+              "writer_behavior",
+              "decoder_correctness",
+              "reproduction"
+            ]
+          },
+          "applicability": {
+            "enum": [
+              "required",
+              "optional_supported",
+              "unsupported",
+              "unknown"
+            ]
+          },
+          "execution": {
+            "enum": [
+              "valid",
+              "not_run",
+              "invalid",
+              "not_exercised"
+            ]
+          },
+          "boundary": {
+            "enum": [
+              "accepted",
+              "helper_invoked",
+              "helper_emitted",
+              "harness_received",
+              "displayed",
+              "file_observed",
+              "constructed"
+            ]
+          },
+          "state": {
+            "enum": [
+              "pass",
+              "fail",
+              "unresolved"
+            ]
+          },
+          "outcome": {
+            "enum": [
+              "retained_and_reconstructed",
+              "retained_decoder_incomplete",
+              "verified_absent",
+              "unresolved"
+            ]
+          },
+          "findings": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "state": {
+                  "enum": [
+                    "pass",
+                    "fail",
+                    "unresolved"
+                  ]
+                },
+                "comparison": {
+                  "enum": [
+                    "exact",
+                    "json",
+                    "text_lf",
+                    "presentation_unknown"
+                  ]
+                },
+                "expected": {},
+                "actual": {},
+                "actual_present": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "name",
+                "state",
+                "comparison",
+                "expected",
+                "actual",
+                "actual_present"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "locators": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "observation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "inspection_evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "id",
+          "scenario",
+          "subject",
+          "applicability",
+          "execution",
+          "boundary",
+          "state",
+          "outcome",
+          "findings",
+          "fields",
+          "locators",
+          "observation_ids",
+          "inspection_evidence_ids"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "numerator": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "denominator": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unit": {
+            "enum": [
+              "assertions",
+              "fields",
+              "events"
+            ]
+          },
+          "state": {
+            "enum": [
+              "pass",
+              "fail",
+              "unresolved"
+            ]
+          },
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
+          "assertion_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "numerator",
+          "denominator",
+          "unit",
+          "state",
+          "scope",
+          "assertion_ids"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "unknown_records": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "implementation_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "decoded_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "evaluation_id",
+    "run_id",
+    "capture_id",
+    "manifest_sha256",
+    "decoder_version",
+    "evaluator_version",
+    "origin",
+    "claim_scope",
+    "capture_status",
+    "evidence_state",
+    "rows",
+    "metrics",
+    "diagnostics",
+    "unknown_records",
+    "implementation_sha256",
+    "decoded_sha256"
+  ],
+  "additionalProperties": false
+}

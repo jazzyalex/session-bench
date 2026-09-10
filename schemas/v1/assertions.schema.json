@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Session-Bench offline prototype assertions",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0-prototype"
+    },
+    "assertions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scenario": {
+            "enum": [
+              "C01",
+              "C02",
+              "C03-A",
+              "C03-B",
+              "C04",
+              "C05",
+              "C06-A",
+              "C06-B",
+              "C06-C",
+              "extended"
+            ]
+          },
+          "subject": {
+            "enum": [
+              "representability",
+              "writer_behavior",
+              "decoder_correctness",
+              "reproduction"
+            ]
+          },
+          "applicability": {
+            "enum": [
+              "required",
+              "optional_supported",
+              "unsupported",
+              "unknown"
+            ]
+          },
+          "execution": {
+            "enum": [
+              "valid",
+              "not_run",
+              "invalid",
+              "not_exercised"
+            ]
+          },
+          "observation_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "session_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "event_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "expected": {},
+                "comparison": {
+                  "enum": [
+                    "exact",
+                    "json",
+                    "text_lf",
+                    "presentation_unknown"
+                  ]
+                }
+              },
+              "required": [
+                "name",
+                "expected",
+                "comparison"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "inspection": {
+            "type": "object",
+            "properties": {
+              "state": {
+                "enum": [
+                  "uninspected",
+                  "present",
+                  "absent"
+                ]
+              },
+              "locators": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "state",
+              "locators",
+              "evidence_ids"
+            ],
+            "additionalProperties": false
+          },
+          "boundary": {
+            "enum": [
+              "accepted",
+              "helper_invoked",
+              "helper_emitted",
+              "harness_received",
+              "displayed",
+              "file_observed",
+              "constructed"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "scenario",
+          "subject",
+          "applicability",
+          "execution",
+          "observation_ids",
+          "session_id",
+          "event_id",
+          "fields",
+          "inspection",
+          "boundary",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "assertions"
+  ],
+  "additionalProperties": false
+}

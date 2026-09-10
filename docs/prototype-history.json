@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "approval": {
+    "status": "approved",
+    "scope": "O1-O5",
+    "approved_at": "2026-09-10",
+    "notes": "Bounded local synthetic prototype and v0.4 preservation bookkeeping only. L0/F0 live access remains separately gated; no collection, publication, commit, or push is authorized by this record."
+  },
+  "v1_bookkeeping": {
+    "first_evaluated_edition": {
+      "scheduled_scenario_runs": 36,
+      "contract": "C01-C04, three configurations, three repetitions per scenario/configuration",
+      "native_session_note": "Each C04 scenario run creates two native sessions. Do not convert scheduled scenario runs into a single native-session total."
+    },
+    "recovery_edition": {
+      "scheduled_scenario_runs": 36,
+      "contract": "C05 three configurations x three repetitions; C06 three configurations x three conditions x three repetitions",
+      "native_session_note": "Native-session multiplicity is recorded per run/capture after collection; no total is inferred for recovery runs."
+    },
+    "calibration": {
+      "scheduled_scenario_runs": 7,
+      "contract": "Three configurations x C01/C02 once, plus one separately budgeted advanced-profile attempt",
+      "native_session_note": "The advanced profile and recovery stages do not receive an invented native-session total."
+    },
+    "feasibility_gate": {
+      "scheduled_scenario_runs": 2,
+      "contract": "One CLI, one valid C01 and one valid C02; copied offline decoding and damaged-fixture detection are derived evaluations",
+      "native_session_note": "Derived copied/damaged evaluations add no native session."
+    }
+  },
+  "v0_4_preservation": {
+    "generated_output": "data/leaderboard.yml",
+    "sha256": {
+      "README.md": "e2609fdd8657cfa96c66d4531ce2e79faf71090b4f3a60076bb6174bfb9d720e",
+      "methodology.md": "507c5e20622a473042134953c01d46fdd47300773671e21e30e03188ac398e61",
+      "scripts/evaluate.py": "d39856b70298e751c57b49f82c7e080fc88364962df8bee96fe3bc7df70381c5",
+      "scripts/measure.py": "724b7684c050e110eb4a7d28b0ddbd366198fe1b1b97421198fe619a12372f67",
+      "data/measurements.json": "439a8951466896eaae40504a07a0720c31eac0179e64e33e58ba1afb73094f0a",
+      "data/verdicts.yml": "c266e26fd46fd73ad304eab2acd8f2a9dc63fdec4dc89ee909b54419b4d26568",
+      "data/leaderboard.yml": "3aaa283bd5f91530c3bfdaa93209fa640a6dd4f0852b91b7b41544a66460ed91",
+      "evidence/README.md": "0fa1ea3d8c20899e9bd47e67ac2bdaf92335cb9769e583679661d3c926e4c7ba",
+      "evidence/receipt_codex_c6c7.py": "9078bc8bd196bf646f1c365728b213d946f37a6bd5992989b04fc0e53eb1fb8e",
+      "evidence/receipts-2026-08-12-codex-c6c7.md": "b8db00f1bfd43eee754d5d37094acc72431e647aa4e26ff355d9a3a205a19853",
+      "evidence/receipts-2026-08-22-s4.md": "e07c2f89aca44759dbd394503424f8a32199c3930ba2c11f0dde6db550b4ffc6"
+    }
+  }
+}

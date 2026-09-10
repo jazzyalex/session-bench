@@ -1,0 +1,17 @@
+{"fields":{"project":"fixture-project","surface":"constructed","title":"unicode correction"},"id":"session-1","kind":"session","session_id":"session-1"}
+{"fields":{"project":"fixture-project","surface":"constructed","title":"second session"},"id":"session-2","kind":"session","session_id":"session-2"}
+{"fields":{"name":"main","parent_id":null,"status":"active"},"id":"branch-main","kind":"branch","session_id":"session-1"}
+{"fields":{"name":"repair","parent_id":"branch-main","status":"active"},"id":"branch-fork","kind":"branch","session_id":"session-1"}
+{"fields":{"role":"user","text":"Inspect target.txt and fix the failing test. café 🙂","turn":1},"id":"m-1","kind":"message","session_id":"session-1"}
+{"fields":{"role":"assistant","text":"I found the defect.\n```python\nreturn value  \n```","turn":1},"id":"m-2","kind":"message","session_id":"session-1"}
+{"fields":{"action_kind":"inspect","arguments":{"command":"inspect fixture_project/target.py"},"attempt":1,"helper_ids":["h-1","h-2"],"name":"shell","project_relative_target":"fixture_project/target.py"},"id":"tc-1","kind":"tool_call","session_id":"session-1"}
+{"fields":{"action_kind":"inspect","exit_code":0,"helper_ids":["h-1","h-2"],"outcome":"inspected","project_relative_target":"fixture_project/target.py","status":"success","stdout":"def answer():\n    return 1\n","tool_call_id":"tc-1"},"id":"tr-1","kind":"tool_result","session_id":"session-1"}
+{"fields":{"action_kind":"test","arguments":{"command":"regression_test.py"},"attempt":2,"helper_ids":["h-3"],"name":"shell","project_relative_target":"fixture_project/test_target.py"},"id":"tc-2","kind":"tool_call","session_id":"session-1"}
+{"fields":{"action_kind":"edit","arguments":{"command":"edit fixture_project/target.py"},"attempt":3,"helper_ids":["h-4"],"name":"shell","project_relative_target":"fixture_project/target.py"},"id":"tc-3","kind":"tool_call","session_id":"session-1"}
+{"fields":{"action_kind":"edit","after_file_sha256":"f760ecee8d16c1da2171e50cb1143db3102e4f71e0e307d28c85331dd0a07306","before_file_sha256":"dd46cb2f80fe2d22e284d503f04d3f7c6a66956a171eaa0e8d128e7e2dee5a0e","exit_code":0,"helper_ids":["h-4"],"outcome":"edited","project_relative_target":"fixture_project/target.py","status":"success","stdout":"edited fixture_project/target.py\n","tool_call_id":"tc-3"},"id":"tr-3","kind":"tool_result","session_id":"session-1"}
+{"fields":{"action_kind":"test","arguments":{"command":"regression_test.py"},"attempt":4,"helper_ids":["h-5"],"name":"shell","project_relative_target":"fixture_project/test_target.py"},"id":"tc-4","kind":"tool_call","session_id":"session-1"}
+{"fields":{"action_kind":"test","exit_code":0,"helper_ids":["h-5"],"outcome":"passed","project_relative_target":"fixture_project/test_target.py","status":"success","stdout":"synthetic regression passed\n","tool_call_id":"tc-4"},"id":"tr-4","kind":"tool_result","session_id":"session-1"}
+{"fields":{"role":"user","text":"Correction: preserve the two spaces inside the code block.","turn":2},"id":"m-correction","kind":"message","session_id":"session-1"}
+{"fields":{"role":"assistant","text":"The corrected regression now passes.","turn":2},"id":"m-3","kind":"message","session_id":"session-1"}
+{"fields":{"path":"attachments/target.txt","sha256":"69ef4f409b530264b0da21ad4054978ada08895c93631a0da1957e2a10b592b5","size_bytes":10},"id":"attachment-1","kind":"attachment","session_id":"session-1"}
+{"fields":{"role":"user","text":"List the files in the second session.","turn":1},"id":"m-4","kind":"message","session_id":"session-2"}

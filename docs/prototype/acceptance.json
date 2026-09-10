@@ -1,0 +1,17 @@
+{
+  "milestone": "O1-O5",
+  "status": "local checks passed; external review pending",
+  "tested_at": "2026-09-10T22:49:26.120114+00:00",
+  "python": "3.14.7",
+  "sqlite": "3.53.4",
+  "os": "15.7.9",
+  "implementation_sha256": "9cb5d5be6bc3cc53cac717c9a7d0280749c8f6bc463439f32010d5a8c8f0f7eb",
+  "test_command": "python3 -m pytest tests/ -q",
+  "tests_passed": 98,
+  "historical_test_count": 24,
+  "prototype_test_count": 74,
+  "reproduced_cases": 8,
+  "live_runs": 0,
+  "independent_person_reproduction": false,
+  "next_gate": "L0/F0 requires separate live authorization"
+}
