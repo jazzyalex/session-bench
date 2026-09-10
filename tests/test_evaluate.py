@@ -38,6 +38,15 @@ def test_matches_checked_in_data(tmp_path):
     assert out.read_text() == (DATA / "leaderboard.yml").read_text()
 
 
+def test_output_names_standalone_source(tmp_path):
+    import yaml
+    r, out = run_eval(tmp_path)
+    assert r.returncode == 0, r.stderr
+    board = yaml.safe_load(out.read_text())
+    assert board["generated_by"] == "scripts/evaluate.py"
+    assert board["source_repository"] == "https://github.com/jazzyalex/session-bench"
+
+
 def test_equal_fractions_share_rank(tmp_path):
     import yaml
     r, out = run_eval(tmp_path)
@@ -151,3 +160,59 @@ def test_codex_receipt_query_counts_structured_records_only(tmp_path):
     assert "summary_text 1 (50%)" in result.stdout
     assert "sub_agent_activity records 1" in result.stdout
     assert "parent_thread_id-keyed records 1" in result.stdout
+
+
+CHECKLIST = DATA / "verdicts.yml"
+EVALUATOR = SCRIPTS / "evaluate.py"
+MEASUREMENTS = DATA / "measurements.json"
+
+
+def test_citations_preserve_board(tmp_path):
+    import yaml
+    checklist = yaml.safe_load(CHECKLIST.read_text())
+    r, cited = run_eval(tmp_path)
+    assert r.returncode == 0, r.stderr
+    with_sources = yaml.safe_load(cited.read_text())
+    for agent in with_sources["agents"]:
+        expected = checklist["verdicts"][agent["slug"]]["O3"]
+        assert agent["sources"]["O3"] == {
+            key: expected[key] for key in ("source_url", "observed_at")}
+    for verdicts in checklist["verdicts"].values():
+        for cell in verdicts.values():
+            cell.pop("source_url", None)
+            cell.pop("observed_at", None)
+    uncited = tmp_path / "uncited.yml"
+    uncited.write_text(yaml.safe_dump(checklist))
+    out = tmp_path / "plain.yml"
+    result = subprocess.run([sys.executable, str(EVALUATOR),
+        "--measurements", str(MEASUREMENTS), "--checklist", str(uncited),
+        "--out", str(out)], capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr
+    without_sources = yaml.safe_load(out.read_text())
+    for board in (with_sources, without_sources):
+        for agent in board["agents"]:
+            agent.pop("sources")
+    assert with_sources == without_sources
+
+
+def test_invalid_citations_rejected(tmp_path):
+    import yaml
+    base = yaml.safe_load(CHECKLIST.read_text())
+    for citation in (
+        {"source_url": "javascript:alert(1)", "observed_at": "2026-09-09"},
+        {"source_url": "https://example.com", "observed_at": "2026-02-30"},
+        {"source_url": "https://example.com"},
+        {"observed_at": "2026-09-09"},
+        {"source_url": "https://example.com", "observed_at": 20260909},
+    ):
+        cell = base["verdicts"]["pi"]["O3"]
+        cell.pop("source_url", None)
+        cell.pop("observed_at", None)
+        cell.update(citation)
+        bad = tmp_path / "bad-citation.yml"
+        bad.write_text(yaml.safe_dump(base))
+        result = subprocess.run([sys.executable, str(EVALUATOR),
+            "--measurements", str(MEASUREMENTS), "--checklist", str(bad),
+            "--out", str(tmp_path / "invalid.yml")], capture_output=True, text=True)
+        assert result.returncode != 0, citation
+        assert "pi O3:" in result.stderr

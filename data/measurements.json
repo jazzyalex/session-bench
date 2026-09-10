@@ -6,7 +6,7 @@
     "surface": "CLI, headless/one-shot mode",
     "runner": "agent-sessions weekly monitoring harness (headless prebump drivers, common prompt) + manual `kimi -p` run",
     "report": "prebump report 20260804-173402Z (retained privately; see evidence/README.md)",
-    "artifacts_note": "raw probe artifacts (session files) are private local session data and are not yet archived publicly; see evidence/README.md. The extractor that recomputes per-artifact numbers (measure.py) lives in the agent-sessions repo under scripts/session_bench/."
+    "artifacts_note": "raw probe artifacts (session files) are private local session data and are not yet archived publicly; see evidence/README.md. The extractor that recomputes per-artifact numbers is scripts/measure.py in this repository."
   },
   "agents": {
     "codex": {

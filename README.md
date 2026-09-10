@@ -15,6 +15,11 @@ Readable report card: **https://jazzyalex.github.io/agent-sessions/bench/**
 This repository is the technical source: methodology, data, evaluator,
 evidence notes, and the public correction history.
 
+The report card is temporarily hosted by Agent Sessions. Its Pages repository
+vendors `data/leaderboard.yml` byte-for-byte and supplies only the Jekyll view;
+scores and evidence are changed here first. Moving the report card to separate
+hosting later will not change the benchmark data or evaluation workflow.
+
 Planned work, including cross-surface local-storage coverage, is tracked in
 [BACKLOG.md](BACKLOG.md).
 
@@ -54,6 +59,26 @@ python3 -m pytest tests/ -q
 
 `data/leaderboard.yml` is generated — never hand-edited. To dispute a
 score, dispute a measurement or an evidence line and re-run the evaluator.
+
+To refresh the temporarily hosted report card after reviewing and testing a
+change here, run the Agent Sessions import command against this generated file:
+
+```
+cd /path/to/agent-sessions
+python3 scripts/sync_session_bench.py \
+    /path/to/session-bench/data/leaderboard.yml
+```
+
+The importer rejects artifacts with old Agent Sessions provenance and copies
+the accepted file without rewriting it. GitHub Pages therefore builds from a
+reviewed, checked-in snapshot rather than fetching another repository during
+deployment.
+
+Checklist cells may carry `source_url` (HTTP/S) and quoted `observed_at`
+(YYYY-MM-DD) together. The evaluator preserves these under each agent’s
+`sources[gate_id]`; the live matrix links cited cells and shows the check date.
+A check date is not a measurement date or a score update. For failed gates,
+the link identifies inspected documentation, not proof of universal absence.
 
 ## Scope and honesty notes (v0.4)
 
@@ -115,6 +140,13 @@ browser that parses all ten of these formats in production — that parsing
 work is where the gate evidence comes from. The benchmark's purpose is
 independent: establishing what a responsible coding-agent work record
 looks like.
+
+Agent Sessions owns the local observation systems: production parsers,
+sanitized fixtures, format-drift monitoring, and the private session corpus.
+Session-Bench owns the published measurement aggregates, verdicts, evidence,
+scoring code, tests, generated leaderboard, and correction history. The
+benchmark can be regenerated from a clean clone without an Agent Sessions
+checkout or access to private sessions.
 
 ## License
 

@@ -1,5 +1,10 @@
 # Session-Bench — public corrections and rescoring
 
+## [Unreleased]
+
+- Added checked source links and dates for O3 evidence; evaluator preserves citation metadata without changing scores.
+- Established this repository as the sole source for benchmark inputs, evaluation, evidence, tests, generated leaderboard, and corrections. Agent Sessions temporarily hosts a byte-identical copy of the generated leaderboard and its Jekyll view.
+
 The bench treats its own record the way it grades others': every score
 change is public, dated, and attributed.
 

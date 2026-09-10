@@ -44,7 +44,8 @@ picks:
   - Claude Code
   - Codex
   - Cursor Agent
-generated_by: scripts/session_bench/evaluate.py
+generated_by: scripts/evaluate.py
+source_repository: https://github.com/jazzyalex/session-bench
 surface: CLI, headless/one-shot mode
 probe_prompt: List the files in the current directory, then say hello in one sentence.
 methodology_url: https://github.com/jazzyalex/session-bench
@@ -233,6 +234,10 @@ agents:
     P2: 'A truncated final write costs at most one record. UNSCORED in v0.2: asserted
       by format family only; needs a cross-harness truncation experiment (a 1.0 milestone).'
     P3: cwd in session record
+  sources:
+    O3:
+      source_url: https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/session-format.md
+      observed_at: '2026-09-09'
   rank: 1
   provisional: true
   rank_best: 1
@@ -302,6 +307,10 @@ agents:
     P2: 'A truncated final write costs at most one record. UNSCORED in v0.2: asserted
       by format family only; needs a cross-harness truncation experiment (a 1.0 milestone).'
     P3: cwd in session record
+  sources:
+    O3:
+      source_url: https://github.com/openclaw/openclaw/blob/main/docs/reference/session-management-compaction/schema.md
+      observed_at: '2026-09-09'
   rank: 2
   provisional: true
   rank_best: 1
@@ -371,6 +380,10 @@ agents:
     P2: 'A truncated final write costs at most one record. UNSCORED in v0.2: asserted
       by format family only; needs a cross-harness truncation experiment (a 1.0 milestone).'
     P3: cwd/sessionId on every line
+  sources:
+    O3:
+      source_url: https://code.claude.com/docs/en/sessions#where-transcripts-are-stored
+      observed_at: '2026-09-09'
   rank: 3
   provisional: true
   rank_best: 3
@@ -457,6 +470,10 @@ agents:
     P2: 'A truncated final write costs at most one record. UNSCORED in v0.2: asserted
       by format family only; needs a cross-harness truncation experiment (a 1.0 milestone).'
     P3: cwd/instructions in session_meta; no sidecar
+  sources:
+    O3:
+      source_url: https://learn.chatgpt.com/docs/app-server
+      observed_at: '2026-09-09'
   rank: 3
   provisional: true
   rank_best: 3
@@ -533,6 +550,10 @@ agents:
     P2: 'A truncated final write costs at most one record. UNSCORED in v0.2: asserted
       by format family only; needs a cross-harness truncation experiment (a 1.0 milestone).'
     P3: title/cwd only in state.json sidecar
+  sources:
+    O3:
+      source_url: https://www.kimi.com/code/docs/en/kimi-code-cli/configuration/data-locations.html
+      observed_at: '2026-09-09'
   rank: 5
   provisional: true
   rank_best: 3
@@ -612,6 +633,10 @@ agents:
     P2: 'A truncated final write costs at most one record. UNSCORED in v0.2: asserted
       by format family only; needs a cross-harness truncation experiment (a 1.0 milestone).'
     P3: session row carries directory/title
+  sources:
+    O3:
+      source_url: https://opencode.ai/docs/server/
+      observed_at: '2026-09-09'
   rank: 5
   provisional: true
   rank_best: 3
@@ -685,6 +710,10 @@ agents:
     P2: 'A truncated final write costs at most one record. UNSCORED in v0.2: asserted
       by format family only; needs a cross-harness truncation experiment (a 1.0 milestone).'
     P3: model/cwd at session root
+  sources:
+    O3:
+      source_url: https://github.com/NousResearch/hermes-agent/blob/main/website/docs/user-guide/sessions.md
+      observed_at: '2026-09-09'
   rank: 7
   provisional: true
   rank_best: 3
@@ -761,6 +790,10 @@ agents:
     P2: 'A truncated final write costs at most one record. UNSCORED in v0.2: asserted
       by format family only; needs a cross-harness truncation experiment (a 1.0 milestone).'
     P3: session title only in sidecar workspace.yaml
+  sources:
+    O3:
+      source_url: https://github.com/github/copilot-sdk/blob/main/docs/features/streaming-events.md
+      observed_at: '2026-09-09'
   rank: 8
   provisional: true
   rank_best: 5
@@ -829,6 +862,10 @@ agents:
     P2: 'A truncated final write costs at most one record. UNSCORED in v0.2: asserted
       by format family only; needs a cross-harness truncation experiment (a 1.0 milestone).'
     P3: cwd inferred from content paths + nearest .git walk
+  sources:
+    O3:
+      source_url: https://antigravity.google/docs/cli/headless/
+      observed_at: '2026-09-09'
   rank: 9
   provisional: true
   rank_best: 7
@@ -897,6 +934,10 @@ agents:
     P2: 'A truncated final write costs at most one record. UNSCORED in v0.2: asserted
       by format family only; needs a cross-harness truncation experiment (a 1.0 milestone).'
     P3: model/metadata require store.db join; cwd inferred from encoded dir name
+  sources:
+    O3:
+      source_url: https://cursor.com/docs/cli/reference/output-format
+      observed_at: '2026-09-09'
   rank: 10
   provisional: true
   rank_best: 10

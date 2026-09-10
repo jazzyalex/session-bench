@@ -19,6 +19,8 @@ from __future__ import annotations
 
 import argparse
 import json
+from datetime import date
+from urllib.parse import urlsplit
 from fractions import Fraction
 from pathlib import Path
 
@@ -130,8 +132,21 @@ def main() -> int:
                 raise SystemExit(f"{slug} {gid}: invalid state {v.get('state')!r}")
             if not v.get("evidence"):
                 raise SystemExit(f"{slug} {gid}: evidence is required")
+            if "source_url" in v or "observed_at" in v:
+                url, observed = v.get("source_url"), v.get("observed_at")
+                if not isinstance(url, str) or not isinstance(observed, str):
+                    raise SystemExit(f"{slug} {gid}: source_url and observed_at require strings")
+                try:
+                    parsed = urlsplit(url)
+                    valid_date = date.fromisoformat(observed).isoformat() == observed
+                except ValueError:
+                    raise SystemExit(f"{slug} {gid}: invalid citation URL or date")
+                if (parsed.scheme not in {"https", "http"} or not parsed.hostname
+                        or parsed.username or parsed.password
+                        or any(c.isspace() for c in url) or not valid_date):
+                    raise SystemExit(f"{slug} {gid}: invalid citation URL or date")
             cells[gid] = v
-        results, notes = {}, {}
+        results, notes, sources = {}, {}, {}
         cleared = scored = not_run = 0
         area_pass = {a: 0 for a in AREAS}
         area_scored = {a: 0 for a in AREAS}
@@ -165,6 +180,8 @@ def main() -> int:
             state = cell["state"]
             results[gid] = state
             notes[gid] = cell["evidence"]
+            if "source_url" in cell:
+                sources[gid] = {key: cell[key] for key in ("source_url", "observed_at")}
             if state == "not_run":
                 not_run += 1
                 continue
@@ -179,7 +196,7 @@ def main() -> int:
             "cleared": cleared, "scored": scored, "not_run": not_run,
             "score_pct": round(100.0 * cleared / scored, 1),
             "area_scores": {a: f"{area_pass[a]}/{area_scored[a]}" for a in AREAS},
-            "results": results, "notes": notes,
+            "results": results, "notes": notes, "sources": sources,
         })
 
     # Rank by exact fraction cleared (standard competition ranking on ties).
@@ -241,7 +258,8 @@ def main() -> int:
         "data_date": meas["data_date"],
         "dates": meas.get("dates", {}),
         "picks": picks,
-        "generated_by": "scripts/session_bench/evaluate.py",
+        "generated_by": "scripts/evaluate.py",
+        "source_repository": "https://github.com/jazzyalex/session-bench",
         "surface": meas["probe"]["surface"],
         "probe_prompt": meas["probe"]["prompt"],
         "methodology_url": "https://github.com/jazzyalex/session-bench",

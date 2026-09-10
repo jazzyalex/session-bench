@@ -7,6 +7,11 @@ entry in its format-drift monitoring ledger
 (`docs/agent-support/` there, fingerprinting each format roughly weekly
 since it entered monitoring).
 
+Agent Sessions produces some observations because it reads these formats in
+production. Published aggregates, receipts, citations, evaluator inputs, and
+the correction record live here; the benchmark does not import Agent Sessions
+code or private session paths when it regenerates the leaderboard.
+
 ## What is public today
 
 - The measured inputs (`data/measurements.json`) and every evidence line.
