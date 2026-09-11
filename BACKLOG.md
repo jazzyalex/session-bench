@@ -39,6 +39,11 @@ contract across one CLI, desktop, and IDE row. Its format fields remain
 explicitly unknown until authorized native inspection supplies evidence. This
 draft does not satisfy the observed-surface manifest or publish an A0 edition.
 
+The [offline campaign-plan contract](docs/campaign/README.md) now separates
+targets, launch modes, artifact tracks, scheduled runs, attempts, native
+sessions, access/isolation readiness, and hard resource caps. Its first
+three-configuration plan remains proposed and carries no execution authority.
+
 ## P1 — Controlled paired probes
 
 Start with the three harnesses for which local evidence already shows cross-surface

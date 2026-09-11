@@ -1,0 +1,241 @@
+{
+  "schema_version": "1.0-campaign-plan",
+  "plan_id": "l1-three-configuration-calibration",
+  "edition_id": "v1-first-edition",
+  "phase": "calibration",
+  "state": "proposed",
+  "execution_authority": "none_preparation_only",
+  "live_runs_completed": 0,
+  "targets": [
+    {
+      "target_id": "codex-cli-local",
+      "subject": {
+        "harness": "codex-cli",
+        "product": "Codex interactive CLI",
+        "application_version": "0.154.0",
+        "build_id": null,
+        "surface": "cli",
+        "launch_mode": "interactive_local",
+        "os": {"family": "macOS", "version": "15.7.9", "architecture": "arm64"},
+        "model": {"provider": "OpenAI", "id": null, "configuration_id": "ordinary-default", "settings_digest": null}
+      },
+      "artifact": {
+        "track": "native_local",
+        "family_id": "codex-rollout-jsonl",
+        "identity_state": "candidate",
+        "primary_roots": [],
+        "companion_policy": "capture_all_declared_companions",
+        "session_join_keys": [],
+        "export": null
+      },
+      "access": {
+        "status": "blocked",
+        "account_profile": "existing-user-account-under-bounded-plan",
+        "launch_evidence_required": true,
+        "private_store_access": "forbidden",
+        "credential_policy": "do_not_copy_or_inspect",
+        "operator_owner": "Alexander Malakhov"
+      },
+      "isolation": {
+        "status": "blocked",
+        "authorized_roots": ["synthetic-project", "new-session-root"],
+        "root_discovery": "stat_only_before_after",
+        "network": "denied",
+        "undeclared_writes": "denied",
+        "personal_history": "forbidden",
+        "synthetic_project_id": "session-bench-l1-codex",
+        "recovery_boundary": "not_in_scope"
+      },
+      "provenance": {
+        "source_ids": ["codex-developer-commands"],
+        "fixture_id": "session-bench-c01-c02-v1",
+        "observer_id": "observer-v1-proposed",
+        "decoder_id": "codex-rollout-v1",
+        "identity_evidence_sha256": null,
+        "access_evidence_sha256": null,
+        "isolation_evidence_sha256": null,
+        "artifact_evidence_sha256": null
+      }
+    },
+    {
+      "target_id": "claude-desktop-code-local",
+      "subject": {
+        "harness": "claude-desktop",
+        "product": "Claude Desktop Code tab",
+        "application_version": null,
+        "build_id": null,
+        "surface": "desktop",
+        "launch_mode": "desktop_local",
+        "os": {"family": "macOS", "version": null, "architecture": "arm64"},
+        "model": {"provider": "Anthropic", "id": null, "configuration_id": null, "settings_digest": null}
+      },
+      "artifact": {
+        "track": "native_local",
+        "family_id": null,
+        "identity_state": "candidate",
+        "primary_roots": [],
+        "companion_policy": "capture_all_declared_companions",
+        "session_join_keys": [],
+        "export": null
+      },
+      "access": {
+        "status": "unconfirmed",
+        "account_profile": null,
+        "launch_evidence_required": true,
+        "private_store_access": "forbidden",
+        "credential_policy": "do_not_copy_or_inspect",
+        "operator_owner": "Alexander Malakhov"
+      },
+      "isolation": {
+        "status": "unconfirmed",
+        "authorized_roots": [],
+        "root_discovery": "stat_only_before_after",
+        "network": "required_documented",
+        "undeclared_writes": "denied",
+        "personal_history": "forbidden",
+        "synthetic_project_id": null,
+        "recovery_boundary": "not_in_scope"
+      },
+      "provenance": {
+        "source_ids": ["claude-desktop"],
+        "fixture_id": "session-bench-c01-c02-v1",
+        "observer_id": "observer-v1-proposed",
+        "decoder_id": "unimplemented",
+        "identity_evidence_sha256": null,
+        "access_evidence_sha256": null,
+        "isolation_evidence_sha256": null,
+        "artifact_evidence_sha256": null
+      }
+    },
+    {
+      "target_id": "goose-cli-local",
+      "subject": {
+        "harness": "goose-cli",
+        "product": "Goose interactive CLI",
+        "application_version": null,
+        "build_id": null,
+        "surface": "cli",
+        "launch_mode": "interactive_local",
+        "os": {"family": "macOS", "version": null, "architecture": "arm64"},
+        "model": {"provider": null, "id": null, "configuration_id": null, "settings_digest": null}
+      },
+      "artifact": {
+        "track": "native_local",
+        "family_id": "goose-sqlite-sessions",
+        "identity_state": "documented",
+        "primary_roots": [],
+        "companion_policy": "capture_all_declared_companions",
+        "session_join_keys": [],
+        "export": null
+      },
+      "access": {
+        "status": "unconfirmed",
+        "account_profile": null,
+        "launch_evidence_required": true,
+        "private_store_access": "forbidden",
+        "credential_policy": "do_not_copy_or_inspect",
+        "operator_owner": "Alexander Malakhov"
+      },
+      "isolation": {
+        "status": "unconfirmed",
+        "authorized_roots": [],
+        "root_discovery": "stat_only_before_after",
+        "network": "required_documented",
+        "undeclared_writes": "denied",
+        "personal_history": "forbidden",
+        "synthetic_project_id": null,
+        "recovery_boundary": "not_in_scope"
+      },
+      "provenance": {
+        "source_ids": ["goose-session-management"],
+        "fixture_id": "session-bench-c01-c02-v1",
+        "observer_id": "observer-v1-proposed",
+        "decoder_id": "unimplemented",
+        "identity_evidence_sha256": null,
+        "access_evidence_sha256": null,
+        "isolation_evidence_sha256": null,
+        "artifact_evidence_sha256": null
+      }
+    }
+  ],
+  "scenarios": [
+    {"scenario_id": "C01", "scenario_class": "core", "assertion_set": "v1-c01-conversation", "mandatory": true, "native_sessions_per_run": 1},
+    {"scenario_id": "C02", "scenario_class": "core", "assertion_set": "v1-c02-coding-actions", "mandatory": true, "native_sessions_per_run": 1},
+    {"scenario_id": "E01-branches", "scenario_class": "advanced", "assertion_set": "v1-e01-branches-proposed", "mandatory": false, "native_sessions_per_run": 1}
+  ],
+  "profiles": [
+    {
+      "profile_id": "baseline-c01-c02",
+      "profile_class": "baseline",
+      "scenario_ids": ["C01", "C02"],
+      "applies_to_target_ids": ["codex-cli-local", "claude-desktop-code-local", "goose-cli-local"],
+      "mandatory": true,
+      "minimum_repetitions": 1
+    },
+    {
+      "profile_id": "advanced-branch-calibration",
+      "profile_class": "advanced",
+      "scenario_ids": ["E01-branches"],
+      "applies_to_target_ids": ["codex-cli-local"],
+      "mandatory": true,
+      "minimum_repetitions": 1
+    }
+  ],
+  "schedule": [
+    {"schedule_id": "codex-baseline", "target_id": "codex-cli-local", "profile_id": "baseline-c01-c02", "repetitions": 1},
+    {"schedule_id": "claude-desktop-baseline", "target_id": "claude-desktop-code-local", "profile_id": "baseline-c01-c02", "repetitions": 1},
+    {"schedule_id": "goose-baseline", "target_id": "goose-cli-local", "profile_id": "baseline-c01-c02", "repetitions": 1},
+    {"schedule_id": "codex-advanced-branch", "target_id": "codex-cli-local", "profile_id": "advanced-branch-calibration", "repetitions": 1}
+  ],
+  "budget": {
+    "declared": {"scenario_runs": 7, "maximum_attempts": 14, "maximum_native_sessions": 14},
+    "caps": {
+      "submitted_turns": 80,
+      "tokens_total_when_observable": 500000,
+      "artifact_files": 2048,
+      "artifact_file_bytes": 16777216,
+      "artifact_total_bytes": 1073741824,
+      "spend": {
+        "currency": "USD",
+        "maximum": 0,
+        "measurement_source": "operator ledger plus provider account evidence where available",
+        "zero_cost_reason": "subscription-only usage; no purchase or credit redemption"
+      },
+      "quota": [
+        {"quota_id": "codex-primary", "target_id": "codex-cli-local", "source": "codex_app_get_usage_limits.rateLimitsByLimitId.codex.primary.usedPercent", "unit": "percentage_points", "baseline": null, "maximum_delta": 3, "absolute_stop": null, "observed_at": null, "evidence_sha256": null, "freshness_seconds": 60, "check": "before_every_submission_and_retry", "unreadable_before_first_launch": "stop_without_live_attempt", "unreadable_after_launch": "finish_current_attempt_only_no_retry_report_unknown"},
+        {"quota_id": "claude-primary", "target_id": "claude-desktop-code-local", "source": null, "unit": "percentage_points", "baseline": null, "maximum_delta": 3, "absolute_stop": null, "observed_at": null, "evidence_sha256": null, "freshness_seconds": 60, "check": "before_every_submission_and_retry", "unreadable_before_first_launch": "stop_without_live_attempt", "unreadable_after_launch": "finish_current_attempt_only_no_retry_report_unknown"},
+        {"quota_id": "goose-provider", "target_id": "goose-cli-local", "source": null, "unit": "percentage_points", "baseline": null, "maximum_delta": 3, "absolute_stop": null, "observed_at": null, "evidence_sha256": null, "freshness_seconds": 60, "check": "before_every_submission_and_retry", "unreadable_before_first_launch": "stop_without_live_attempt", "unreadable_after_launch": "finish_current_attempt_only_no_retry_report_unknown"}
+      ],
+      "operator_minutes": 240,
+      "wall_clock_minutes": 480
+    }
+  },
+  "retry_policy": {
+    "maximum_retries_per_scenario": 1,
+    "allowed_reasons": ["clearly corrected harness or capture defect"],
+    "retain_all_attempts": true,
+    "uncertain_submitted_attempt": "do_not_duplicate",
+    "retries_count_toward_all_caps": true
+  },
+  "provenance": {
+    "methodology_commit": "6207914ea4399fef19531cfd61847d1b78f1b0d2",
+    "created_at": "2026-09-11T04:35:00Z",
+    "owner": "Alexander Malakhov",
+    "source_records": [
+      {"source_id": "codex-developer-commands", "url": "https://learn.chatgpt.com/docs/developer-commands#built-in-slash-commands", "inspected_at": "2026-09-10"},
+      {"source_id": "claude-desktop", "url": "https://code.claude.com/docs/en/desktop", "inspected_at": "2026-09-10"},
+      {"source_id": "goose-session-management", "url": "https://goose-docs.ai/docs/guides/sessions/session-management/", "inspected_at": "2026-09-10"}
+    ],
+    "fixture_version": "session-bench-c01-c02-plus-branch-proposed-v1",
+    "observer_version": "observer-v1-proposed",
+    "decoder_version": "per-target-proposed"
+  },
+  "forbidden_operations": [
+    "private_history_collection",
+    "credential_copy_or_inspection",
+    "purchase_or_credit_redemption",
+    "publication",
+    "cross_repository_access",
+    "unapproved_surface_expansion"
+  ]
+}
