@@ -9,6 +9,26 @@ from .result_contract import evaluation_id
 
 MISSING = object()
 
+EVALUATOR_IMPLEMENTATION_PATHS = (
+    "session_bench/__init__.py",
+    "session_bench/bundle.py",
+    "session_bench/decoders.py",
+    "session_bench/evaluate.py",
+    "session_bench/isolation.py",
+    "session_bench/l0_preflight.py",
+    "session_bench/live_ledger.py",
+    "session_bench/live_plan.py",
+    "session_bench/locators.py",
+    "session_bench/result_contract.py",
+    "session_bench/schema.py",
+    "schemas/v1/assertions.schema.json",
+    "schemas/v1/live_ledger.schema.json",
+    "schemas/v1/live_run_plan.schema.json",
+    "schemas/v1/manifest.schema.json",
+    "schemas/v1/observer.schema.json",
+    "schemas/v1/result.schema.json",
+)
+
 
 def lookup(event, name):
     value = event
@@ -35,10 +55,24 @@ def compare(actual, expected, rule):
     raise ValueError(f'unknown comparator: {rule}')
 
 
-def implementation_digest():
-    base = Path(__file__).resolve().parent
-    files = sorted(base.glob('*.py')) + sorted((base.parent/'schemas'/'v1').glob('*.json'))
-    return digest(canonical({p.relative_to(base.parent).as_posix():digest(p.read_bytes()) for p in files}))
+def implementation_inventory(base=None):
+    """Return the frozen file-level dependency set behind semantic evaluation.
+
+    CLI, fixture generation, controllers, registries, atlas and campaign files are
+    outside the evaluation path and must not create a new evaluation identity.
+    """
+    base = Path(base) if base is not None else Path(__file__).resolve().parent.parent
+    inventory = {}
+    for relative in EVALUATOR_IMPLEMENTATION_PATHS:
+        path = base / relative
+        if not path.is_file():
+            raise RuntimeError(f"missing evaluator implementation component: {relative}")
+        inventory[relative] = digest(path.read_bytes())
+    return inventory
+
+
+def implementation_digest(base=None):
+    return digest(canonical(implementation_inventory(base)))
 
 
 def evaluate_bundle(root, *, decoder=isolated_decode):
