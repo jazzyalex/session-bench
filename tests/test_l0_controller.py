@@ -98,6 +98,17 @@ def test_complete_codex_decode_package_is_integrity_bound(tmp_path):
     assert decode["artifacts"][0]["path"] == "rollout-new.jsonl"
 
 
+def test_verified_copy_rejects_path_replacement_after_selection(tmp_path):
+    source = tmp_path / "store" / "rollout-new.jsonl"
+    source.parent.mkdir()
+    source.write_text('{"type":"session_meta","payload":{"id":"s"}}\n')
+    selected = stat_inventory(source.parent)[0]
+    source.unlink()
+    source.write_text('{"type":"session_meta","payload":{"id":"replacement"}}\n')
+    with pytest.raises(ValueError, match="descriptor differs"):
+        build_codex_decode_package(source, tmp_path / "package", verified_primary=selected)
+
+
 def test_capture_requires_frozen_observer_and_single_new_candidate(tmp_path):
     root = tmp_path / "store"; root.mkdir()
     (root / "rollout-old.jsonl").write_text("old")
@@ -143,12 +154,14 @@ def test_controller_owns_live_attempt_through_capture(tmp_path):
 
     class Environment(FakeRunner):
         quota_reads = 0
+        starts = 0
         def read_quota(self, *, monotonic_started):
             self.quota_reads += 1
             contract = plan()["limits"]["quota"]
             return QuotaSnapshot(contract["source"], "2026-09-11T00:01:00Z", 10,
                                  contract["baseline_used_percent"], monotonic_started, monotonic_started)
         def start_session(self, argv):
+            self.starts += 1
             return Process()
 
     environment = Environment()
@@ -156,12 +169,76 @@ def test_controller_owns_live_attempt_through_capture(tmp_path):
     result = controller.execute_scenario(scenario_id="C01", scenario_run_id="run-c01",
         attempt_id="attempt-c01-1", prompts=["public prompt"], scratch=scratch,
         sibling=tmp_path / "forbidden-sibling", session_root=store,
-        package_output=tmp_path / "package", ledger_path=tmp_path / "ledger.json",
+        package_output=tmp_path / "package", provenance_output=tmp_path / "provenance",
+        ledger_path=tmp_path / "ledger.json", capture_id="capture-1",
         monotonic=lambda: 1.0, epoch_ns=lambda: 0, sleep=lambda _: None)
     assert environment.quota_reads == 3
     assert result["ledger"]["attempts"][0]["native_session_ids"] == ["native-s1"]
     assert result["capture_evidence"]["observer_frozen"] is True
+    assert result["live_binding"]["scenario_id"] == "C01"
+    assert result["live_binding"]["resolved_config_fingerprint"] == result["preflight"]["resolved_fingerprint"]
+    assert {path.name for path in (tmp_path / "provenance").iterdir()} == {
+        "plan.json", "resolved-config.json", "capture.json", "ledger.json", "live-binding.json"}
     assert json.loads((tmp_path / "ledger.json").read_text())["attempts"][0]["state"] == "captured"
+    ledger_before = (tmp_path / "ledger.json").read_bytes()
+    with pytest.raises(RuntimeError, match="attempt_id already exists"):
+        L0Controller(plan(), environment).execute_scenario(
+            scenario_id="C01", scenario_run_id="run-c01", attempt_id="attempt-c01-1",
+            prompts=["public prompt"], scratch=scratch, sibling=tmp_path / "forbidden-sibling",
+            session_root=store, package_output=tmp_path / "package-duplicate",
+            provenance_output=tmp_path / "provenance-duplicate",
+            ledger_path=tmp_path / "ledger.json", capture_id="capture-duplicate", monotonic=lambda: 1.0,
+            epoch_ns=lambda: 0, sleep=lambda _: None)
+    assert environment.starts == 1
+    assert (tmp_path / "ledger.json").read_bytes() == ledger_before
+
+
+def test_unreadable_quota_after_launch_finishes_capture_and_suppresses_retry(tmp_path):
+    store = tmp_path / "store"; store.mkdir()
+    scratch = tmp_path / "scratch"; scratch.mkdir()
+    class Process:
+        def submit(self, prompt):
+            (store / "rollout-new.jsonl").write_text("\n".join([
+                json.dumps({"type": "session_meta", "payload": {"id": "native-s1"}}),
+                json.dumps({"type": "event_msg", "payload": {"type": "user_message", "message": prompt}}),
+            ]) + "\n")
+            return "done"
+        def close(self): return 0
+    class Environment(FakeRunner):
+        reads = 0
+        starts = 0
+        def read_quota(self, *, monotonic_started):
+            self.reads += 1
+            if self.reads >= 3:
+                return QuotaSnapshot(None, None, None, None, None, None)
+            contract = plan()["limits"]["quota"]
+            return QuotaSnapshot(contract["source"], "2026-09-11T00:01:00Z", 10,
+                                 contract["baseline_used_percent"], monotonic_started, monotonic_started)
+        def start_session(self, argv):
+            self.starts += 1
+            return Process()
+    environment = Environment()
+    ledger_path = tmp_path / "ledger.json"
+    result = L0Controller(plan(), environment).execute_scenario(
+        scenario_id="C01", scenario_run_id="run-c01", attempt_id="attempt-1",
+        prompts=["public"], scratch=scratch, sibling=tmp_path / "sibling",
+        session_root=store, package_output=tmp_path / "package", provenance_output=tmp_path / "provenance",
+        ledger_path=ledger_path, capture_id="capture-1",
+        monotonic=lambda: 1.0, epoch_ns=lambda: 0, sleep=lambda _: None)
+    attempt = result["ledger"]["attempts"][0]
+    assert attempt["state"] == "captured"
+    assert attempt["quota_state"] == "unknown_after_launch"
+    assert attempt["retry_allowed"] is False
+    ledger_before = ledger_path.read_bytes()
+    with pytest.raises(RuntimeError, match="forbids another launch"):
+        L0Controller(plan(), environment).execute_scenario(
+            scenario_id="C01", scenario_run_id="run-c01", attempt_id="attempt-2",
+            prompts=["public"], scratch=scratch, sibling=tmp_path / "sibling",
+            session_root=store, package_output=tmp_path / "package-2", ledger_path=ledger_path,
+            provenance_output=tmp_path / "provenance-2", capture_id="capture-2",
+            monotonic=lambda: 1.0, epoch_ns=lambda: 0, sleep=lambda _: None)
+    assert environment.starts == 1
+    assert ledger_path.read_bytes() == ledger_before
 
 
 def test_final_quota_gate_stops_without_launch_or_attempt_record(tmp_path):
@@ -182,7 +259,8 @@ def test_final_quota_gate_stops_without_launch_or_attempt_record(tmp_path):
         L0Controller(plan(), Environment()).execute_scenario(
             scenario_id="C01", scenario_run_id="run-c01", attempt_id="attempt-1",
             prompts=["public"], scratch=scratch, sibling=tmp_path / "sibling",
-            session_root=store, package_output=tmp_path / "package", ledger_path=ledger_path,
+            session_root=store, package_output=tmp_path / "package", provenance_output=tmp_path / "provenance",
+            ledger_path=ledger_path, capture_id="capture-1",
             monotonic=lambda: 1.0, epoch_ns=lambda: 0, sleep=lambda _: None)
     assert not ledger_path.exists()
 
@@ -197,6 +275,7 @@ def test_resume_reconstructs_limits_from_existing_ledger_before_launch(tmp_path)
             attempts.append({"scenario_id": scenario, "scenario_run_id": f"run-{scenario}",
                 "attempt_id": f"{scenario}-{number}", "state": "interrupted",
                 "native_session_ids": [], "submitted_turns": 0, "config_identity": "cfg",
+                "quota_state": "known", "retry_allowed": True,
                 "usage": dict(usage), "events": [], "reason": "retained"})
     ledger_path = tmp_path / "ledger.json"
     ledger_path.write_text(json.dumps({"schema_version": "1.0-live-ledger", "gate_id": p["gate_id"],
@@ -214,5 +293,6 @@ def test_resume_reconstructs_limits_from_existing_ledger_before_launch(tmp_path)
         L0Controller(p, Environment()).execute_scenario(
             scenario_id="C01", scenario_run_id="run-C01", attempt_id="extra",
             prompts=["public"], scratch=scratch, sibling=tmp_path / "sibling",
-            session_root=store, package_output=tmp_path / "package", ledger_path=ledger_path,
+            session_root=store, package_output=tmp_path / "package", provenance_output=tmp_path / "provenance",
+            ledger_path=ledger_path, capture_id="capture-extra",
             monotonic=lambda: 1.0, epoch_ns=lambda: 0, sleep=lambda _: None)

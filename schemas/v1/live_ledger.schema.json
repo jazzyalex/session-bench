@@ -17,6 +17,8 @@
           "native_session_ids": {"type": "array", "items": {"type": "string", "minLength": 1}},
           "submitted_turns": {"type": "integer", "minimum": 0},
           "config_identity": {"type": "string", "minLength": 1},
+          "quota_state": {"enum": ["known", "unknown_after_launch"]},
+          "retry_allowed": {"type": "boolean"},
           "usage": {
             "type": "object",
             "properties": {
@@ -33,7 +35,7 @@
           "events": {"type": "array", "items": {"type": "string", "minLength": 1}},
           "reason": {"type": "string", "minLength": 1}
         },
-        "required": ["scenario_id", "scenario_run_id", "attempt_id", "state", "native_session_ids", "submitted_turns", "config_identity", "usage", "events", "reason"],
+        "required": ["scenario_id", "scenario_run_id", "attempt_id", "state", "native_session_ids", "submitted_turns", "config_identity", "quota_state", "retry_allowed", "usage", "events", "reason"],
         "additionalProperties": false
       }
     }

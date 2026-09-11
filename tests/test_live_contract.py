@@ -52,7 +52,7 @@ def test_plan_rejects_preexisting_hashing_and_unfrozen_controls():
 
 def test_ledger_keeps_attempts_distinct_and_bounded():
     p, value = plan(), ledger()
-    value["attempts"].append({"scenario_id": "C01", "scenario_run_id": "run-1", "attempt_id": "attempt-1", "state": "started", "native_session_ids": [], "submitted_turns": 1, "config_identity": "cfg", "usage": usage(), "events": [], "reason": "started"})
+    value["attempts"].append({"scenario_id": "C01", "scenario_run_id": "run-1", "attempt_id": "attempt-1", "state": "started", "native_session_ids": [], "submitted_turns": 1, "config_identity": "cfg", "quota_state": "known", "retry_allowed": True, "usage": usage(), "events": [], "reason": "started"})
     validate_live_ledger(value, p)
     duplicate = copy.deepcopy(value)
     duplicate["attempts"].append(copy.deepcopy(value["attempts"][0]))
@@ -62,8 +62,9 @@ def test_ledger_keeps_attempts_distinct_and_bounded():
 
 def test_capture_contract_is_fail_closed_on_ambiguous_or_preexisting_open():
     p = plan()
-    attempt = {"state": "captured", "attempt_id": "a1", "scenario_run_id": "run-1", "native_session_ids": ["s1"]}
-    base = {"attempt_id": "a1", "scenario_run_id": "run-1", "native_session_ids": ["s1"],
+    attempt = {"state": "captured", "attempt_id": "a1", "scenario_id": "C01",
+               "scenario_run_id": "run-1", "native_session_ids": ["s1"]}
+    base = {"attempt_id": "a1", "scenario_id": "C01", "scenario_run_id": "run-1", "native_session_ids": ["s1"],
             "resolved_config_fingerprint": "cfg", "before_stats": [], "after_stats": [],
             "primary_candidate_path": "a", "companion_paths": [], "candidate_paths": ["a"],
             "opened_paths": ["a"], "preexisting_file_hashing": False,
@@ -86,6 +87,6 @@ def test_ledger_binds_plan_and_aggregate_limits():
     for number in range(3):
         value["attempts"].append({"scenario_id": "C01", "scenario_run_id": "run-c01",
             "attempt_id": f"attempt-{number}", "state": "started", "native_session_ids": [],
-            "submitted_turns": 0, "config_identity": "cfg", "usage": usage(), "events": [], "reason": "started"})
+            "submitted_turns": 0, "config_identity": "cfg", "quota_state": "known", "retry_allowed": True, "usage": usage(), "events": [], "reason": "started"})
     with pytest.raises(ValueError, match="per-scenario"):
         validate_live_ledger(value, p)

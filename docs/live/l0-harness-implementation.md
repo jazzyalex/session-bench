@@ -12,6 +12,7 @@ The bounded Codex CLI F0 harness now includes:
 - an explicit-package `codex-rollout-v1` decoder with no home discovery;
 - frozen positive-control selection, deterministic damaged-copy support, and an intact-pass-to-damaged-loss proof under byte-identical observer and expectation files;
 - bounded `native_live` validation that joins the plan, resolved configuration, scenario run, attempt, native session, capture, and ledger through semantic checks and immutable digests;
+- append-only attempt identities, explicit post-launch unknown-quota state with retry suppression, and offline recomputation of the resolved configuration fingerprint from its inventoried override/feature/MCP preimage;
 - public constructed Codex-shaped C01/C02 records under `fixtures/l0/codex-cli-0.154.0/`.
 
 The decoder shapes were checked against OpenAI's `rust-v0.154.0` [rollout recorder tests](https://github.com/openai/codex/blob/rust-v0.154.0/codex-rs/rollout/src/recorder_tests.rs) and [response-item models](https://github.com/openai/codex/blob/rust-v0.154.0/codex-rs/protocol/src/models.rs) before acceptance. In particular, the implementation carries the session identifier from `session_meta.payload.id`, handles `agent_message` and `local_shell_call`, and joins tool results through `call_id` rather than assuming every event repeats a thread identifier.

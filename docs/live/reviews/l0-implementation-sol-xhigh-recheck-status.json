@@ -1,0 +1,16 @@
+{
+  "reviewed_commit": "6105c285b29087409c25d3a59ce61e9929eaf238",
+  "source_access": "connected GitHub exact commit",
+  "model": "GPT-5.6 Sol",
+  "model_verified": true,
+  "effort": "Extra High",
+  "effort_verified": true,
+  "verdict": "NOT READY",
+  "p0_findings": 0,
+  "p1_findings": 3,
+  "p2_findings": 1,
+  "event_identity_blocker_closed": true,
+  "damage_control_blocker_closed": true,
+  "live_f0_correctly_blocked": true,
+  "followup": "fresh exact-commit review after second hardening pass"
+}

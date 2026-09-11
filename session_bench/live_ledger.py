@@ -46,6 +46,8 @@ def validate_live_ledger(ledger, plan):
             raise ValueError("submitted turns require a started or terminal execution state")
         if attempt["state"] == "captured" and not attempt["native_session_ids"]:
             raise ValueError("captured attempt requires native session identity")
+        if attempt["quota_state"] == "unknown_after_launch" and attempt["retry_allowed"] is not False:
+            raise ValueError("unknown post-launch quota must suppress retries")
     if submitted > plan["limits"]["submitted_turns"]:
         raise ValueError("ledger exceeds submitted-turn limit")
     if len(seen_sessions) > plan["limits"]["native_sessions"]:
@@ -66,7 +68,7 @@ def validate_capture_evidence(evidence, plan, *, attempt):
     This contract intentionally accepts metadata records rather than opening files;
     the controller owns the actual stat/copy operation.
     """
-    required = {"attempt_id", "scenario_run_id", "native_session_ids", "resolved_config_fingerprint",
+    required = {"attempt_id", "scenario_id", "scenario_run_id", "native_session_ids", "resolved_config_fingerprint",
                 "before_stats", "after_stats", "primary_candidate_path",
                 "companion_paths", "candidate_paths", "opened_paths",
                 "preexisting_file_hashing", "ambiguous", "source_mutated",
@@ -92,6 +94,7 @@ def validate_capture_evidence(evidence, plan, *, attempt):
     if set(evidence["companion_paths"]) - set(evidence["candidate_paths"]):
         raise ValueError("companion was not proven new")
     if (attempt.get("attempt_id") != evidence["attempt_id"]
+            or attempt.get("scenario_id") != evidence["scenario_id"]
             or attempt.get("scenario_run_id") != evidence["scenario_run_id"]
             or attempt.get("native_session_ids", []) != evidence["native_session_ids"]):
         raise ValueError("capture evidence identity differs from attempt")

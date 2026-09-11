@@ -10,6 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -213,7 +214,27 @@ def explicit_decode_package(source: Path, output: Path, paths: Sequence[str]) ->
     return tuple(sorted(copied))
 
 
-def build_codex_decode_package(source_rollout: Path, output: Path, companions: Sequence[Path] = ()) -> Path:
+def copy_verified_candidate(source: Path, target: Path, candidate: Any) -> None:
+    """Copy bytes from the exact no-follow descriptor whose stat was selected."""
+    descriptor = os.open(source, os.O_RDONLY | os.O_NOFOLLOW)
+    try:
+        info = os.fstat(descriptor)
+        birth = getattr(info, "st_birthtime", None)
+        birth_ns = int(birth * 1_000_000_000) if birth is not None else None
+        current = (info.st_dev, info.st_ino, info.st_size, birth_ns, info.st_ctime_ns, info.st_mtime_ns)
+        expected = (candidate.device, candidate.inode, candidate.size, candidate.birth_ns,
+                    candidate.ctime_ns, candidate.mtime_ns)
+        if current != expected:
+            raise ValueError("opened rollout descriptor differs from proven candidate")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        with os.fdopen(os.dup(descriptor), "rb") as source_stream, target.open("xb") as target_stream:
+            shutil.copyfileobj(source_stream, target_stream)
+    finally:
+        os.close(descriptor)
+
+
+def build_codex_decode_package(source_rollout: Path, output: Path, companions: Sequence[Path] = (),
+                               *, verified_primary: Any | None = None) -> Path:
     """Copy one proven-new rollout into a complete explicit decoder package."""
     source_rollout = Path(source_rollout)
     output = Path(output)
@@ -221,7 +242,15 @@ def build_codex_decode_package(source_rollout: Path, output: Path, companions: S
     if any(path.parent.resolve() != source_rollout.parent.resolve() for path in companion_paths):
         raise ValueError("companions must share the proven rollout source directory")
     names = (source_rollout.name, *(path.name for path in companion_paths))
-    explicit_decode_package(source_rollout.parent, output, names)
+    if verified_primary is None:
+        explicit_decode_package(source_rollout.parent, output, names)
+    else:
+        output.mkdir(parents=True, exist_ok=False)
+        copy_verified_candidate(source_rollout, output / source_rollout.name, verified_primary)
+        for path in companion_paths:
+            if path.is_symlink() or not path.is_file():
+                raise ValueError("decode companion is not an ordinary file")
+            shutil.copy2(path, output / path.name)
     artifacts = []
     for index, name in enumerate(names):
         copied = output / name
@@ -249,6 +278,42 @@ def privacy_scan(root: Path) -> tuple[str, ...]:
             if marker in data:
                 findings.append(f"{path.relative_to(root)}:{marker.decode('ascii', 'replace')}")
     return tuple(findings)
+
+
+def write_live_receipts(output: Path, *, plan: Mapping[str, Any],
+                        resolved_configuration: Mapping[str, Any],
+                        resolved_config_fingerprint: str,
+                        capture_evidence: Mapping[str, Any], ledger: Mapping[str, Any],
+                        scenario_id: str, scenario_run_id: str, attempt_id: str,
+                        native_session_id: str, capture_id: str) -> dict[str, Any]:
+    """Persist the complete controller-owned provenance preimage and binding."""
+    output = Path(output)
+    output.mkdir(parents=True, exist_ok=False)
+    values = {
+        "plan.json": {"plan": plan, "plan_sha256": plan_sha256(plan)},
+        "resolved-config.json": dict(resolved_configuration),
+        "capture.json": dict(capture_evidence),
+        "ledger.json": dict(ledger),
+    }
+    raw = {name: canonical(value) + b"\n" for name, value in values.items()}
+    for name, data in raw.items():
+        (output / name).write_bytes(data)
+    binding = {
+        "plan_sha256": plan_sha256(plan),
+        "resolved_config_fingerprint": resolved_config_fingerprint,
+        "resolved_config_sha256": hashlib.sha256(raw["resolved-config.json"]).hexdigest(),
+        "scenario_id": scenario_id, "scenario_run_id": scenario_run_id,
+        "attempt_id": attempt_id, "capture_id": capture_id,
+        "native_session_id": native_session_id,
+        "capture_evidence_sha256": hashlib.sha256(raw["capture.json"]).hexdigest(),
+        "ledger_sha256": hashlib.sha256(raw["ledger.json"]).hexdigest(),
+        "plan_artifact_id": "provenance-plan",
+        "capture_evidence_artifact_id": "provenance-capture",
+        "ledger_artifact_id": "provenance-ledger",
+        "resolved_config_artifact_id": "provenance-resolved-config",
+    }
+    (output / "live-binding.json").write_bytes(canonical(binding) + b"\n")
+    return binding
 
 
 def capture_candidate(before: Sequence[Any], after: Sequence[Any]) -> Any:
@@ -284,13 +349,20 @@ class L0Controller:
         required = ("scratch_write_allowed", "undeclared_sibling_write_denied", "outbound_network_denied")
         if any(sandbox.get(key) is not True for key in required):
             raise RuntimeError("sandbox preflight failed")
-        return {"argv": exact_argv(config, scratch), "override_fingerprint": config.override_fingerprint,
+        launch_argv = exact_argv(config, scratch)
+        resolved_configuration = {"override_argv": list(config.argv), "launch_argv": list(launch_argv),
+                                  "override_fingerprint": config.override_fingerprint,
+                                  "features": dict(sorted(features.items())),
+                                  "mcps": dict(sorted(resolved_mcp.items()))}
+        return {"argv": launch_argv, "override_fingerprint": config.override_fingerprint,
                 "resolved_fingerprint": resolved_fingerprint, "mcp_names": tuple(sorted(names)),
+                "resolved_configuration": resolved_configuration,
                 "sandbox": dict(sandbox), "plan_sha256": plan_sha256(self.plan)}
 
     def capture_evidence(self, before: Sequence[Any], after: Sequence[Any], *, opened: Sequence[str],
                          resolved_config_fingerprint: str, candidate: Any | None = None,
                          companions: Sequence[Any] = (), attempt_id: str = "attempt-1",
+                         scenario_id: str = "C01",
                          scenario_run_id: str = "scenario-run-1",
                          native_session_ids: Sequence[str] = ("native-1",),
                          source_mutated: bool = False, quiescence_checks: int = 2) -> dict[str, Any]:
@@ -304,7 +376,8 @@ class L0Controller:
         candidate_paths = [candidate.relative_path, *companion_paths]
         as_stat = lambda item: {"relative_path": item.relative_path, "filesystem_id": f"{item.device}:{item.inode}",
                                 "birth_time": item.birth_ns, "ctime": item.ctime_ns, "mtime": item.mtime_ns, "size": item.size}
-        evidence = {"attempt_id": attempt_id, "scenario_run_id": scenario_run_id,
+        evidence = {"attempt_id": attempt_id, "scenario_id": scenario_id,
+                    "scenario_run_id": scenario_run_id,
                     "native_session_ids": list(native_session_ids),
                     "resolved_config_fingerprint": resolved_config_fingerprint,
                     "before_stats": [as_stat(item) for item in before], "after_stats": [as_stat(item) for item in after],
@@ -314,7 +387,8 @@ class L0Controller:
                     "source_mutated": source_mutated, "observer_frozen": self.observer.frozen,
                     "quiescence_checks": quiescence_checks, "candidate_identity_verified": True}
         attempt = {"state": "captured", "attempt_id": attempt_id,
-                   "scenario_run_id": scenario_run_id, "native_session_ids": list(native_session_ids)}
+                   "scenario_id": scenario_id, "scenario_run_id": scenario_run_id,
+                   "native_session_ids": list(native_session_ids)}
         validate_capture_evidence(evidence, self.plan, attempt=attempt)
         return evidence
 
@@ -335,7 +409,9 @@ class L0Controller:
         sibling: Path,
         session_root: Path,
         package_output: Path,
+        provenance_output: Path,
         ledger_path: Path,
+        capture_id: str,
         monotonic: Callable[[], float],
         epoch_ns: Callable[[], int],
         sleep: Callable[[float], None] = __import__('time').sleep,
@@ -347,6 +423,16 @@ class L0Controller:
         environment = self.runner
         if not hasattr(environment, "read_quota") or not hasattr(environment, "start_session"):
             raise RuntimeError("live execution requires a trusted quota reader and PTY owner")
+        ledger_target = Path(ledger_path)
+        previous_attempts: list[Mapping[str, Any]] = []
+        if ledger_target.exists():
+            previous_ledger = json.loads(ledger_target.read_text(encoding="utf-8"))
+            validate_live_ledger(previous_ledger, self.plan)
+            previous_attempts = previous_ledger["attempts"]
+            if any(item["attempt_id"] == attempt_id for item in previous_attempts):
+                raise RuntimeError("attempt_id already exists in append-only ledger")
+            if any(item["retry_allowed"] is False for item in previous_attempts):
+                raise RuntimeError("retained quota state forbids another launch")
         started_mono = monotonic()
         first_quota = environment.read_quota(monotonic_started=started_mono)
         preflight = self.preflight(scratch, sibling, quota=first_quota, now_monotonic=monotonic())
@@ -356,12 +442,7 @@ class L0Controller:
         if launch_decision != "proceed":
             raise RuntimeError(launch_decision)
         attempt_started_ns = epoch_ns()
-        ledger_target = Path(ledger_path)
-        previous_attempts: list[Mapping[str, Any]] = []
-        if ledger_target.exists():
-            previous_ledger = json.loads(ledger_target.read_text(encoding="utf-8"))
-            validate_live_ledger(previous_ledger, self.plan)
-            previous_attempts = previous_ledger["attempts"]
+        if previous_attempts:
             restored = HardCounters(
                 attempts=len(previous_attempts),
                 submitted_turns=sum(item["submitted_turns"] for item in previous_attempts),
@@ -378,6 +459,7 @@ class L0Controller:
         attempt = {"scenario_id": scenario_id, "scenario_run_id": scenario_run_id,
             "attempt_id": attempt_id, "state": "started", "native_session_ids": [],
             "submitted_turns": 0, "config_identity": preflight["resolved_fingerprint"],
+            "quota_state": "known", "retry_allowed": True,
             "usage": {"captured_files": 0, "captured_bytes": 0, "observable_tokens": 0,
                       "spend_usd": 0, "operator_minutes": 0, "wall_clock_minutes": 0},
             "events": [], "reason": "reserved before spawn"}
@@ -395,8 +477,7 @@ class L0Controller:
         def persist() -> dict[str, Any]:
             target = Path(ledger_path)
             target.parent.mkdir(parents=True, exist_ok=True)
-            previous = [item for item in previous_attempts if item["attempt_id"] != attempt_id]
-            ledger = self.ledger([*previous, attempt])
+            ledger = self.ledger([*previous_attempts, attempt])
             temporary = target.with_suffix(target.suffix + ".tmp")
             temporary.write_bytes(canonical(ledger) + b"\n")
             temporary.replace(target)
@@ -411,7 +492,13 @@ class L0Controller:
             for prompt in prompts:
                 quota = environment.read_quota(monotonic_started=started_mono)
                 decision = quota_decision(quota, plan=self.plan, now_monotonic=monotonic(), live_attempt_started=True)
-                if decision != "proceed":
+                if decision == "finish-current-only":
+                    attempt["quota_state"] = "unknown_after_launch"
+                    attempt["retry_allowed"] = False
+                    attempt["reason"] = "quota unreadable after launch; finish current attempt only"
+                    update_time()
+                    persist()
+                elif decision != "proceed":
                     raise RuntimeError(decision)
                 self.counters.reserve(self.plan, submitted_turns=1)
                 attempt["submitted_turns"] += 1
@@ -457,7 +544,8 @@ class L0Controller:
                 raise RuntimeError("capture artifact file limit reached")
             if candidate.size > self.plan["limits"]["artifact_total_bytes"]:
                 raise RuntimeError("capture artifact total limit reached")
-            package = build_codex_decode_package(Path(session_root) / candidate.relative_path, package_output)
+            package = build_codex_decode_package(Path(session_root) / candidate.relative_path, package_output,
+                                                 verified_primary=candidate)
             captured = [path for path in package.rglob("*") if path.is_file()]
             captured_bytes = sum(path.stat().st_size for path in captured)
             self.counters.reserve(self.plan, captured_files=len(captured), captured_bytes=captured_bytes)
@@ -470,15 +558,23 @@ class L0Controller:
                 raise ValueError("captured rollout does not prove exactly one native session identity")
             evidence = self.capture_evidence(before, after, opened=[candidate.relative_path],
                 resolved_config_fingerprint=preflight["resolved_fingerprint"], candidate=candidate,
-                scenario_run_id=scenario_run_id, attempt_id=attempt_id, native_session_ids=native_ids)
+                scenario_id=scenario_id, scenario_run_id=scenario_run_id,
+                attempt_id=attempt_id, native_session_ids=native_ids)
             attempt.update({"state": "captured", "native_session_ids": native_ids,
                 "submitted_turns": len(prompts),
                 "events": [f"pty:{event.sequence}:{event.kind}" for event in frozen],
                 "reason": f"process exit {exit_code}"})
             update_time()
             ledger = persist()
+            live_binding = write_live_receipts(provenance_output, plan=self.plan,
+                resolved_configuration=preflight["resolved_configuration"],
+                resolved_config_fingerprint=preflight["resolved_fingerprint"],
+                capture_evidence=evidence, ledger=ledger, scenario_id=scenario_id,
+                scenario_run_id=scenario_run_id, attempt_id=attempt_id,
+                native_session_id=native_ids[0], capture_id=capture_id)
             return {"preflight": preflight, "candidate": candidate.relative_path,
                 "package": str(package), "capture_evidence": evidence, "ledger": ledger,
+                "live_binding": live_binding, "provenance": str(provenance_output),
                 "observer_events": frozen, "exit_code": exit_code}
         except Exception as exc:
             attempt["state"] = "invalid"

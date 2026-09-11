@@ -18,6 +18,7 @@ from session_bench.bundle import (
 from session_bench.decoders import decode_native
 from session_bench.evaluate import evaluate_bundle
 from session_bench.fixtures import build_fixture
+from session_bench.l0_preflight import build_effective_config, verify_resolved_config
 
 
 def _json(path: Path):
@@ -238,8 +239,18 @@ def test_bounded_codex_native_live_bundle_is_admitted(tmp_path):
     plan_sha = digest(canonical(plan_payload))
     stat = {"relative_path": "rollout-new.jsonl", "filesystem_id": "1:2", "birth_time": 1,
             "ctime": 1, "mtime": 1, "size": 10}
-    capture_payload = {"attempt_id": "attempt-1", "scenario_run_id": "scenario-1",
-                       "native_session_ids": ["session-1"], "resolved_config_fingerprint": "b" * 64,
+    config = build_effective_config(disable_mcps=["safe"])
+    feature_names = (*plan_payload["effective_configuration"]["disabled_features"],
+                     *plan_payload["effective_configuration"]["enabled_features"])
+    features = {name: name == "skip_host_skill_discovery" for name in feature_names}
+    mcps = {"safe": False}
+    config_fingerprint = verify_resolved_config(config, features=features, mcps=mcps)
+    config_payload = {"override_argv": list(config.argv),
+                      "launch_argv": ["/opt/homebrew/bin/codex", *config.argv, "--no-alt-screen", "-C", "/tmp/sb-f0", "--sandbox", "workspace-write", "--ask-for-approval", "never"],
+                      "override_fingerprint": config.override_fingerprint,
+                      "features": dict(sorted(features.items())), "mcps": mcps}
+    capture_payload = {"attempt_id": "attempt-1", "scenario_id": "C01", "scenario_run_id": "scenario-1",
+                       "native_session_ids": ["session-1"], "resolved_config_fingerprint": config_fingerprint,
                        "before_stats": [], "after_stats": [stat],
                        "primary_candidate_path": "rollout-new.jsonl", "companion_paths": [],
                        "candidate_paths": ["rollout-new.jsonl"], "opened_paths": ["rollout-new.jsonl"],
@@ -249,7 +260,8 @@ def test_bounded_codex_native_live_bundle_is_admitted(tmp_path):
                       "attempts": [{"scenario_id": "C01", "attempt_id": "attempt-1",
                                     "scenario_run_id": "scenario-1", "state": "captured",
                                     "native_session_ids": ["session-1"], "submitted_turns": 1,
-                                    "config_identity": "b" * 64,
+                                    "config_identity": config_fingerprint,
+                                    "quota_state": "known", "retry_allowed": True,
                                     "usage": {"captured_files": 2, "captured_bytes": 100,
                                               "observable_tokens": 0, "spend_usd": 0,
                                               "operator_minutes": 1, "wall_clock_minutes": 1},
@@ -259,6 +271,7 @@ def test_bounded_codex_native_live_bundle_is_admitted(tmp_path):
         "plan.json": {"plan": plan_payload, "plan_sha256": plan_sha},
         "capture.json": capture_payload,
         "ledger.json": ledger_payload,
+        "resolved-config.json": config_payload,
     }
     import hashlib
     for name, value in files.items():
@@ -269,13 +282,15 @@ def test_bounded_codex_native_live_bundle_is_admitted(tmp_path):
                                       "size_bytes": len(data), "depends_on": []})
     capture_sha = next(item["sha256"] for item in manifest["artifacts"] if item["id"] == "provenance-capture")
     ledger_sha = next(item["sha256"] for item in manifest["artifacts"] if item["id"] == "provenance-ledger")
+    config_sha = next(item["sha256"] for item in manifest["artifacts"] if item["id"] == "provenance-resolved-config")
     manifest["live_binding"] = {
         "plan_sha256": plan_sha, "resolved_config_fingerprint": capture_payload["resolved_config_fingerprint"],
+        "resolved_config_sha256": config_sha, "scenario_id": "C01",
         "scenario_run_id": "scenario-1", "attempt_id": "attempt-1", "capture_id": manifest["capture_id"],
         "native_session_id": "session-1",
         "capture_evidence_sha256": capture_sha, "ledger_sha256": ledger_sha,
         "plan_artifact_id": "provenance-plan", "capture_evidence_artifact_id": "provenance-capture",
-        "ledger_artifact_id": "provenance-ledger",
+        "ledger_artifact_id": "provenance-ledger", "resolved_config_artifact_id": "provenance-resolved-config",
     }
     _write_json(manifest_path, manifest)
     validate_bundle(bundle)
@@ -292,6 +307,21 @@ def test_bounded_codex_native_live_bundle_is_admitted(tmp_path):
     with pytest.raises(ValueError, match="capture identity"):
         validate_bundle(bundle)
 
+    _write_json(manifest_path, manifest)
+    config_path = bundle / "provenance/resolved-config.json"
+    substituted = json.loads(json.dumps(config_payload))
+    substituted["override_argv"].append("unexpected")
+    _write_json(config_path, substituted)
+    _rehash_artifact(bundle, "provenance/resolved-config.json")
+    substituted_manifest = _json(manifest_path)
+    substituted_manifest["live_binding"]["resolved_config_sha256"] = next(
+        item["sha256"] for item in substituted_manifest["artifacts"]
+        if item["id"] == "provenance-resolved-config")
+    _write_json(manifest_path, substituted_manifest)
+    with pytest.raises(ValueError, match="preimage"):
+        validate_bundle(bundle)
+
+    _write_json(config_path, config_payload)
     _write_json(manifest_path, manifest)
     observer_path = bundle / "observer/events.json"
     observer = _json(observer_path)

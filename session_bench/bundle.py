@@ -130,7 +130,8 @@ def validate_live_binding(root, manifest, artifacts_by_id):
         raise ValueError('native live capture requires a live evidence binding')
     if binding['capture_id'] != manifest['capture_id']:
         raise ValueError('live binding capture identity differs from manifest')
-    for key in ('plan_artifact_id', 'capture_evidence_artifact_id', 'ledger_artifact_id'):
+    for key in ('plan_artifact_id', 'capture_evidence_artifact_id', 'ledger_artifact_id',
+                'resolved_config_artifact_id'):
         artifact = artifacts_by_id.get(binding[key])
         if artifact is None or artifact['role'] != 'provenance':
             raise ValueError(f"live binding {key} is not an inventoried provenance artifact")
@@ -158,12 +159,37 @@ def validate_live_binding(root, manifest, artifacts_by_id):
     if artifacts_by_id[binding['capture_evidence_artifact_id']]['sha256'] != binding['capture_evidence_sha256']:
         raise ValueError('capture evidence digest does not match inventoried artifact')
     if (capture.get('attempt_id') != binding['attempt_id']
+            or capture.get('scenario_id') != binding['scenario_id']
             or capture.get('scenario_run_id') != binding['scenario_run_id']
             or capture.get('resolved_config_fingerprint') != binding['resolved_config_fingerprint']):
         raise ValueError('capture evidence identity does not match live binding')
     sessions = capture.get('native_session_ids')
     if not isinstance(sessions, list) or binding['native_session_id'] not in sessions:
         raise ValueError('capture evidence does not contain the claimed native session')
+
+    resolved = provenance_json(binding['resolved_config_artifact_id'])
+    if artifacts_by_id[binding['resolved_config_artifact_id']]['sha256'] != binding['resolved_config_sha256']:
+        raise ValueError('resolved configuration digest does not match inventoried artifact')
+    if set(resolved) != {'override_argv', 'launch_argv', 'override_fingerprint', 'features', 'mcps'}:
+        raise ValueError('resolved configuration evidence has an invalid shape')
+    from .l0_preflight import build_effective_config, verify_resolved_config
+    if not isinstance(resolved['mcps'], dict) or any(type(value) is not bool for value in resolved['mcps'].values()):
+        raise ValueError('resolved MCP evidence is malformed')
+    config = build_effective_config(disable_mcps=tuple(resolved['mcps']))
+    if resolved['override_argv'] != list(config.argv) or resolved['override_fingerprint'] != config.override_fingerprint:
+        raise ValueError('resolved configuration override preimage differs from approved vector')
+    launch = resolved['launch_argv']
+    scratch_path = launch[-5] if isinstance(launch, list) and len(launch) >= 7 else None
+    expected_tail = ['--no-alt-screen', '-C', scratch_path,
+                     '--sandbox', 'workspace-write', '--ask-for-approval', 'never']
+    if (not isinstance(launch, list) or launch[:1] != ['/opt/homebrew/bin/codex']
+            or not isinstance(scratch_path, str) or not Path(scratch_path).is_absolute()
+            or launch[1:1 + len(config.argv)] != list(config.argv)
+            or launch[1 + len(config.argv):] != expected_tail):
+        raise ValueError('resolved launch invocation differs from bounded controller vector')
+    recomputed_config = verify_resolved_config(config, features=resolved['features'], mcps=resolved['mcps'])
+    if recomputed_config != binding['resolved_config_fingerprint']:
+        raise ValueError('resolved configuration fingerprint cannot be reproduced')
 
     ledger = provenance_json(binding['ledger_artifact_id'])
     if artifacts_by_id[binding['ledger_artifact_id']]['sha256'] != binding['ledger_sha256']:
@@ -175,6 +201,7 @@ def validate_live_binding(root, manifest, artifacts_by_id):
     validate_live_ledger(ledger, plan_payload)
     matching = [item for item in attempts
                 if item['attempt_id'] == binding['attempt_id']
+                and item['scenario_id'] == binding['scenario_id']
                 and item['scenario_run_id'] == binding['scenario_run_id']
                 and binding['native_session_id'] in item['native_session_ids']]
     if len(matching) != 1:
