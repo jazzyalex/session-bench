@@ -1,5 +1,6 @@
 import hashlib
 import json
+from pathlib import Path
 import shutil
 
 import pytest
@@ -8,6 +9,9 @@ from session_bench.bundle import canonical, validate_bundle
 from session_bench.c04_fixture import build_c04_portability_fixture, derive_c04_portability_fixture
 from session_bench.decoders import decode_native
 from session_bench.evaluate import evaluate_bundle
+
+
+REPO = Path(__file__).parents[1]
 
 
 def _tree_digests(root):
@@ -71,3 +75,15 @@ def test_copied_c04_native_package_decodes_identically_after_source_deletion(tmp
     shutil.rmtree(source)
     after = decode_native(delivered / "native")
     assert canonical(before) == canonical(after)
+
+
+def test_checked_in_c04_packs_regenerate_byte_identically(tmp_path):
+    generated = tmp_path / "generated"
+    intact = build_c04_portability_fixture(generated / "c04-portability-intact")
+    derive_c04_portability_fixture(intact, generated / "c04-portability-damaged",
+                                   "damage_session_b_continuation")
+    derive_c04_portability_fixture(intact, generated / "c04-portability-missing-companion",
+                                   "missing_session_b_companion")
+    checked_in = REPO / "fixtures" / "scenarios" / "v1"
+    for name in ("c04-portability-intact", "c04-portability-damaged", "c04-portability-missing-companion"):
+        assert _tree_digests(generated / name) == _tree_digests(checked_in / name)

@@ -12,3 +12,6 @@ session artifacts, and a declared session-B companion. Its tests cover
 artifact-to-session attribution, a damaged copied session-B continuation, a
 missing companion, and copied-package decoding after the source is removed. It
 does not claim vendor-native storage, writer behavior, continuation, or recovery.
+The generated intact, damaged, and missing-companion packs are checked in under
+[`fixtures/scenarios/v1`](../scenarios/v1) and have a byte-identical regeneration
+test.

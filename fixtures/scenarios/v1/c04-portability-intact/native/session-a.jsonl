@@ -1,0 +1,2 @@
+{"fields":{"attempt_id":"c04-portability-attempt-1","scenario_run_id":"c04-portability-run-1","title":"C04 constructed portability source"},"id":"session","kind":"session","session_id":"c04-session-a"}
+{"fields":{"token":"C04_PORTABILITY_TOKEN_cafe","turn":1},"id":"anchor","kind":"message","session_id":"c04-session-a"}
