@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0-campaign-implementations",
+  "registry_id": "session-bench-offline-implementations-v1",
+  "fixtures": [
+    {"id": "synthetic-coding-v1", "implementation_path": "session_bench/fixtures.py"}
+  ],
+  "observers": [
+    {"id": "constructed-ledger-v1", "implementation_path": "session_bench/fixtures.py"}
+  ],
+  "decoders": [
+    {"id": "constructed-jsonl-v1", "implementation_path": "session_bench/decoders.py"},
+    {"id": "constructed-sqlite-v1", "implementation_path": "session_bench/decoders.py"}
+  ],
+  "assertion_sets": [
+    {"id": "prototype-c01-v1", "implementation_path": "session_bench/fixtures.py"},
+    {"id": "prototype-c02-v1", "implementation_path": "session_bench/fixtures.py"},
+    {"id": "prototype-c04-v1", "implementation_path": "session_bench/fixtures.py"}
+  ]
+}

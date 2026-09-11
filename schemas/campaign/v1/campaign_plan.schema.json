@@ -258,14 +258,11 @@
     },
     "provenance": {
       "type": "object", "additionalProperties": false,
-      "required": ["methodology_commit", "created_at", "owner", "source_records", "fixture_version", "observer_version", "decoder_version"],
+      "required": ["methodology_commit", "created_at", "owner", "source_records"],
       "properties": {
         "methodology_commit": {"type": "string", "pattern": "^[a-f0-9]{40}$"},
         "created_at": {"$ref": "#/$defs/text"},
         "owner": {"$ref": "#/$defs/text"},
-        "fixture_version": {"$ref": "#/$defs/text"},
-        "observer_version": {"$ref": "#/$defs/text"},
-        "decoder_version": {"$ref": "#/$defs/text"},
         "source_records": {
           "type": "array", "minItems": 1,
           "items": {

@@ -39,6 +39,9 @@ def test_atlas_and_campaign_files_do_not_change_evaluator_digest(tmp_path):
     campaign_schema = tmp_path / "schemas" / "campaign" / "v1" / "campaign_plan.schema.json"
     campaign_schema.parent.mkdir(parents=True, exist_ok=True)
     campaign_schema.write_text('{"type":"object","description":"unrelated campaign change"}\n', encoding="utf-8")
+    campaign_registry = tmp_path / "registries" / "campaign" / "v1" / "implemented.json"
+    campaign_registry.parent.mkdir(parents=True, exist_ok=True)
+    campaign_registry.write_text('{"description":"unrelated campaign registry change"}\n', encoding="utf-8")
     assert implementation_digest(tmp_path) == baseline
     with (tmp_path / "session_bench" / "decoders.py").open("a", encoding="utf-8") as stream:
         stream.write("\n# semantic decoder change\n")

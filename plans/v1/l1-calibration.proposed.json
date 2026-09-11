@@ -225,10 +225,7 @@
       {"source_id": "codex-developer-commands", "url": "https://learn.chatgpt.com/docs/developer-commands#built-in-slash-commands", "inspected_at": "2026-09-10"},
       {"source_id": "claude-desktop", "url": "https://code.claude.com/docs/en/desktop", "inspected_at": "2026-09-10"},
       {"source_id": "goose-session-management", "url": "https://goose-docs.ai/docs/guides/sessions/session-management/", "inspected_at": "2026-09-10"}
-    ],
-    "fixture_version": "session-bench-c01-c02-plus-branch-proposed-v1",
-    "observer_version": "observer-v1-proposed",
-    "decoder_version": "per-target-proposed"
+    ]
   },
   "forbidden_operations": [
     "private_history_collection",

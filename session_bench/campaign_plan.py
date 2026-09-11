@@ -10,6 +10,8 @@ from .schema import validate
 
 
 SCHEMA = Path(__file__).resolve().parent.parent / "schemas" / "campaign" / "v1" / "campaign_plan.schema.json"
+IMPLEMENTATION_REGISTRY = (Path(__file__).resolve().parent.parent / "registries" / "campaign" / "v1"
+                           / "implemented.json")
 REQUIRED_FORBIDDEN = {
     "private_history_collection",
     "credential_copy_or_inspection",
@@ -53,7 +55,28 @@ def _load_schema():
     return json.loads(SCHEMA.read_text(encoding="utf-8"))
 
 
-def validate_campaign_plan(plan, as_of=None):
+def _load_implementation_registry():
+    return json.loads(IMPLEMENTATION_REGISTRY.read_text(encoding="utf-8"))
+
+
+def _implementation_ids(registry, category):
+    items = registry.get(category)
+    if not isinstance(items, list):
+        raise ValueError(f"implementation registry lacks {category}")
+    _unique(items, "id", f"implementation registry {category}")
+    for item in items:
+        if (set(item) != {"id", "implementation_path"} or not _known(item["id"])
+                or not _known(item["implementation_path"])):
+            raise ValueError(f"implementation registry has invalid {category} entry")
+        implementation_path = Path(item["implementation_path"])
+        repository_root = Path(__file__).resolve().parent.parent
+        resolved = (repository_root / implementation_path).resolve()
+        if (implementation_path.is_absolute() or not resolved.is_relative_to(repository_root) or not resolved.is_file()):
+            raise ValueError(f"implementation registry {category} path does not resolve inside repository")
+    return {item["id"] for item in items}
+
+
+def validate_campaign_plan(plan, as_of=None, implementation_registry=None):
     """Validate structure, cross-references, arithmetic, and readiness without I/O."""
     validate(plan, _load_schema())
     targets, scenarios = plan["targets"], plan["scenarios"]
@@ -153,7 +176,16 @@ def validate_campaign_plan(plan, as_of=None):
         if any(any(scenario_by_id[scenario_id]["scenario_class"] != "advanced"
                    for scenario_id in profile["scenario_ids"]) for profile in advanced_profiles):
             raise ValueError("calibration advanced profiles may contain only advanced scenarios")
-        if (len(advanced_profiles) != 1 or len(advanced_schedule) != 1
+        baseline_schedule = [item for item in schedule
+                             if profile_by_id[item["profile_id"]]["profile_class"] == "baseline"]
+        if (len(baseline_profiles) != 1 or set(baseline_profiles[0]["scenario_ids"]) != {"C01", "C02"}
+                or len(baseline_schedule) != len(targets)
+                or {item["target_id"] for item in baseline_schedule} != set(target_by_id)
+                or any(item["profile_id"] != baseline_profiles[0]["profile_id"]
+                       or item["repetitions"] != 1 for item in baseline_schedule)):
+            raise ValueError("calibration requires exactly C01 and C02 once per target in one baseline profile")
+        if (len(advanced_profiles) != 1 or len(advanced_profiles[0]["scenario_ids"]) != 1
+                or len(advanced_schedule) != 1
                 or advanced_schedule[0]["profile_id"] != advanced_profiles[0]["profile_id"]
                 or advanced_schedule[0]["repetitions"] != 1):
             raise ValueError("calibration requires exactly one separately scheduled single-run advanced profile")
@@ -204,6 +236,22 @@ def validate_campaign_plan(plan, as_of=None):
         authorization_time = _timestamp(as_of, "authorization as_of")
         if created_at > authorization_time:
             raise ValueError("campaign creation cannot be later than authorization as_of")
+        registry = _load_implementation_registry() if implementation_registry is None else implementation_registry
+        if (set(registry) != {"schema_version", "registry_id", "fixtures", "observers", "decoders",
+                             "assertion_sets"}
+                or registry["schema_version"] != "1.0-campaign-implementations"
+                or not _known(registry["registry_id"])):
+            raise ValueError("implementation registry identity or structure is invalid")
+        fixture_ids = _implementation_ids(registry, "fixtures")
+        observer_ids = _implementation_ids(registry, "observers")
+        decoder_ids = _implementation_ids(registry, "decoders")
+        assertion_set_ids = _implementation_ids(registry, "assertion_sets")
+        scheduled_scenario_ids = set().union(*scheduled_scenarios.values())
+        unresolved_assertions = {
+            scenario_by_id[scenario_id]["assertion_set"] for scenario_id in scheduled_scenario_ids
+        } - assertion_set_ids
+        if unresolved_assertions:
+            raise ValueError(f"ready plan has unimplemented assertion sets: {sorted(unresolved_assertions)}")
         for target in targets:
             subject = target["subject"]
             required_identity = [subject["application_version"], subject["build_id"], subject["os"]["version"],
@@ -220,13 +268,26 @@ def validate_campaign_plan(plan, as_of=None):
             artifact = target["artifact"]
             if not _known(artifact["family_id"]) or artifact["identity_state"] == "candidate":
                 raise ValueError("ready target requires documented or verified artifact identity")
-            if artifact["track"] == "native_local" and not artifact["primary_roots"]:
-                raise ValueError("ready native-local target requires declared primary roots")
-            if not artifact["session_join_keys"]:
+            roots = artifact["primary_roots"]
+            if artifact["track"] == "native_local" and (
+                    not roots or not set(roots).issubset(isolation["authorized_roots"])):
+                raise ValueError("ready native-local roots must be declared within authorized isolation roots")
+            if (len(roots) != len(set(roots)) or not all(_known(value) for value in roots)
+                    or len(isolation["authorized_roots"]) != len(set(isolation["authorized_roots"]))
+                    or not all(_known(value) for value in isolation["authorized_roots"])):
+                raise ValueError("ready target roots must be unique and non-placeholder")
+            if (not artifact["session_join_keys"]
+                    or len(artifact["session_join_keys"]) != len(set(artifact["session_join_keys"]))
+                    or not all(_known(value) for value in artifact["session_join_keys"])):
                 raise ValueError("ready target requires native session join identity")
+            if artifact["track"] == "explicit_export" and not all(
+                    _known(artifact["export"][key]) for key in ("format", "version", "acquisition")):
+                raise ValueError("ready explicit export requires resolved format, version, and acquisition")
             target_provenance = target["provenance"]
-            if not all(_known(target_provenance[key]) for key in ("fixture_id", "observer_id", "decoder_id")):
-                raise ValueError("ready target requires implemented fixture, observer, and decoder identities")
+            if (target_provenance["fixture_id"] not in fixture_ids
+                    or target_provenance["observer_id"] not in observer_ids
+                    or target_provenance["decoder_id"] not in decoder_ids):
+                raise ValueError("ready target requires registry-resolved fixture, observer, and decoder identities")
             if any(target_provenance[key] is None for key in (
                 "identity_evidence_sha256", "access_evidence_sha256",
                 "isolation_evidence_sha256", "artifact_evidence_sha256",

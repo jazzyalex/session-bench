@@ -21,12 +21,18 @@ its completed-live-run count is zero. It cannot become
 `ready_for_authorization` until every target has exact build, OS, model,
 configuration, artifact, access, account/profile, isolation, root, synthetic
 project, and quota-source evidence.
-Readiness also requires implemented fixture, observer, and decoder identities;
-native session join keys; and SHA-256 receipts for target identity, access,
-isolation, artifact identity, and the quota observation. Each quota observation
+Readiness also requires fixture, observer, decoder, and assertion-set identities
+that resolve in the repository-owned offline implementation registry; native
+session join keys; and correctly shaped SHA-256 references for target identity,
+access, isolation, artifact identity, and the quota observation. Plan validation
+proves the references are present, not that referenced evidence exists or binds
+the claims. Each quota observation
 must be timezone-aware, no older than its declared freshness window when the
 plan is authorized, and no later than the independently supplied authorization
 time. Structural plan validation cannot prove current freshness by itself.
+The closed registry is
+[`registries/campaign/v1/implemented.json`](../../registries/campaign/v1/implemented.json);
+each entry must resolve to an implementation file inside this repository.
 
 ## Scheduled units
 
@@ -60,8 +66,9 @@ python3 -m session_bench validate-campaign-plan \
 
 A plan marked `ready_for_authorization` additionally requires an independently
 supplied timestamp, for example `--as-of 2026-09-11T04:35:30Z`. The later live
-controller must obtain that time independently and verify that each referenced
-receipt binds the recorded quota value and observation timestamp before launch.
+controller must obtain that time independently and resolve, hash, and verify that
+every referenced identity, access, isolation, artifact, and quota receipt binds
+the corresponding recorded claims before launch.
 
 The command prints the plan ID, state, target count, derived run/attempt/session
 totals, and SHA-256 of canonical plan JSON. It exits with status 2 when schema,
@@ -76,8 +83,10 @@ create a misleading new evaluation ID.
 
 ## Readiness and later execution
 
-`ready_for_authorization` means the evidence needed to request a live campaign
-has been filled and validated. It does not grant execution authority. A separate
+`ready_for_authorization` means required identities resolve, evidence digest
+references have the required shape, and quota values are fresh at the supplied
+authorization time. It does not validate receipt contents or grant execution
+authority. A separate
 explicit live authorization and suitable controller are still required. The
 contract permanently forbids private-history collection, credential inspection,
 purchases or credit redemption, publication, cross-repository access, and

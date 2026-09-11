@@ -13,6 +13,7 @@ from session_bench.live_plan import plan_sha256
 
 REPO = Path(__file__).parents[1]
 PLAN_PATH = REPO / "plans" / "v1" / "l1-calibration.proposed.json"
+IMPLEMENTATION_REGISTRY_PATH = REPO / "registries" / "campaign" / "v1" / "implemented.json"
 
 
 def _plan():
@@ -36,9 +37,9 @@ def _ready(plan):
                                   identity_state="documented", primary_roots=["new-session-root"],
                                   session_join_keys=["session_id"])
         target["provenance"].update(
-            fixture_id="session-bench-c01-c02-v1",
-            observer_id="observer-v1",
-            decoder_id="decoder-v1",
+            fixture_id="synthetic-coding-v1",
+            observer_id="constructed-ledger-v1",
+            decoder_id="constructed-jsonl-v1",
             identity_evidence_sha256="b" * 64,
             access_evidence_sha256="b" * 64,
             isolation_evidence_sha256="b" * 64,
@@ -48,6 +49,9 @@ def _ready(plan):
         quota.update(source="verified-provider-usage", unit="percentage_points",
                      baseline=10, maximum_delta=3, absolute_stop=13,
                      observed_at=plan["provenance"]["created_at"], evidence_sha256="c" * 64)
+    plan["scenarios"][0]["assertion_set"] = "prototype-c01-v1"
+    plan["scenarios"][1]["assertion_set"] = "prototype-c02-v1"
+    plan["scenarios"][2]["assertion_set"] = "prototype-c04-v1"
     return plan
 
 
@@ -75,13 +79,13 @@ def test_required_target_identity_fields_cannot_be_omitted():
 def test_ready_plan_requires_complete_identity_access_isolation_and_quota():
     plan = _plan()
     plan["state"] = "ready_for_authorization"
-    with pytest.raises(ValueError, match="unresolved build|confirmed access|confirmed isolation|artifact identity|quota"):
+    with pytest.raises(ValueError, match="unimplemented assertion|unresolved build|confirmed access|confirmed isolation|artifact identity|quota"):
         validate_campaign_plan(plan, as_of=READY_AS_OF)
     validate_campaign_plan(_ready(_plan()), as_of=READY_AS_OF)
 
 
 @pytest.mark.parametrize(("mutation", "message"), [
-    (lambda plan: plan["targets"][0]["provenance"].update(decoder_id="unimplemented"), "fixture, observer, and decoder"),
+    (lambda plan: plan["targets"][0]["provenance"].update(decoder_id="arbitrary-decoder-v1"), "fixture, observer, and decoder"),
     (lambda plan: plan["targets"][0]["artifact"].update(session_join_keys=[]), "session join identity"),
     (lambda plan: plan["targets"][0]["provenance"].update(artifact_evidence_sha256=None), "immutable identity"),
     (lambda plan: plan["budget"]["caps"]["quota"][0].update(observed_at=None), "complete quota"),
@@ -107,6 +111,32 @@ def test_ready_validation_requires_independent_authorization_time():
         validate_campaign_plan(_ready(_plan()))
 
 
+def test_ready_plan_rejects_unimplemented_assertion_set():
+    plan = _ready(_plan())
+    plan["scenarios"][0]["assertion_set"] = "arbitrary-assertions-v1"
+    with pytest.raises(ValueError, match="unimplemented assertion sets"):
+        validate_campaign_plan(plan, as_of=READY_AS_OF)
+
+
+def test_ready_plan_rejects_invalid_implementation_registry():
+    registry = read_json(IMPLEMENTATION_REGISTRY_PATH)
+    registry["decoders"][0]["implementation_path"] = "../outside.py"
+    with pytest.raises(ValueError, match="path does not resolve"):
+        validate_campaign_plan(_ready(_plan()), as_of=READY_AS_OF, implementation_registry=registry)
+
+
+def test_ready_native_roots_and_join_keys_resolve_inside_isolation():
+    plan = _ready(_plan())
+    plan["targets"][0]["artifact"]["primary_roots"] = ["outside-root"]
+    with pytest.raises(ValueError, match="authorized isolation roots"):
+        validate_campaign_plan(plan, as_of=READY_AS_OF)
+
+    plan = _ready(_plan())
+    plan["targets"][0]["artifact"]["session_join_keys"] = ["unknown"]
+    with pytest.raises(ValueError, match="session join identity"):
+        validate_campaign_plan(plan, as_of=READY_AS_OF)
+
+
 def test_surface_and_launch_mode_must_match():
     plan = _plan()
     plan["targets"][1]["subject"]["launch_mode"] = "interactive_local"
@@ -129,6 +159,13 @@ def test_native_and_export_tracks_are_mutually_exclusive():
     plan["targets"][1]["artifact"]["track"] = "explicit_export"
     with pytest.raises(ValueError, match="requires export identity"):
         validate_campaign_plan(plan)
+
+    plan = _ready(_plan())
+    artifact = plan["targets"][1]["artifact"]
+    artifact.update(track="explicit_export", primary_roots=[],
+                    export={"format": "unknown", "version": "1", "acquisition": "documented-command"})
+    with pytest.raises(ValueError, match="resolved format"):
+        validate_campaign_plan(plan, as_of=READY_AS_OF)
 
 
 @pytest.mark.parametrize(("collection", "key", "message"), [
@@ -170,6 +207,7 @@ def test_declared_run_attempt_and_session_arithmetic_is_exact(field, value):
 
 def test_c04_two_session_multiplier_is_charged_to_every_attempt():
     plan = _plan()
+    plan["phase"] = "first_edition"
     plan["scenarios"].append({"scenario_id": "C04", "scenario_class": "core",
                               "assertion_set": "v1-c04-portability",
                               "mandatory": True, "native_sessions_per_run": 2})
@@ -225,6 +263,28 @@ def test_calibration_target_shape_is_fixed():
     plan["targets"][1]["subject"].update(surface="cli", launch_mode="interactive_local")
     with pytest.raises(ValueError, match="spanning CLI and desktop"):
         validate_campaign_plan(plan, as_of=READY_AS_OF)
+
+
+@pytest.mark.parametrize("mutation", ["extra_core", "baseline_repetition", "extra_advanced"])
+def test_calibration_rejects_silent_schedule_expansion(mutation):
+    plan = _plan()
+    if mutation == "extra_core":
+        plan["scenarios"].append({"scenario_id": "C03", "scenario_class": "core",
+                                  "assertion_set": "v1-c03-proposed", "mandatory": False,
+                                  "native_sessions_per_run": 1})
+        plan["profiles"][0]["scenario_ids"].append("C03")
+        expected = "exactly C01 and C02"
+    elif mutation == "baseline_repetition":
+        plan["schedule"][0]["repetitions"] = 2
+        expected = "once per target"
+    else:
+        plan["scenarios"].append({"scenario_id": "E02", "scenario_class": "advanced",
+                                  "assertion_set": "v1-e02-proposed", "mandatory": False,
+                                  "native_sessions_per_run": 1})
+        plan["profiles"][1]["scenario_ids"].append("E02")
+        expected = "single-run advanced profile"
+    with pytest.raises(ValueError, match=expected):
+        validate_campaign_plan(plan)
 
 
 def test_budget_quota_retry_and_forbidden_boundaries_fail_closed():
