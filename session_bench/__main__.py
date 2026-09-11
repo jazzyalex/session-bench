@@ -6,6 +6,7 @@ import sys
 import time
 
 from . import __version__
+from .atlas import render_atlas, validate_atlas
 from .bundle import canonical, digest, read_json, validate_bundle, validate_registry, validate_result
 from .evaluate import evaluate_bundle
 from .fixtures import build_fixture
@@ -62,6 +63,12 @@ def main(argv=None):
         sub.add_argument('input',type=Path)
         if command in ('decode','evaluate','render'):
             sub.add_argument('--out',type=Path,required=True)
+    validate_atlas_parser=subs.add_parser('validate-atlas', help='validate the independent format atlas')
+    validate_atlas_parser.add_argument('input', type=Path)
+    render_atlas_parser=subs.add_parser('render-atlas', help='render a dated atlas snapshot')
+    render_atlas_parser.add_argument('input', type=Path)
+    render_atlas_parser.add_argument('--out', type=Path, required=True)
+    render_atlas_parser.add_argument('--as-of', required=True)
     fixture=subs.add_parser('make-fixture')
     fixture.add_argument('--out',type=Path,required=True)
     fixture.add_argument('--format',choices=['constructed-jsonl-v1','constructed-sqlite-v1'],default='constructed-jsonl-v1')
@@ -102,6 +109,17 @@ def main(argv=None):
             print(json.dumps({'evidence':'valid','capture_status':manifest['capture']['status'],'origin':manifest['origin']},sort_keys=True))
         elif args.command=='validate-registry':
             validate_registry(read_json(args.input));print('valid registry')
+        elif args.command=='validate-atlas':
+            atlas = validate_atlas(read_json(args.input))
+            print(json.dumps({'atlas_id': atlas['atlas_id'], 'entries': len(atlas['entries']),
+                              'edition_status': atlas['edition_status']}, sort_keys=True))
+        elif args.command=='render-atlas':
+            atlas = read_json(args.input)
+            rendered = render_atlas(atlas, args.as_of)
+            args.out.parent.mkdir(parents=True, exist_ok=True)
+            args.out.write_text(rendered, encoding='utf-8')
+            print(json.dumps({'atlas_id': atlas['atlas_id'], 'as_of': args.as_of,
+                              'output': str(args.out)}, sort_keys=True))
         elif args.command=='decode':
             decoded=isolated_decode(args.input)
             write_output(args.out,{'decoded.json':canonical(decoded)+b'\n'},args.input)

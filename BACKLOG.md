@@ -33,6 +33,12 @@ Add a versioned manifest with one row per observed surface containing:
 - archive and retention behavior;
 - probe ID, observation date, and artifact receipt.
 
+An [unreleased executable atlas draft](docs/atlas/README.md) now establishes the
+candidate identity, source, maintenance, freshness, and claim-separation
+contract across one CLI, desktop, and IDE row. Its format fields remain
+explicitly unknown until authorized native inspection supplies evidence. This
+draft does not satisfy the observed-surface manifest or publish an A0 edition.
+
 ## P1 — Controlled paired probes
 
 Start with the three harnesses for which local evidence already shows cross-surface

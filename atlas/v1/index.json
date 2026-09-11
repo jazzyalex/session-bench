@@ -1,0 +1,330 @@
+{
+  "schema_version": "1.0-atlas",
+  "atlas_id": "session-bench-atlas-v1-documentation-2026-09-10",
+  "release_status": "draft_unreleased",
+  "edition_status": "documentation_only",
+  "purpose": "public format and surface inventory; not a conformance result",
+  "entries": [
+    {
+      "entry_id": "codex-interactive-cli-local",
+      "status": "documented_candidate",
+      "identity": {
+        "harness": "Codex",
+        "product": "Codex interactive CLI",
+        "application_version": null,
+        "surface": "cli",
+        "launch_mode": "interactive_local",
+        "os": "macOS",
+        "model_provider": "unknown",
+        "configuration": "ordinary documented default; unverified",
+        "identity_basis": "public_documentation"
+      },
+      "artifact_family": {
+        "identity_state": "unknown",
+        "family_id": null,
+        "physical_encoding": null,
+        "tables_or_record_families": [],
+        "roots": [],
+        "session_id_fields": [],
+        "join_keys": [],
+        "surface_marker": "unknown",
+        "retention": "unknown",
+        "acquisition": "public_documentation_only",
+        "unknowns": [
+          "Native local roots and companion artifacts were not inspected.",
+          "Physical encoding, session identifiers, joins, retention, and surface markers require authorized native capture."
+        ]
+      },
+      "claims": [
+        {
+          "id": "surface-documentation",
+          "subject": "surface_documentation",
+          "state": "documented",
+          "evidence_kind": "public_documentation",
+          "statement": "Public documentation identifies Codex developer commands and built-in slash commands; this entry records the proposed interactive local CLI surface only.",
+          "source_ids": [
+            "codex-developer-commands"
+          ],
+          "unknowns": [
+            "No claim is made about a currently installed build, local persistence, or writer completeness."
+          ]
+        },
+        {
+          "id": "native-format",
+          "subject": "artifact_documentation",
+          "state": "unknown",
+          "evidence_kind": "none",
+          "statement": "The native artifact family is unknown in this documentation-only entry.",
+          "source_ids": [],
+          "unknowns": [
+            "A native bundle, artifact roots, and required companions have not been acquired."
+          ]
+        },
+        {
+          "id": "writer-behavior",
+          "subject": "writer_behavior",
+          "state": "not_tested",
+          "evidence_kind": "none",
+          "statement": "Writer behavior is not tested.",
+          "source_ids": []
+        },
+        {
+          "id": "decoder-support",
+          "subject": "decoder_correctness",
+          "state": "not_tested",
+          "evidence_kind": "none",
+          "statement": "No vendor decoder qualification is claimed.",
+          "source_ids": []
+        },
+        {
+          "id": "reproduction",
+          "subject": "reproduction",
+          "state": "not_tested",
+          "evidence_kind": "none",
+          "statement": "No independent live or native-bundle reproduction is claimed.",
+          "source_ids": []
+        }
+      ],
+      "sources": [
+        {
+          "id": "codex-developer-commands",
+          "url": "https://learn.chatgpt.com/docs/developer-commands#built-in-slash-commands",
+          "title": "ChatGPT developer commands: built-in slash commands",
+          "locator": "built-in slash commands",
+          "source_kind": "official_documentation",
+          "inspected_at": "2026-09-10"
+        }
+      ],
+      "maintenance": {
+        "maintenance_owner": "Alexander Malakhov",
+        "source_inspected_at": "2026-09-10",
+        "live_tested_at": null,
+        "next_inspection_due": "2026-10-10",
+        "inspection_method": "public_source_review"
+      },
+      "correction": {
+        "status": "none",
+        "issue_url": null,
+        "supersedes_entry_id": null
+      },
+      "measurement": null,
+      "notes": [
+        "Candidate identity only; this row is not a measured result and does not establish native persistence."
+      ]
+    },
+    {
+      "entry_id": "claude-desktop-code-local",
+      "status": "documented_candidate",
+      "identity": {
+        "harness": "Claude",
+        "product": "Claude Desktop Code tab",
+        "application_version": null,
+        "surface": "desktop",
+        "launch_mode": "desktop_code_local",
+        "os": "macOS",
+        "model_provider": "unknown",
+        "configuration": "ordinary documented default; unverified",
+        "identity_basis": "public_documentation"
+      },
+      "artifact_family": {
+        "identity_state": "unknown",
+        "family_id": null,
+        "physical_encoding": null,
+        "tables_or_record_families": [],
+        "roots": [],
+        "session_id_fields": [],
+        "join_keys": [],
+        "surface_marker": "unknown",
+        "retention": "unknown",
+        "acquisition": "public_documentation_only",
+        "unknowns": [
+          "Native desktop roots and companion artifacts were not inspected.",
+          "Desktop UI execution, surface markers, retention, joins, and local availability require separate authorized measurement."
+        ]
+      },
+      "claims": [
+        {
+          "id": "surface-documentation",
+          "subject": "surface_documentation",
+          "state": "documented",
+          "evidence_kind": "public_documentation",
+          "statement": "Public documentation identifies Claude Desktop and its Code/local execution surface; this entry keeps desktop execution distinct from CLI execution.",
+          "source_ids": [
+            "claude-desktop"
+          ],
+          "unknowns": [
+            "No claim is made about an installed app version or local session persistence."
+          ]
+        },
+        {
+          "id": "native-format",
+          "subject": "artifact_documentation",
+          "state": "unknown",
+          "evidence_kind": "none",
+          "statement": "The native artifact family is unknown in this documentation-only entry.",
+          "source_ids": [],
+          "unknowns": [
+            "A native bundle, artifact roots, and required companions have not been acquired."
+          ]
+        },
+        {
+          "id": "writer-behavior",
+          "subject": "writer_behavior",
+          "state": "not_tested",
+          "evidence_kind": "none",
+          "statement": "Writer behavior is not tested.",
+          "source_ids": []
+        },
+        {
+          "id": "decoder-support",
+          "subject": "decoder_correctness",
+          "state": "not_tested",
+          "evidence_kind": "none",
+          "statement": "No vendor decoder qualification is claimed.",
+          "source_ids": []
+        },
+        {
+          "id": "reproduction",
+          "subject": "reproduction",
+          "state": "not_tested",
+          "evidence_kind": "none",
+          "statement": "No independent live or native-bundle reproduction is claimed.",
+          "source_ids": []
+        }
+      ],
+      "sources": [
+        {
+          "id": "claude-desktop",
+          "url": "https://code.claude.com/docs/en/desktop",
+          "title": "Claude Desktop",
+          "locator": "Code / Local execution surface",
+          "source_kind": "official_documentation",
+          "inspected_at": "2026-09-10"
+        }
+      ],
+      "maintenance": {
+        "maintenance_owner": "Alexander Malakhov",
+        "source_inspected_at": "2026-09-10",
+        "live_tested_at": null,
+        "next_inspection_due": "2026-10-10",
+        "inspection_method": "public_source_review"
+      },
+      "correction": {
+        "status": "none",
+        "issue_url": null,
+        "supersedes_entry_id": null
+      },
+      "measurement": null,
+      "notes": [
+        "Candidate identity only; the desktop surface cannot inherit CLI persistence or format claims."
+      ]
+    },
+    {
+      "entry_id": "github-copilot-vscode",
+      "status": "documented_candidate",
+      "identity": {
+        "harness": "GitHub Copilot",
+        "product": "GitHub Copilot in VS Code",
+        "application_version": null,
+        "surface": "ide",
+        "launch_mode": "vscode_agent_session",
+        "os": "macOS",
+        "model_provider": "unknown",
+        "configuration": "ordinary documented default; unverified",
+        "identity_basis": "public_documentation"
+      },
+      "artifact_family": {
+        "identity_state": "unknown",
+        "family_id": null,
+        "physical_encoding": null,
+        "tables_or_record_families": [],
+        "roots": [],
+        "session_id_fields": [],
+        "join_keys": [],
+        "surface_marker": "unknown",
+        "retention": "unknown",
+        "acquisition": "public_documentation_only",
+        "unknowns": [
+          "Native VS Code and extension roots, companions, and export boundaries were not inspected.",
+          "Provider boundary, session identifiers, retention, and local portability require separate authorized measurement."
+        ]
+      },
+      "claims": [
+        {
+          "id": "surface-documentation",
+          "subject": "surface_documentation",
+          "state": "documented",
+          "evidence_kind": "public_documentation",
+          "statement": "Public VS Code documentation identifies agent sessions as an IDE surface; this entry keeps the IDE execution context distinct from CLI and desktop rows.",
+          "source_ids": [
+            "vscode-agent-sessions"
+          ],
+          "unknowns": [
+            "No claim is made about a current VS Code or extension build, provider, or local persistence."
+          ]
+        },
+        {
+          "id": "native-format",
+          "subject": "artifact_documentation",
+          "state": "unknown",
+          "evidence_kind": "none",
+          "statement": "The native artifact family is unknown in this documentation-only entry.",
+          "source_ids": [],
+          "unknowns": [
+            "A native bundle, artifact roots, and required companions have not been acquired."
+          ]
+        },
+        {
+          "id": "writer-behavior",
+          "subject": "writer_behavior",
+          "state": "not_tested",
+          "evidence_kind": "none",
+          "statement": "Writer behavior is not tested.",
+          "source_ids": []
+        },
+        {
+          "id": "decoder-support",
+          "subject": "decoder_correctness",
+          "state": "not_tested",
+          "evidence_kind": "none",
+          "statement": "No vendor decoder qualification is claimed.",
+          "source_ids": []
+        },
+        {
+          "id": "reproduction",
+          "subject": "reproduction",
+          "state": "not_tested",
+          "evidence_kind": "none",
+          "statement": "No independent live or native-bundle reproduction is claimed.",
+          "source_ids": []
+        }
+      ],
+      "sources": [
+        {
+          "id": "vscode-agent-sessions",
+          "url": "https://code.visualstudio.com/docs/agents/run/sessions/manage-sessions",
+          "title": "VS Code agent sessions",
+          "locator": "Manage sessions",
+          "source_kind": "official_documentation",
+          "inspected_at": "2026-09-10"
+        }
+      ],
+      "maintenance": {
+        "maintenance_owner": "Alexander Malakhov",
+        "source_inspected_at": "2026-09-10",
+        "live_tested_at": null,
+        "next_inspection_due": "2026-10-10",
+        "inspection_method": "public_source_review"
+      },
+      "correction": {
+        "status": "none",
+        "issue_url": null,
+        "supersedes_entry_id": null
+      },
+      "measurement": null,
+      "notes": [
+        "Candidate identity only; IDE storage and provider boundaries are explicitly unresolved."
+      ]
+    }
+  ]
+}
