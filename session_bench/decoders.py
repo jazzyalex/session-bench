@@ -373,7 +373,7 @@ def _codex_event(obj: dict[str, Any], locator: dict[str, Any], current_session_i
         return None
     payload = outer if outer_type == "session_meta" else _nested_payload(outer)
     kind = outer_type if outer_type in {"session_meta", "turn_context"} else payload.get("type")
-    event_id = payload.get("id") or payload.get("message_id") or payload.get("call_id")
+    event_id = payload.get("id") or payload.get("message_id")
     session_id = payload.get("session_id") or payload.get("conversation_id") or payload.get("thread_id") or obj.get("session_id") or current_session_id
     if not isinstance(session_id, str):
         return None
@@ -407,11 +407,13 @@ def _codex_event(obj: dict[str, Any], locator: dict[str, Any], current_session_i
         fields = {key: payload[key] for key in ("call_id", "tool_call_id", "output", "status", "exit_code", "error") if key in payload}
     else:
         return None
+    identity_origin = "native"
     if not isinstance(event_id, str) or not event_id:
-        event_id = None
+        event_id = f"derived:{locator['artifact_id']}:{locator['line']}:{locator['record_sha256'][:16]}"
+        identity_origin = "derived"
     return {"id": event_id, "session_id": session_id, "kind": event_kind,
             "fields": fields, "locator": locator,
-            "identity_origin": "native" if event_id is not None else "derived"}
+            "identity_origin": identity_origin}
 
 
 def _decode_codex_rollout(records: list[dict[str, Any]], paths: dict[str, Path]) -> dict[str, Any]:
@@ -427,32 +429,36 @@ def _decode_codex_rollout(records: list[dict[str, Any]], paths: dict[str, Path])
             continue
         if path.suffix.lower() != ".jsonl":
             continue
-        for line_number, raw in enumerate(path.open("rb"), 1):
-            content = raw.rstrip(b"\r\n")
-            if not content.strip():
-                continue
-            locator = {"artifact_id": item["id"], "sha256": item["sha256"],
-                       "line": line_number, "record_sha256": hashlib.sha256(content).hexdigest()}
-            try:
-                obj = _strict_json(content.decode("utf-8"))
-            except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
-                diagnostics.append(_diagnostic("malformed_record", item["id"], f"line {line_number}: {exc}"))
-                continue
-            if isinstance(obj, dict) and obj.get("type") == "session_meta" and isinstance(obj.get("payload"), dict):
-                candidate = obj["payload"].get("id") or obj["payload"].get("session_id")
-                if isinstance(candidate, str) and candidate:
-                    current_session_id = candidate
-            event = _codex_event(obj, locator, current_session_id) if isinstance(obj, dict) else None
-            if event is None:
-                diagnostics.append(_diagnostic("unknown_record", item["id"], f"line {line_number}: unsupported rollout envelope"))
-                unknown += 1
-                continue
-            events.append(event)
-            record_count += 1
-            if record_count > _MAX_RECORDS:
-                raise ValueError(f"Codex rollout exceeds {_MAX_RECORDS}-record limit")
-            if event["id"] is None:
-                diagnostics.append(_diagnostic("missing_event_id", item["id"], f"line {line_number}: event id missing"))
+        with path.open("rb") as handle:
+            byte_start = 0
+            for line_number, raw in enumerate(handle, 1):
+                byte_end = byte_start + len(raw)
+                content = raw.rstrip(b"\r\n")
+                if not content.strip():
+                    byte_start = byte_end
+                    continue
+                locator = {"artifact_id": item["id"], "sha256": item["sha256"],
+                           "line": line_number, "byte_start": byte_start, "byte_end": byte_end,
+                           "record_sha256": hashlib.sha256(content).hexdigest()}
+                byte_start = byte_end
+                try:
+                    obj = _strict_json(content.decode("utf-8"))
+                except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
+                    diagnostics.append(_diagnostic("malformed_record", item["id"], f"line {line_number}: {exc}"))
+                    continue
+                if isinstance(obj, dict) and obj.get("type") == "session_meta" and isinstance(obj.get("payload"), dict):
+                    candidate = obj["payload"].get("id") or obj["payload"].get("session_id")
+                    if isinstance(candidate, str) and candidate:
+                        current_session_id = candidate
+                event = _codex_event(obj, locator, current_session_id) if isinstance(obj, dict) else None
+                if event is None:
+                    diagnostics.append(_diagnostic("unknown_record", item["id"], f"line {line_number}: unsupported rollout envelope"))
+                    unknown += 1
+                    continue
+                events.append(event)
+                record_count += 1
+                if record_count > _MAX_RECORDS:
+                    raise ValueError(f"Codex rollout exceeds {_MAX_RECORDS}-record limit")
     _postprocess(events, diagnostics)
     return {"format": "codex-rollout-v1", "events": events, "diagnostics": diagnostics, "unknown_records": unknown}
 

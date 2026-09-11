@@ -8,6 +8,7 @@ from session_bench.l0_controller import (
     exact_argv, privacy_scan,
 )
 from session_bench.l0_preflight import QuotaSnapshot, build_effective_config, stat_inventory
+from session_bench.live_plan import plan_sha256
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -106,9 +107,9 @@ def test_capture_requires_frozen_observer_and_single_new_candidate(tmp_path):
     controller = L0Controller(plan(), FakeRunner())
     controller.observer.record("prompt", "x")
     with pytest.raises(ValueError, match="observer"):
-        controller.capture_evidence(before, after, opened=["rollout-new.jsonl"])
+        controller.capture_evidence(before, after, opened=["rollout-new.jsonl"], resolved_config_fingerprint="cfg")
     controller.observer.freeze()
-    evidence = controller.capture_evidence(before, after, opened=["rollout-new.jsonl"])
+    evidence = controller.capture_evidence(before, after, opened=["rollout-new.jsonl"], resolved_config_fingerprint="cfg")
     assert evidence["candidate_paths"] == ["rollout-new.jsonl"]
 
 
@@ -121,3 +122,97 @@ def test_hard_counters_stop_at_plan_limits():
     assert (counters.attempts, counters.submitted_turns, counters.native_sessions) == (1, 3, 1)
     with pytest.raises(RuntimeError, match="spend"):
         counters.reserve(plan(), spend_usd=0.01)
+
+
+def test_controller_owns_live_attempt_through_capture(tmp_path):
+    store = tmp_path / "store"; store.mkdir()
+    scratch = tmp_path / "scratch"; scratch.mkdir()
+
+    class Process:
+        def __init__(self):
+            self.path = store / "rollout-new.jsonl"
+        def submit(self, prompt):
+            self.path.write_text("\n".join([
+                json.dumps({"type": "session_meta", "payload": {"id": "native-s1"}}),
+                json.dumps({"type": "event_msg", "payload": {"type": "user_message", "message": prompt}}),
+                json.dumps({"type": "response_item", "payload": {"type": "agent_message", "content": [{"text": "done"}]}}),
+            ]) + "\n")
+            return "done"
+        def close(self):
+            return 0
+
+    class Environment(FakeRunner):
+        quota_reads = 0
+        def read_quota(self, *, monotonic_started):
+            self.quota_reads += 1
+            contract = plan()["limits"]["quota"]
+            return QuotaSnapshot(contract["source"], "2026-09-11T00:01:00Z", 10,
+                                 contract["baseline_used_percent"], monotonic_started, monotonic_started)
+        def start_session(self, argv):
+            return Process()
+
+    environment = Environment()
+    controller = L0Controller(plan(), environment)
+    result = controller.execute_scenario(scenario_id="C01", scenario_run_id="run-c01",
+        attempt_id="attempt-c01-1", prompts=["public prompt"], scratch=scratch,
+        sibling=tmp_path / "forbidden-sibling", session_root=store,
+        package_output=tmp_path / "package", ledger_path=tmp_path / "ledger.json",
+        monotonic=lambda: 1.0, epoch_ns=lambda: 0, sleep=lambda _: None)
+    assert environment.quota_reads == 3
+    assert result["ledger"]["attempts"][0]["native_session_ids"] == ["native-s1"]
+    assert result["capture_evidence"]["observer_frozen"] is True
+    assert json.loads((tmp_path / "ledger.json").read_text())["attempts"][0]["state"] == "captured"
+
+
+def test_final_quota_gate_stops_without_launch_or_attempt_record(tmp_path):
+    class Environment(FakeRunner):
+        reads = 0
+        def read_quota(self, *, monotonic_started):
+            self.reads += 1
+            contract = plan()["limits"]["quota"]
+            used = 10 if self.reads == 1 else contract["absolute_stop_used_percent"]
+            return QuotaSnapshot(contract["source"], "2026-09-11T00:01:00Z", used,
+                                 contract["baseline_used_percent"], monotonic_started, monotonic_started)
+        def start_session(self, argv):
+            raise AssertionError("quota-stopped run launched")
+    store = tmp_path / "store"; store.mkdir()
+    scratch = tmp_path / "scratch"; scratch.mkdir()
+    ledger_path = tmp_path / "ledger.json"
+    with pytest.raises(RuntimeError, match="quota-threshold"):
+        L0Controller(plan(), Environment()).execute_scenario(
+            scenario_id="C01", scenario_run_id="run-c01", attempt_id="attempt-1",
+            prompts=["public"], scratch=scratch, sibling=tmp_path / "sibling",
+            session_root=store, package_output=tmp_path / "package", ledger_path=ledger_path,
+            monotonic=lambda: 1.0, epoch_ns=lambda: 0, sleep=lambda _: None)
+    assert not ledger_path.exists()
+
+
+def test_resume_reconstructs_limits_from_existing_ledger_before_launch(tmp_path):
+    p = plan()
+    usage = {"captured_files": 0, "captured_bytes": 0, "observable_tokens": 0,
+             "spend_usd": 0, "operator_minutes": 0, "wall_clock_minutes": 0}
+    attempts = []
+    for scenario in ("C01", "C02"):
+        for number in range(2):
+            attempts.append({"scenario_id": scenario, "scenario_run_id": f"run-{scenario}",
+                "attempt_id": f"{scenario}-{number}", "state": "interrupted",
+                "native_session_ids": [], "submitted_turns": 0, "config_identity": "cfg",
+                "usage": dict(usage), "events": [], "reason": "retained"})
+    ledger_path = tmp_path / "ledger.json"
+    ledger_path.write_text(json.dumps({"schema_version": "1.0-live-ledger", "gate_id": p["gate_id"],
+        "plan_sha256": plan_sha256(p), "attempts": attempts}), encoding="utf-8")
+    class Environment(FakeRunner):
+        def read_quota(self, *, monotonic_started):
+            contract = p["limits"]["quota"]
+            return QuotaSnapshot(contract["source"], "2026-09-11T00:01:00Z", 10,
+                                 contract["baseline_used_percent"], monotonic_started, monotonic_started)
+        def start_session(self, argv):
+            raise AssertionError("limit-exhausted run launched")
+    store = tmp_path / "store"; store.mkdir()
+    scratch = tmp_path / "scratch"; scratch.mkdir()
+    with pytest.raises(RuntimeError, match="attempts? limit"):
+        L0Controller(p, Environment()).execute_scenario(
+            scenario_id="C01", scenario_run_id="run-C01", attempt_id="extra",
+            prompts=["public"], scratch=scratch, sibling=tmp_path / "sibling",
+            session_root=store, package_output=tmp_path / "package", ledger_path=ledger_path,
+            monotonic=lambda: 1.0, epoch_ns=lambda: 0, sleep=lambda _: None)

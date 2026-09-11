@@ -13,6 +13,8 @@ def validate_live_ledger(ledger, plan):
     if len(ledger["attempts"]) > plan["limits"]["attempts_total"]:
         raise ValueError("attempt ledger exceeds plan attempt limit")
     seen_attempts, seen_sessions, submitted = set(), set(), 0
+    totals = {key: 0 for key in ("captured_files", "captured_bytes", "observable_tokens",
+                                  "spend_usd", "operator_minutes", "wall_clock_minutes")}
     run_by_scenario = {}
     attempts_by_scenario = {scenario: 0 for scenario in plan["scenarios"]}
     config_identity = None
@@ -38,7 +40,9 @@ def validate_live_ledger(ledger, plan):
             raise ValueError("native session identity reused across attempts")
         seen_sessions.update(attempt["native_session_ids"])
         submitted += attempt["submitted_turns"]
-        if attempt["submitted_turns"] and attempt["state"] in {"planned", "invalid"}:
+        for key in totals:
+            totals[key] += attempt["usage"][key]
+        if attempt["submitted_turns"] and attempt["state"] == "planned":
             raise ValueError("submitted turns require a started or terminal execution state")
         if attempt["state"] == "captured" and not attempt["native_session_ids"]:
             raise ValueError("captured attempt requires native session identity")
@@ -46,6 +50,13 @@ def validate_live_ledger(ledger, plan):
         raise ValueError("ledger exceeds submitted-turn limit")
     if len(seen_sessions) > plan["limits"]["native_sessions"]:
         raise ValueError("ledger exceeds aggregate native-session limit")
+    limit_names = {"captured_files": "artifact_files", "captured_bytes": "artifact_total_bytes",
+                   "observable_tokens": "tokens_total_when_observable",
+                   "spend_usd": "incremental_spend_usd", "operator_minutes": "operator_minutes",
+                   "wall_clock_minutes": "wall_clock_minutes"}
+    for key, limit_name in limit_names.items():
+        if totals[key] > plan["limits"][limit_name]:
+            raise ValueError(f"ledger exceeds {key.replace('_', '-')} limit")
     return ledger
 
 
@@ -55,12 +66,20 @@ def validate_capture_evidence(evidence, plan, *, attempt):
     This contract intentionally accepts metadata records rather than opening files;
     the controller owns the actual stat/copy operation.
     """
-    required = {"attempt_id", "native_session_ids", "before_stats", "after_stats", "primary_candidate_path", "companion_paths", "candidate_paths", "opened_paths", "preexisting_file_hashing", "ambiguous", "source_mutated", "observer_frozen"}
+    required = {"attempt_id", "scenario_run_id", "native_session_ids", "resolved_config_fingerprint",
+                "before_stats", "after_stats", "primary_candidate_path",
+                "companion_paths", "candidate_paths", "opened_paths",
+                "preexisting_file_hashing", "ambiguous", "source_mutated",
+                "observer_frozen", "quiescence_checks", "candidate_identity_verified"}
     missing = required - set(evidence)
     if missing:
         raise ValueError(f"capture evidence missing fields: {sorted(missing)}")
     if evidence["preexisting_file_hashing"] is not False:
         raise ValueError("pre-existing files must not be hashed")
+    if not isinstance(evidence["resolved_config_fingerprint"], str) or not evidence["resolved_config_fingerprint"]:
+        raise ValueError("capture evidence requires the resolved configuration identity")
+    if evidence["quiescence_checks"] < 2 or evidence["candidate_identity_verified"] is not True:
+        raise ValueError("capture requires two stable observations and a final identity check")
     if evidence["ambiguous"] and evidence["opened_paths"]:
         raise ValueError("ambiguous discovery cannot open candidates")
     approved = {evidence["primary_candidate_path"], *evidence["companion_paths"]}
@@ -72,7 +91,9 @@ def validate_capture_evidence(evidence, plan, *, attempt):
         raise ValueError("primary candidate was not proven new")
     if set(evidence["companion_paths"]) - set(evidence["candidate_paths"]):
         raise ValueError("companion was not proven new")
-    if attempt.get("attempt_id") != evidence["attempt_id"] or attempt.get("native_session_ids", []) != evidence["native_session_ids"]:
+    if (attempt.get("attempt_id") != evidence["attempt_id"]
+            or attempt.get("scenario_run_id") != evidence["scenario_run_id"]
+            or attempt.get("native_session_ids", []) != evidence["native_session_ids"]):
         raise ValueError("capture evidence identity differs from attempt")
     stat_keys = {"relative_path", "filesystem_id", "birth_time", "ctime", "mtime", "size"}
     for record in evidence["before_stats"] + evidence["after_stats"]:

@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from session_bench.decoders import decode_native
+from session_bench.evaluate import evaluate_decoded
 
 
 def _digest(path: Path) -> str:
@@ -283,6 +284,51 @@ def test_codex_rollout_unknown_and_malformed_records_are_diagnostics(tmp_path: P
     result = decode_native(package)
     assert not result["events"]
     assert {item["code"] for item in result["diagnostics"]} == {"unknown_record", "malformed_record"}
+
+
+def test_codex_no_id_records_get_distinct_derived_ids_and_call_id_only_joins(tmp_path: Path):
+    package = tmp_path / "codex"
+    package.mkdir()
+    rollout = package / "rollout.jsonl"
+    rows = [
+        {"timestamp": "2026-09-10T00:00:00Z", "type": "session_meta", "payload": {"id": "s1"}},
+        {"timestamp": "2026-09-10T00:00:01Z", "type": "event_msg", "payload": {"type": "user_message", "message": "SB_F0_C01_café_🙂"}},
+        {"timestamp": "2026-09-10T00:00:02Z", "type": "response_item", "payload": {"type": "function_call", "name": "shell", "arguments": "{}", "call_id": "call-1"}},
+        {"timestamp": "2026-09-10T00:00:03Z", "type": "response_item", "payload": {"type": "function_call_output", "call_id": "call-1", "output": "ok"}},
+    ]
+    rollout.write_text("".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows), encoding="utf-8")
+    _manifest(package, "codex-rollout-v1", [("rollout", "rollout.jsonl", [])])
+    result = decode_native(package)
+    message, call, output = result["events"][1:]
+    assert message["identity_origin"] == "derived"
+    assert call["identity_origin"] == "derived"
+    assert output["identity_origin"] == "derived"
+    assert len({message["id"], call["id"], output["id"]}) == 3
+    assert call["id"] != "call-1" and output["id"] != "call-1"
+    assert call["fields"]["call_id"] == output["fields"]["call_id"] == "call-1"
+    assert not any(item["code"] == "dangling_tool_result" for item in result["diagnostics"])
+
+    observer = {"schema_version": "1.0-prototype", "events": [
+        {"id": "obs-session", "population_role": "unscored", "boundary": "accepted",
+         "event_id": result["events"][0]["id"], "session_id": "s1", "fields": {},
+         "source": "independent-test", "sequence": 1},
+        {"id": "obs-message", "population_role": "primary_scored", "boundary": "accepted",
+         "event_id": message["id"], "session_id": "s1", "fields": {"fields.text": "SB_F0_C01_café_🙂"},
+         "source": "independent-test", "sequence": 2},
+    ]}
+    expected = {"schema_version": "1.0-prototype", "assertions": [{
+        "id": "derived-message-scored", "assertion_role": "primary", "scenario": "C01",
+        "subject": "decoder_correctness", "applicability": "required", "execution": "valid",
+        "observation_ids": ["obs-message"], "session_id": "s1", "event_id": message["id"],
+        "fields": [{"name": "fields.text", "expected": "SB_F0_C01_café_🙂", "comparison": "exact"}],
+        "inspection": {"state": "present", "locators": [message["locator"]], "evidence_ids": ["native-rollout"]},
+        "boundary": "accepted", "reason": "locator-derived IDs remain scoreable",
+    }]}
+    manifest = {"run_id": "run", "capture_id": "capture", "origin": "native_live",
+                "live_binding": {"present": True}, "capture": {"status": "valid", "roots_complete": True},
+                "execution": {"state": "valid"}, "observation": {"complete": True}, "artifacts": []}
+    evaluated = evaluate_decoded(manifest, expected, result, "a" * 64, observer=observer)
+    assert next(row for row in evaluated["rows"] if row["id"] == "derived-message-scored")["state"] == "pass"
 
 
 @pytest.mark.parametrize("name,session_id", [("rollout-c01.jsonl", "constructed-c01"), ("rollout-c02.jsonl", "constructed-c02")])

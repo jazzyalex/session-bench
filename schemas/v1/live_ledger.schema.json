@@ -17,10 +17,23 @@
           "native_session_ids": {"type": "array", "items": {"type": "string", "minLength": 1}},
           "submitted_turns": {"type": "integer", "minimum": 0},
           "config_identity": {"type": "string", "minLength": 1},
+          "usage": {
+            "type": "object",
+            "properties": {
+              "captured_files": {"type": "integer", "minimum": 0},
+              "captured_bytes": {"type": "integer", "minimum": 0},
+              "observable_tokens": {"type": "integer", "minimum": 0},
+              "spend_usd": {"type": "number", "minimum": 0},
+              "operator_minutes": {"type": "number", "minimum": 0},
+              "wall_clock_minutes": {"type": "number", "minimum": 0}
+            },
+            "required": ["captured_files", "captured_bytes", "observable_tokens", "spend_usd", "operator_minutes", "wall_clock_minutes"],
+            "additionalProperties": false
+          },
           "events": {"type": "array", "items": {"type": "string", "minLength": 1}},
           "reason": {"type": "string", "minLength": 1}
         },
-        "required": ["scenario_id", "scenario_run_id", "attempt_id", "state", "native_session_ids", "submitted_turns", "config_identity", "events", "reason"],
+        "required": ["scenario_id", "scenario_run_id", "attempt_id", "state", "native_session_ids", "submitted_turns", "config_identity", "usage", "events", "reason"],
         "additionalProperties": false
       }
     }

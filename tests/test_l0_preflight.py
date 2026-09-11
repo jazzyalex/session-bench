@@ -7,7 +7,8 @@ import pytest
 
 from session_bench.l0_preflight import (
     QuotaSnapshot, build_effective_config, identify_single_new_candidate,
-    quota_decision, stat_inventory, verify_resolved_config,
+    quota_decision, stat_inventory, verify_candidate_identity, verify_resolved_config,
+    wait_for_candidate_quiescence,
 )
 from session_bench.l0_scenarios import c01_inputs, c02_inputs
 
@@ -61,10 +62,29 @@ def test_rollout_inventory_never_opens_or_hashes_old_files(tmp_path: Path, monke
     new.write_bytes(b"public-synthetic")
     after = stat_inventory(tmp_path)
     assert identify_single_new_candidate(before, after).relative_path.endswith("rollout-new.jsonl")
+    candidate = identify_single_new_candidate(before, after)
+    verify_candidate_identity(tmp_path, candidate)
+    old.rename(old.parent / "rollout-renamed.jsonl")
+    renamed = stat_inventory(tmp_path)
+    assert identify_single_new_candidate(before, renamed).relative_path.endswith("rollout-new.jsonl")
     other = old.parent / "rollout-other.jsonl"
     other.write_bytes(b"public-synthetic-2")
     with pytest.raises(ValueError):
         identify_single_new_candidate(before, stat_inventory(tmp_path))
+
+
+def test_quiescence_rejects_a_candidate_that_changes_between_stats(tmp_path: Path):
+    rollout = tmp_path / "rollout-new.jsonl"
+    rollout.write_text("one", encoding="utf-8")
+    candidate = stat_inventory(tmp_path)[0]
+    calls = 0
+    def mutate(_):
+        nonlocal calls
+        calls += 1
+        if calls == 1:
+            rollout.write_text("two-two", encoding="utf-8")
+    with pytest.raises(ValueError, match="quiescence"):
+        wait_for_candidate_quiescence(tmp_path, candidate, sleep=mutate)
 
 
 def test_quota_policy_matches_machine_plan():

@@ -244,6 +244,28 @@
       ],
       "additionalProperties": false
     },
+    "live_binding": {
+      "type": "object",
+      "properties": {
+        "plan_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "resolved_config_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "scenario_run_id": {"type": "string", "minLength": 1},
+        "attempt_id": {"type": "string", "minLength": 1},
+        "capture_id": {"type": "string", "minLength": 1},
+        "native_session_id": {"type": "string", "minLength": 1},
+        "capture_evidence_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "ledger_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "plan_artifact_id": {"type": "string", "minLength": 1},
+        "capture_evidence_artifact_id": {"type": "string", "minLength": 1},
+        "ledger_artifact_id": {"type": "string", "minLength": 1}
+      },
+      "required": [
+        "plan_sha256", "resolved_config_fingerprint", "scenario_run_id", "attempt_id", "capture_id",
+        "native_session_id", "capture_evidence_sha256", "ledger_sha256", "plan_artifact_id",
+        "capture_evidence_artifact_id", "ledger_artifact_id"
+      ],
+      "additionalProperties": false
+    },
     "execution": {
       "type": "object",
       "properties": {

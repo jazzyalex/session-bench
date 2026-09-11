@@ -13,18 +13,28 @@ import json
 from pathlib import Path
 import shutil
 import subprocess
-from typing import Any, Mapping, Protocol, Sequence
+from typing import Any, Callable, Mapping, Protocol, Sequence
 
 from .bundle import canonical
 from .live_ledger import validate_capture_evidence, validate_live_ledger
 from .live_plan import plan_sha256, validate_live_plan
-from .l0_preflight import EffectiveConfig, build_effective_config, identify_single_new_candidate, quota_decision, stat_inventory, verify_resolved_config
+from .l0_preflight import EffectiveConfig, build_effective_config, identify_single_new_candidate, quota_decision, stat_inventory, verify_candidate_identity, verify_resolved_config, wait_for_candidate_quiescence
 
 
 class Runner(Protocol):
     def enumerate_mcp_names(self, argv: Sequence[str]) -> Mapping[str, bool]: ...
     def resolve_features(self, argv: Sequence[str]) -> Mapping[str, bool]: ...
     def sandbox_probe(self, argv: Sequence[str], scratch: Path, sibling: Path) -> Mapping[str, bool]: ...
+
+
+class LiveProcess(Protocol):
+    def submit(self, prompt: str) -> str | Mapping[str, Any]: ...
+    def close(self) -> int: ...
+
+
+class LiveEnvironment(Runner, Protocol):
+    def read_quota(self, *, monotonic_started: float) -> QuotaSnapshot: ...
+    def start_session(self, argv: Sequence[str]) -> LiveProcess: ...
 
 
 class LocalCodexRunner:
@@ -278,17 +288,33 @@ class L0Controller:
                 "resolved_fingerprint": resolved_fingerprint, "mcp_names": tuple(sorted(names)),
                 "sandbox": dict(sandbox), "plan_sha256": plan_sha256(self.plan)}
 
-    def capture_evidence(self, before: Sequence[Any], after: Sequence[Any], *, opened: Sequence[str], companions: Sequence[str] = (), attempt_id: str = "attempt-1", native_session_ids: Sequence[str] = ("native-1",), source_mutated: bool = False) -> dict[str, Any]:
-        candidate_paths = [item.relative_path for item in after if item.relative_path not in {x.relative_path for x in before}]
+    def capture_evidence(self, before: Sequence[Any], after: Sequence[Any], *, opened: Sequence[str],
+                         resolved_config_fingerprint: str, candidate: Any | None = None,
+                         companions: Sequence[Any] = (), attempt_id: str = "attempt-1",
+                         scenario_run_id: str = "scenario-run-1",
+                         native_session_ids: Sequence[str] = ("native-1",),
+                         source_mutated: bool = False, quiescence_checks: int = 2) -> dict[str, Any]:
+        candidate = candidate or identify_single_new_candidate(before, after)
+        companion_paths = [item.relative_path for item in companions]
+        old_paths = {item.relative_path for item in before}
+        old_ids = {(item.device, item.inode) for item in before}
+        if any(item not in after or item.relative_path in old_paths or (item.device, item.inode) in old_ids
+               for item in companions):
+            raise ValueError("companion was not proven new")
+        candidate_paths = [candidate.relative_path, *companion_paths]
         as_stat = lambda item: {"relative_path": item.relative_path, "filesystem_id": f"{item.device}:{item.inode}",
                                 "birth_time": item.birth_ns, "ctime": item.ctime_ns, "mtime": item.mtime_ns, "size": item.size}
-        evidence = {"attempt_id": attempt_id, "native_session_ids": list(native_session_ids),
+        evidence = {"attempt_id": attempt_id, "scenario_run_id": scenario_run_id,
+                    "native_session_ids": list(native_session_ids),
+                    "resolved_config_fingerprint": resolved_config_fingerprint,
                     "before_stats": [as_stat(item) for item in before], "after_stats": [as_stat(item) for item in after],
-                    "primary_candidate_path": candidate_paths[0] if len(candidate_paths) == 1 else None,
-                    "companion_paths": list(companions), "candidate_paths": candidate_paths, "opened_paths": list(opened),
-                    "preexisting_file_hashing": False, "ambiguous": len(candidate_paths) != 1,
-                    "source_mutated": source_mutated, "observer_frozen": self.observer.frozen}
-        attempt = {"state": "captured", "attempt_id": attempt_id, "native_session_ids": list(native_session_ids)}
+                    "primary_candidate_path": candidate.relative_path,
+                    "companion_paths": companion_paths, "candidate_paths": candidate_paths, "opened_paths": list(opened),
+                    "preexisting_file_hashing": False, "ambiguous": False,
+                    "source_mutated": source_mutated, "observer_frozen": self.observer.frozen,
+                    "quiescence_checks": quiescence_checks, "candidate_identity_verified": True}
+        attempt = {"state": "captured", "attempt_id": attempt_id,
+                   "scenario_run_id": scenario_run_id, "native_session_ids": list(native_session_ids)}
         validate_capture_evidence(evidence, self.plan, attempt=attempt)
         return evidence
 
@@ -297,6 +323,168 @@ class L0Controller:
                   "plan_sha256": plan_sha256(self.plan), "attempts": list(attempts)}
         validate_live_ledger(ledger, self.plan)
         return ledger
+
+    def execute_scenario(
+        self,
+        *,
+        scenario_id: str,
+        scenario_run_id: str,
+        attempt_id: str,
+        prompts: Sequence[str],
+        scratch: Path,
+        sibling: Path,
+        session_root: Path,
+        package_output: Path,
+        ledger_path: Path,
+        monotonic: Callable[[], float],
+        epoch_ns: Callable[[], int],
+        sleep: Callable[[float], None] = __import__('time').sleep,
+        operator_minutes: Callable[[], float] | None = None,
+    ) -> dict[str, Any]:
+        """Own one complete live attempt; no launch or submission can bypass reservations."""
+        if scenario_id not in self.plan["scenarios"] or not prompts:
+            raise ValueError("scenario is not declared or has no prompts")
+        environment = self.runner
+        if not hasattr(environment, "read_quota") or not hasattr(environment, "start_session"):
+            raise RuntimeError("live execution requires a trusted quota reader and PTY owner")
+        started_mono = monotonic()
+        first_quota = environment.read_quota(monotonic_started=started_mono)
+        preflight = self.preflight(scratch, sibling, quota=first_quota, now_monotonic=monotonic())
+        before = stat_inventory(session_root)
+        launch_quota = environment.read_quota(monotonic_started=started_mono)
+        launch_decision = quota_decision(launch_quota, plan=self.plan, now_monotonic=monotonic())
+        if launch_decision != "proceed":
+            raise RuntimeError(launch_decision)
+        attempt_started_ns = epoch_ns()
+        ledger_target = Path(ledger_path)
+        previous_attempts: list[Mapping[str, Any]] = []
+        if ledger_target.exists():
+            previous_ledger = json.loads(ledger_target.read_text(encoding="utf-8"))
+            validate_live_ledger(previous_ledger, self.plan)
+            previous_attempts = previous_ledger["attempts"]
+            restored = HardCounters(
+                attempts=len(previous_attempts),
+                submitted_turns=sum(item["submitted_turns"] for item in previous_attempts),
+                native_sessions=sum(len(item["native_session_ids"]) for item in previous_attempts),
+                captured_files=sum(item["usage"]["captured_files"] for item in previous_attempts),
+                captured_bytes=sum(item["usage"]["captured_bytes"] for item in previous_attempts),
+                observable_tokens=sum(item["usage"]["observable_tokens"] for item in previous_attempts),
+                spend_usd=sum(item["usage"]["spend_usd"] for item in previous_attempts),
+                operator_minutes=sum(item["usage"]["operator_minutes"] for item in previous_attempts),
+                wall_clock_minutes=sum(item["usage"]["wall_clock_minutes"] for item in previous_attempts),
+            )
+            self.counters = restored
+        self.counters.reserve(self.plan, attempts=1, native_sessions=1)
+        attempt = {"scenario_id": scenario_id, "scenario_run_id": scenario_run_id,
+            "attempt_id": attempt_id, "state": "started", "native_session_ids": [],
+            "submitted_turns": 0, "config_identity": preflight["resolved_fingerprint"],
+            "usage": {"captured_files": 0, "captured_bytes": 0, "observable_tokens": 0,
+                      "spend_usd": 0, "operator_minutes": 0, "wall_clock_minutes": 0},
+            "events": [], "reason": "reserved before spawn"}
+
+        def update_time() -> None:
+            elapsed = max(0.0, (monotonic() - started_mono) / 60)
+            operator = elapsed if operator_minutes is None else max(0.0, operator_minutes())
+            usage = attempt["usage"]
+            increments = {"wall_clock_minutes": max(0.0, elapsed - usage["wall_clock_minutes"]),
+                          "operator_minutes": max(0.0, operator - usage["operator_minutes"])}
+            self.counters.reserve(self.plan, **increments)
+            usage["wall_clock_minutes"] = elapsed
+            usage["operator_minutes"] = operator
+
+        def persist() -> dict[str, Any]:
+            target = Path(ledger_path)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            previous = [item for item in previous_attempts if item["attempt_id"] != attempt_id]
+            ledger = self.ledger([*previous, attempt])
+            temporary = target.with_suffix(target.suffix + ".tmp")
+            temporary.write_bytes(canonical(ledger) + b"\n")
+            temporary.replace(target)
+            return ledger
+
+        update_time()
+        persist()
+        process: LiveProcess | None = None
+        exit_code: int | None = None
+        try:
+            process = environment.start_session(preflight["argv"])
+            for prompt in prompts:
+                quota = environment.read_quota(monotonic_started=started_mono)
+                decision = quota_decision(quota, plan=self.plan, now_monotonic=monotonic(), live_attempt_started=True)
+                if decision != "proceed":
+                    raise RuntimeError(decision)
+                self.counters.reserve(self.plan, submitted_turns=1)
+                attempt["submitted_turns"] += 1
+                attempt["state"] = "submitted"
+                reserved = self.observer.record("prompt_reserved", prompt)
+                attempt["events"].append(f"pty:{reserved.sequence}:prompt_reserved")
+                attempt["reason"] = "prompt reserved before PTY write"
+                update_time()
+                persist()
+                turn = process.submit(prompt)
+                if isinstance(turn, str):
+                    visible, observed_tokens, observed_spend = turn, 0, 0
+                elif isinstance(turn, Mapping):
+                    visible = turn.get("visible_text")
+                    observed_tokens = turn.get("observable_tokens", 0)
+                    observed_spend = turn.get("spend_usd", 0)
+                    if not isinstance(visible, str) or type(observed_tokens) is not int or observed_tokens < 0 or type(observed_spend) not in (int, float) or observed_spend < 0:
+                        raise ValueError("live turn observation is malformed")
+                else:
+                    raise ValueError("live turn observation is malformed")
+                self.counters.reserve(self.plan, observable_tokens=observed_tokens, spend_usd=observed_spend)
+                attempt["usage"]["observable_tokens"] += observed_tokens
+                attempt["usage"]["spend_usd"] += observed_spend
+                submitted = self.observer.record("submitted_prompt", prompt)
+                attempt["events"].append(f"pty:{submitted.sequence}:submitted_prompt")
+                self.observer.record("visible_output", visible)
+            exit_code = process.close()
+        except Exception as exc:
+            attempt["state"] = "interrupted"
+            attempt["reason"] = f"live attempt stopped: {type(exc).__name__}"
+            persist()
+            raise
+        finally:
+            if process is not None and exit_code is None:
+                process.close()
+        try:
+            frozen = self.observer.freeze()
+            after = stat_inventory(session_root)
+            candidate = identify_single_new_candidate(before, after, attempt_started_ns=attempt_started_ns)
+            candidate = wait_for_candidate_quiescence(session_root, candidate, sleep=sleep)
+            verify_candidate_identity(session_root, candidate)
+            if candidate.size > self.plan["limits"]["artifact_file_bytes"]:
+                raise RuntimeError("capture artifact file limit reached")
+            if candidate.size > self.plan["limits"]["artifact_total_bytes"]:
+                raise RuntimeError("capture artifact total limit reached")
+            package = build_codex_decode_package(Path(session_root) / candidate.relative_path, package_output)
+            captured = [path for path in package.rglob("*") if path.is_file()]
+            captured_bytes = sum(path.stat().st_size for path in captured)
+            self.counters.reserve(self.plan, captured_files=len(captured), captured_bytes=captured_bytes)
+            attempt["usage"]["captured_files"] = len(captured)
+            attempt["usage"]["captured_bytes"] = captured_bytes
+            from .decoders import decode_native
+            decoded = decode_native(package)
+            native_ids = sorted({event["session_id"] for event in decoded["events"] if event["kind"] == "session"})
+            if len(native_ids) != 1:
+                raise ValueError("captured rollout does not prove exactly one native session identity")
+            evidence = self.capture_evidence(before, after, opened=[candidate.relative_path],
+                resolved_config_fingerprint=preflight["resolved_fingerprint"], candidate=candidate,
+                scenario_run_id=scenario_run_id, attempt_id=attempt_id, native_session_ids=native_ids)
+            attempt.update({"state": "captured", "native_session_ids": native_ids,
+                "submitted_turns": len(prompts),
+                "events": [f"pty:{event.sequence}:{event.kind}" for event in frozen],
+                "reason": f"process exit {exit_code}"})
+            update_time()
+            ledger = persist()
+            return {"preflight": preflight, "candidate": candidate.relative_path,
+                "package": str(package), "capture_evidence": evidence, "ledger": ledger,
+                "observer_events": frozen, "exit_code": exit_code}
+        except Exception as exc:
+            attempt["state"] = "invalid"
+            attempt["reason"] = f"capture stopped: {type(exc).__name__}"
+            persist()
+            raise
 
 
 def dry_run(plan: Mapping[str, Any], mcp_names: Sequence[str], scratch: Path) -> dict[str, Any]:

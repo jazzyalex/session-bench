@@ -1,0 +1,16 @@
+{
+  "reviewed_commit": "836e6433285a0bc9f4b82759da5049146685fccf",
+  "source_access": "connected GitHub exact commit",
+  "model": "GPT-5.6 Sol",
+  "model_verified": true,
+  "effort": "Extra High",
+  "effort_verified": true,
+  "verdict": "NOT READY",
+  "p0_findings": 0,
+  "p1_findings": 5,
+  "live_action_justified": false,
+  "quota_used_percent": 15,
+  "quota_stop_percent": 13,
+  "reset_or_credit_authorized": false,
+  "followup": "fresh exact-commit review after hardening"
+}

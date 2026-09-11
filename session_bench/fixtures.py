@@ -14,6 +14,8 @@ import shutil
 from pathlib import Path
 from typing import Any
 
+from .l0_scenarios import PositiveControl, make_damage_receipt
+
 
 _JSONL_FORMAT = "constructed-jsonl-v1"
 _SQLITE_FORMAT = "constructed-sqlite-v1"
@@ -340,7 +342,7 @@ def build_fixture(root: Path, format: str = _JSONL_FORMAT, mutation: str | None 
 
 
 def damage_codex_rollout(source: Path, destination: Path, event_id: str,
-                         mutation: str = "remove") -> tuple[Path, dict[str, Any]]:
+                         mutation: str = "remove", *, selected_assertion: PositiveControl | None = None) -> tuple[Path, dict[str, Any]]:
     """Create a deterministic damaged copy of an explicit Codex package.
 
     Only the declared rollout JSONL is changed.  The source package is never
@@ -360,12 +362,13 @@ def damage_codex_rollout(source: Path, destination: Path, event_id: str,
     if manifest.get("format") != "codex-rollout-v1":
         raise ValueError("damage source must be a codex-rollout-v1 package")
     changed = 0
+    changed_locations: list[str] = []
     for item in manifest.get("artifacts", []):
         path = destination / item["path"]
         if path.suffix.lower() != ".jsonl":
             continue
         output: list[bytes] = []
-        for raw in path.read_bytes().splitlines(keepends=True):
+        for line_number, raw in enumerate(path.read_bytes().splitlines(keepends=True), 1):
             try:
                 obj = json.loads(raw)
             except json.JSONDecodeError:
@@ -378,12 +381,14 @@ def damage_codex_rollout(source: Path, destination: Path, event_id: str,
             )
             if matches and mutation == "remove":
                 changed += 1
+                changed_locations.append(f"{item['id']}:{path.name}:line-{line_number}")
                 continue
             if matches and mutation == "wrong_status":
                 if isinstance(nested, dict):
                     nested["status"] = "success" if nested.get("status") != "success" else "failure"
                 encoded = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
                 changed += 1
+                changed_locations.append(f"{item['id']}:{path.name}:line-{line_number}")
                 if raw.endswith(b"\n"):
                     encoded += b"\n"
                 output.append(encoded)
@@ -392,14 +397,27 @@ def damage_codex_rollout(source: Path, destination: Path, event_id: str,
         path.write_bytes(b"".join(output))
         item["sha256"] = _sha256(path)
         item["size_bytes"] = path.stat().st_size
-    if changed != 1:
-        raise ValueError(f"Codex damage target must match exactly one record, found {changed}")
+    expected_changes = len(selected_assertion.native_locations) if selected_assertion is not None else 1
+    if changed != expected_changes:
+        raise ValueError(f"Codex damage target must match exactly {expected_changes} record(s), found {changed}")
     manifest_path.write_text(_json(manifest) + "\n", encoding="utf-8")
-    return destination, {"event_id": event_id, "mutation": mutation, "changed_records": changed}
+    receipt = {"event_id": event_id, "mutation": mutation, "changed_records": changed}
+    if selected_assertion is not None:
+        source_manifest = source / "decode.json"
+        derived_manifest = destination / "decode.json"
+        receipt = make_damage_receipt(
+            selected_assertion=selected_assertion,
+            changed_native_locations=changed_locations,
+            source_decode_manifest=source_manifest,
+            derived_decode_manifest=derived_manifest,
+            transformation=f"codex-rollout:{mutation}:{event_id}",
+        )
+    return destination, receipt
 
 
 def damage_codex_fact(source: Path, destination: Path, fact: str,
-                      replacement: str = "[SB_DAMAGED]") -> tuple[Path, dict[str, Any]]:
+                      replacement: str = "[SB_DAMAGED]", *,
+                      selected_assertion: PositiveControl | None = None) -> tuple[Path, dict[str, Any]]:
     """Replace every exact native string occurrence of a selected positive fact."""
     if not fact or fact == replacement:
         raise ValueError("damage fact and replacement must be distinct non-empty strings")
@@ -427,19 +445,21 @@ def damage_codex_fact(source: Path, destination: Path, fact: str,
         return value
 
     changed_artifacts: list[str] = []
+    changed_locations: list[str] = []
     for item in manifest.get("artifacts", []):
         path = destination / item["path"]
         if path.suffix.lower() != ".jsonl":
             continue
         output: list[str] = []
         changed = False
-        for raw in path.read_text(encoding="utf-8").splitlines(keepends=True):
+        for line_number, raw in enumerate(path.read_text(encoding="utf-8").splitlines(keepends=True), 1):
             obj = json.loads(raw)
             before = occurrences
             obj = replace(obj)
             line_changed = occurrences != before
             changed = changed or line_changed
             if line_changed:
+                changed_locations.append(f"{item['id']}:{path.name}:line-{line_number}")
                 encoded = json.dumps(obj, ensure_ascii=False, separators=(",", ":"))
                 output.append(encoded + ("\n" if raw.endswith("\n") else ""))
             else:
@@ -452,8 +472,17 @@ def damage_codex_fact(source: Path, destination: Path, fact: str,
     if occurrences < 1:
         raise ValueError("selected positive fact is absent from the native package")
     manifest_path.write_text(_json(manifest) + "\n", encoding="utf-8")
-    return destination, {
+    receipt = {
         "fact_sha256": hashlib.sha256(fact.encode("utf-8")).hexdigest(),
         "replacement": replacement, "occurrences_changed": occurrences,
         "changed_artifact_ids": changed_artifacts,
     }
+    if selected_assertion is not None:
+        receipt = make_damage_receipt(
+            selected_assertion=selected_assertion,
+            changed_native_locations=changed_locations,
+            source_decode_manifest=source / "decode.json",
+            derived_decode_manifest=destination / "decode.json",
+            transformation=f"codex-rollout:replace-fact:{hashlib.sha256(fact.encode('utf-8')).hexdigest()}",
+        )
+    return destination, receipt

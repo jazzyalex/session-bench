@@ -36,7 +36,10 @@
       ]
     },
     "claim_scope": {
-      "const": "constructed measurement-system test; no vendor qualification"
+      "enum": [
+        "constructed measurement-system test; no vendor qualification",
+        "bounded native-live F0 measurement; no recovery or broader qualification"
+      ]
     },
     "capture_status": {
       "enum": [

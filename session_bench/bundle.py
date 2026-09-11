@@ -123,6 +123,74 @@ def validate_live_subject(subject, format):
         raise ValueError('native live artifact family mismatch')
 
 
+def validate_live_binding(root, manifest, artifacts_by_id):
+    """Verify that a native-live claim is joined to its immutable run evidence."""
+    binding = manifest.get('live_binding')
+    if not isinstance(binding, dict):
+        raise ValueError('native live capture requires a live evidence binding')
+    if binding['capture_id'] != manifest['capture_id']:
+        raise ValueError('live binding capture identity differs from manifest')
+    for key in ('plan_artifact_id', 'capture_evidence_artifact_id', 'ledger_artifact_id'):
+        artifact = artifacts_by_id.get(binding[key])
+        if artifact is None or artifact['role'] != 'provenance':
+            raise ValueError(f"live binding {key} is not an inventoried provenance artifact")
+
+    def provenance_json(artifact_id):
+        artifact = artifacts_by_id[artifact_id]
+        try:
+            value = safe_json(root, artifact['path'])
+        except (OSError, UnicodeDecodeError, ValueError, TypeError) as exc:
+            raise ValueError(f'live provenance artifact is not valid JSON: {artifact_id}') from exc
+        if not isinstance(value, dict):
+            raise ValueError(f'live provenance artifact must be an object: {artifact_id}')
+        return value
+
+    plan = provenance_json(binding['plan_artifact_id'])
+    plan_payload = plan.get('plan')
+    if not isinstance(plan_payload, dict) or plan.get('plan_sha256') != binding['plan_sha256'] or digest(canonical(plan_payload)) != binding['plan_sha256']:
+        raise ValueError('live plan digest does not match inventoried plan artifact')
+    from .live_plan import plan_sha256, validate_live_plan
+    validate_live_plan(plan_payload)
+    if plan_sha256(plan_payload) != binding['plan_sha256']:
+        raise ValueError('live plan semantic identity does not match binding')
+
+    capture = provenance_json(binding['capture_evidence_artifact_id'])
+    if artifacts_by_id[binding['capture_evidence_artifact_id']]['sha256'] != binding['capture_evidence_sha256']:
+        raise ValueError('capture evidence digest does not match inventoried artifact')
+    if (capture.get('attempt_id') != binding['attempt_id']
+            or capture.get('scenario_run_id') != binding['scenario_run_id']
+            or capture.get('resolved_config_fingerprint') != binding['resolved_config_fingerprint']):
+        raise ValueError('capture evidence identity does not match live binding')
+    sessions = capture.get('native_session_ids')
+    if not isinstance(sessions, list) or binding['native_session_id'] not in sessions:
+        raise ValueError('capture evidence does not contain the claimed native session')
+
+    ledger = provenance_json(binding['ledger_artifact_id'])
+    if artifacts_by_id[binding['ledger_artifact_id']]['sha256'] != binding['ledger_sha256']:
+        raise ValueError('ledger digest does not match inventoried artifact')
+    if ledger.get('plan_sha256') != binding['plan_sha256'] or ledger.get('gate_id') != 'codex-cli-f0':
+        raise ValueError('ledger is not bound to the claimed plan')
+    attempts = ledger.get('attempts')
+    from .live_ledger import validate_capture_evidence, validate_live_ledger
+    validate_live_ledger(ledger, plan_payload)
+    matching = [item for item in attempts
+                if item['attempt_id'] == binding['attempt_id']
+                and item['scenario_run_id'] == binding['scenario_run_id']
+                and binding['native_session_id'] in item['native_session_ids']]
+    if len(matching) != 1:
+        raise ValueError('ledger does not contain the claimed attempt and native session')
+    attempt = matching[0]
+    if attempt['config_identity'] != binding['resolved_config_fingerprint']:
+        raise ValueError('ledger configuration identity does not match live binding')
+    validate_capture_evidence(capture, plan_payload, attempt=attempt)
+    plan_subject = plan_payload['subject']
+    manifest_subject = manifest['subject']
+    for key in ('harness', 'version', 'surface', 'mode', 'os', 'artifact_family'):
+        if manifest_subject[key] != plan_subject[key]:
+            raise ValueError(f'native live subject {key} differs from bound plan')
+    return binding
+
+
 def validate_registry(registry):
     validate_named(registry, 'registry')
     unique(registry['surfaces'], 'id', 'registry')
@@ -171,6 +239,8 @@ def validate_bundle(root):
     dependencies(artifacts)
     by_path = {a['path']: a for a in artifacts}
     by_id = {a['id']: a for a in artifacts}
+    if manifest['origin'] == 'native_live':
+        validate_live_binding(root, manifest, by_id)
     if 'manifest.json' in by_path:
         raise ValueError('manifest must not inventory itself')
     actual = set()
@@ -223,6 +293,10 @@ def validate_bundle(root):
     validate_named(observer, 'observer')
     unique(expected['assertions'], 'id', 'expectations')
     unique(observer['events'], 'id', 'observer')
+    if manifest['origin'] == 'native_live':
+        observed_sessions = {event['session_id'] for event in observer['events']}
+        if manifest['live_binding']['native_session_id'] not in observed_sessions:
+            raise ValueError('bound native session differs from independently observed session population')
     obs = {e['id']:e for e in observer['events']}
     if manifest['execution']['native_sessions'] != len({e['session_id'] for e in observer['events']}):
         raise ValueError('native_sessions differs from independently specified observed session population')

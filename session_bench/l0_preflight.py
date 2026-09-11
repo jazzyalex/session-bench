@@ -9,7 +9,8 @@ import json
 import os
 from pathlib import Path
 import re
-from typing import Mapping, Sequence
+import time
+from typing import Callable, Mapping, Sequence
 
 
 _MCP_NAME = re.compile(r"^[A-Za-z0-9_-]+$")
@@ -121,13 +122,61 @@ def stat_inventory(root: Path) -> tuple[CandidateStat, ...]:
     return tuple(sorted(found, key=lambda item: item.relative_path))
 
 
-def identify_single_new_candidate(before: Sequence[CandidateStat], after: Sequence[CandidateStat]) -> CandidateStat:
-    """Return exactly one path absent before the attempt; ambiguity fails closed."""
+def identify_single_new_candidate(before: Sequence[CandidateStat], after: Sequence[CandidateStat], *, attempt_started_ns: int | None = None) -> CandidateStat:
+    """Require one path and filesystem identity unseen before the attempt."""
     old_paths = {item.relative_path for item in before}
-    candidates = [item for item in after if item.relative_path not in old_paths]
+    old_identities = {(item.device, item.inode) for item in before}
+    candidates = [item for item in after
+                  if item.relative_path not in old_paths
+                  and (item.device, item.inode) not in old_identities
+                  and (attempt_started_ns is None or item.birth_ns is None or item.birth_ns >= attempt_started_ns)]
     if len(candidates) != 1:
         raise ValueError(f"expected exactly one new rollout candidate; found {len(candidates)}")
     return candidates[0]
+
+
+def verify_candidate_identity(root: Path, candidate: CandidateStat) -> None:
+    """Re-stat a quiesced candidate immediately before any open or copy."""
+    path = Path(root) / candidate.relative_path
+    info = path.stat(follow_symlinks=False)
+    if not path.is_file() or path.is_symlink():
+        raise ValueError("rollout candidate is no longer a regular file")
+    birth = getattr(info, "st_birthtime", None)
+    birth_ns = int(birth * 1_000_000_000) if birth is not None else None
+    current = (info.st_dev, info.st_ino, info.st_size, birth_ns, info.st_ctime_ns, info.st_mtime_ns)
+    expected = (candidate.device, candidate.inode, candidate.size, candidate.birth_ns, candidate.ctime_ns, candidate.mtime_ns)
+    if current != expected:
+        raise ValueError("rollout candidate identity changed after quiescence")
+
+
+def candidate_stat(root: Path, relative_path: str) -> CandidateStat:
+    """Re-stat one already selected path without reading its contents."""
+    path = Path(root) / relative_path
+    info = path.stat(follow_symlinks=False)
+    if path.is_symlink() or not path.is_file() or not path.name.startswith("rollout-") or not path.name.endswith(".jsonl"):
+        raise ValueError("selected rollout is no longer an ordinary candidate")
+    birth = getattr(info, "st_birthtime", None)
+    return CandidateStat(relative_path, info.st_dev, info.st_ino, info.st_size,
+                         int(birth * 1_000_000_000) if birth is not None else None,
+                         info.st_ctime_ns, info.st_mtime_ns)
+
+
+def wait_for_candidate_quiescence(root: Path, candidate: CandidateStat, *,
+                                  sleep: Callable[[float], None] = time.sleep,
+                                  stable_interval_seconds: float = 1.0,
+                                  stable_checks: int = 2) -> CandidateStat:
+    """Require repeated unchanged metadata, then return the stat used for copying."""
+    if stable_checks < 2 or stable_interval_seconds < 0:
+        raise ValueError("invalid quiescence policy")
+    current = candidate
+    for _ in range(stable_checks):
+        sleep(stable_interval_seconds)
+        observed = candidate_stat(root, candidate.relative_path)
+        if observed != current:
+            raise ValueError("rollout candidate changed during quiescence")
+        current = observed
+    verify_candidate_identity(root, current)
+    return current
 
 
 @dataclass(frozen=True)
@@ -171,4 +220,6 @@ def quota_decision(snapshot: QuotaSnapshot, *, plan: Mapping[str, object], now_m
         return "stop-wall-clock"
     if not snapshot.monotonic_started <= snapshot.monotonic_observed <= now_monotonic:
         return "stop-invalid-time-anchor"
+    if now_monotonic - snapshot.monotonic_observed > 60:
+        return "stop-quota-stale"
     return "proceed"
