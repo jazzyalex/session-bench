@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0-review-record",
+  "review_id": "atlas-draft-sol-xhigh-2026-09-10",
+  "subject_commit": "579f14c7155038aee67abc7824df306cfa3476a2",
+  "range_base": "6085f853ec63e6bb6dadd4218a8f89a6e2dbaea1",
+  "scope": "documentation-only atlas implementation and optional steward research pack",
+  "initial_review": {
+    "session": "session-bench-atlas-xhigh",
+    "requested_model": "gpt-5.6-sol",
+    "resolved_model_label": "GPT-5.6 Sol",
+    "model_selection_verified": true,
+    "requested_effort": "extra-high",
+    "resolved_effort_label": "Extra High",
+    "effort_verified": true,
+    "verdict": "NEEDS_FIXES",
+    "findings": {
+      "P0": 0,
+      "P1": 2,
+      "P2": 3
+    }
+  },
+  "verification_review": {
+    "session": "verify-the-fixes-at-exact",
+    "requested_model": "gpt-5.6-sol",
+    "reported_model": "gpt-5.6-sol",
+    "model_selection_status": "skipped",
+    "resolved_model_label": null,
+    "model_selection_verified": false,
+    "requested_effort": "extra-high",
+    "resolved_effort_label": "Extra High",
+    "effort_verified": true,
+    "verdict": "READY",
+    "findings": {
+      "P0": 0,
+      "P1": 0,
+      "P2": 0
+    }
+  },
+  "verification": {
+    "local_pytest_passed": 197,
+    "compileall": "passed",
+    "diff_check": "passed",
+    "github_actions_run": 34562348656,
+    "github_actions_head": "579f14c7155038aee67abc7824df306cfa3476a2",
+    "github_actions_conclusion": "success"
+  },
+  "release_status": "draft_unreleased",
+  "live_collection_performed": false,
+  "publication_authorized": false
+}
