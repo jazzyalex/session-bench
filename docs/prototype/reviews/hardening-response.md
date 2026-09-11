@@ -24,3 +24,8 @@ Limits remain explicit: unscored populations are declared, not inferred; hashes 
 The [second source review](hardening-review.md) confirmed the previous changes and identified one remaining acceptance blocker: passing rows could lose their evidence references and still render after recomputing the ID and receipt. The new contract requires native locators and observation references for passing rows, validates locator structure, and checks state/outcome consistency in both directions. Causal failure outcomes additionally require observation and inspection references. Regression tests deliberately recompute IDs and receipts before expecting semantic rejection, including empty locator objects.
 
 The stale research-pack statement about external contact is corrected. The copied attachment mutation now changes bytes without changing size, extending digest-only verification into both copied reproduction families. Full local validation passes 138 tests; ten copied cases match exactly under denied original source/bundle/network access. Fresh Sol Extra High verification remains pending. The earlier follow-up actually ran Pro because installed Oracle 0.20.0 reused the parent configuration; its execution metadata records that limitation, and the next review uses a fresh session.
+
+
+## Final verification
+
+The fresh [Sol Extra High review](row-contract-xhigh-review.md) returned **READY** for `20919793425ededb408969d4c709443855ebc20d`, with no actionable findings. Oracle verified both GPT-5.6 Sol and Extra High selection. GitHub CI for that revision passed 136 tests and skipped the two Darwin-only isolation tests; all 138 tests passed locally. This closes the bounded O1–O5 acceptance work only. Work stops before L0/F0 under the user’s explicit gate.

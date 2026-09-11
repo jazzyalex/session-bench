@@ -1,0 +1,16 @@
+{
+  "session": "session-bench-row-contract-xhigh",
+  "target_commit": "20919793425ededb408969d4c709443855ebc20d",
+  "status": "completed",
+  "requested_model": "gpt-5.6-sol",
+  "resolved_model": "GPT-5.6 Sol",
+  "model_verified": true,
+  "requested_thinking_time": "extra-high",
+  "observed_thinking_time": "Extra High",
+  "prompt_submitted": true,
+  "conversation_url": "https://chatgpt.com/c/6aa342f0-7bac-83e8-8876-e1f3bb012a0b",
+  "verdict": "READY for bounded offline O1-O5",
+  "effort_verified": true,
+  "source_access": "Connected GitHub exact 20919793425ededb408969d4c709443855ebc20d; reviewer inspected code/receipts and GitHub CI, did not run local tests",
+  "live_authorization": false
+}

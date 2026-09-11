@@ -1,6 +1,6 @@
 {
   "milestone": "O1-O5",
-  "status": "row evidence and outcome hardening checks passed; fresh Sol Extra High review pending",
+  "status": "accepted for bounded offline O1-O5 only",
   "tested_at": "2026-09-10T23:52:22.983446+00:00",
   "python": "3.14.7",
   "sqlite": "3.53.4",
@@ -13,7 +13,7 @@
   "reproduced_cases": 10,
   "live_runs": 0,
   "independent_person_reproduction": false,
-  "next_gate": "L0/F0 requires separate live authorization",
+  "next_gate": "Stopped before L0/F0 per user authorization; named live access and spend/quota/operator plan remains separately gated",
   "reproduction_receipt": "evidence-row-contract/reproduction-receipt.json",
   "previous_reproduction_receipt": "evidence-hardening/reproduction-receipt.json",
   "previous_ci": {
@@ -25,6 +25,21 @@
     "skip_reason": "macOS OS isolation tests not available on Linux"
   },
   "ci": {
-    "status": "pending for row-contract revision"
+    "status": "success",
+    "url": "https://github.com/jazzyalex/session-bench/actions/runs/34544053358",
+    "commit": "20919793425ededb408969d4c709443855ebc20d",
+    "passed": 136,
+    "skipped": 2,
+    "skip_reason": "macOS isolation tests unavailable on Linux"
+  },
+  "accepted_at": "2026-09-11T00:01:17.100007+00:00",
+  "review": {
+    "verdict": "READY",
+    "file": "reviews/row-contract-xhigh-review.md",
+    "target_commit": "20919793425ededb408969d4c709443855ebc20d",
+    "model": "GPT-5.6 Sol",
+    "effort": "Extra High",
+    "model_and_effort_verified_by_oracle": true,
+    "local_tests_executed_by_reviewer": false
   }
 }
