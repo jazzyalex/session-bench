@@ -50,6 +50,18 @@
         }
       ]
     },
+    "nullable_uri": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https?://.+"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
     "source_id": {
       "type": "string",
       "pattern": "^[a-z0-9][a-z0-9._-]*$"
@@ -447,7 +459,7 @@
               ]
             },
             "issue_url": {
-              "$ref": "#/$defs/nullable_string"
+              "$ref": "#/$defs/nullable_uri"
             },
             "supersedes_entry_id": {
               "$ref": "#/$defs/nullable_string"

@@ -27,6 +27,8 @@ Entry ID: `claude-desktop-code-local`. Status: **documented_candidate**.
 
 Identity: `desktop` / `desktop_code_local` / `macOS`; version: `unknown`; provider/model: `unknown`.
 
+Correction status: **none**.
+
 | Claim partition | State | Evidence | Statement |
 |---|---|---|---|
 | surface_documentation | documented | public_documentation | Public documentation identifies Claude Desktop and its Code/local execution surface; this entry keeps desktop execution distinct from CLI execution. |
@@ -51,6 +53,8 @@ Entry ID: `codex-interactive-cli-local`. Status: **documented_candidate**.
 
 Identity: `cli` / `interactive_local` / `macOS`; version: `unknown`; provider/model: `unknown`.
 
+Correction status: **none**.
+
 | Claim partition | State | Evidence | Statement |
 |---|---|---|---|
 | surface_documentation | documented | public_documentation | Public documentation identifies Codex developer commands and built-in slash commands; this entry records the proposed interactive local CLI surface only. |
@@ -74,6 +78,8 @@ Open format questions:
 Entry ID: `github-copilot-vscode`. Status: **documented_candidate**.
 
 Identity: `ide` / `vscode_agent_session` / `macOS`; version: `unknown`; provider/model: `unknown`.
+
+Correction status: **none**.
 
 | Claim partition | State | Evidence | Statement |
 |---|---|---|---|

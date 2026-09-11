@@ -14,6 +14,11 @@ REQUIRED_CLAIM_SUBJECTS = {
     "reproduction",
 }
 PUBLIC_EVIDENCE = {"public_documentation", "public_repository", "public_protocol"}
+SOURCE_KIND_BY_EVIDENCE = {
+    "public_documentation": "official_documentation",
+    "public_repository": "public_repository",
+    "public_protocol": "public_protocol",
+}
 
 
 def _unique(items, key, context):
@@ -44,22 +49,25 @@ def validate_atlas(atlas):
         claims = entry["claims"]
         _unique(sources, "id", f"atlas entry {entry_id} sources")
         _unique(claims, "id", f"atlas entry {entry_id} claims")
-        source_ids = {source["id"] for source in sources}
-        subjects = {claim["subject"] for claim in claims}
-        missing = REQUIRED_CLAIM_SUBJECTS - subjects
-        if missing:
-            raise ValueError(f"atlas entry {entry_id} lacks claim partitions: {sorted(missing)}")
+        source_by_id = {source["id"]: source for source in sources}
+        subjects = [claim["subject"] for claim in claims]
+        if set(subjects) != REQUIRED_CLAIM_SUBJECTS or len(subjects) != len(REQUIRED_CLAIM_SUBJECTS):
+            raise ValueError(f"atlas entry {entry_id} must contain exactly one of every claim partition")
         for claim in claims:
-            dangling = set(claim["source_ids"]) - source_ids
+            dangling = set(claim["source_ids"]) - set(source_by_id)
             if dangling:
                 raise ValueError(f"atlas entry {entry_id} has dangling source IDs: {sorted(dangling)}")
             if claim["state"] == "documented":
                 if claim["evidence_kind"] not in PUBLIC_EVIDENCE or not claim["source_ids"]:
                     raise ValueError("documented claim requires cited public evidence")
-            elif claim["evidence_kind"] in PUBLIC_EVIDENCE and claim["subject"] in {
-                "writer_behavior", "decoder_correctness", "reproduction"
-            }:
-                raise ValueError("public documentation cannot establish observed behavior, decoder correctness, or reproduction")
+                expected_kind = SOURCE_KIND_BY_EVIDENCE[claim["evidence_kind"]]
+                if any(source_by_id[source_id]["source_kind"] != expected_kind
+                       for source_id in claim["source_ids"]):
+                    raise ValueError("claim evidence kind does not match its cited source kind")
+            elif claim["state"] in {"unknown", "not_tested"} and (
+                claim["evidence_kind"] != "none" or claim["source_ids"]
+            ):
+                raise ValueError("unknown or untested claim cannot carry evidence")
 
         maintenance = entry["maintenance"]
         inspected = _date(maintenance["source_inspected_at"], "source inspection")
@@ -88,13 +96,34 @@ def validate_atlas(atlas):
                 raise ValueError("documentation-only candidate cannot carry live measurement evidence")
             if entry["identity"]["identity_basis"] != "public_documentation":
                 raise ValueError("documentation-only candidate requires public-documentation identity basis")
+            if maintenance["inspection_method"] != "public_source_review":
+                raise ValueError("documentation-only candidate requires public source review")
             family = entry["artifact_family"]
-            if family["identity_state"] == "measured" or family["acquisition"] != "public_documentation_only":
+            if ("measured" in {family["identity_state"], family["surface_marker"], family["retention"]}
+                    or family["acquisition"] != "public_documentation_only"):
                 raise ValueError("documentation-only candidate cannot claim measured/native artifact acquisition")
             for claim in claims:
+                if claim["state"] in {"pass", "fail", "unresolved"}:
+                    raise ValueError("documentation-only candidate cannot carry result states")
+                if claim["evidence_kind"] not in PUBLIC_EVIDENCE | {"none"}:
+                    raise ValueError("documentation-only candidate cannot carry measurement evidence")
                 if claim["subject"] in {"writer_behavior", "decoder_correctness", "reproduction"}:
                     if claim["state"] not in {"unknown", "not_tested"} or claim["evidence_kind"] != "none":
                         raise ValueError("candidate cannot claim observed behavior, decoder correctness, or reproduction")
+            artifact_claim = next(claim for claim in claims if claim["subject"] == "artifact_documentation")
+            for root in family["roots"]:
+                if not root["source_ids"] or not set(root["source_ids"]).issubset(set(artifact_claim["source_ids"])):
+                    raise ValueError("documented artifact root requires sources from the artifact claim")
+            if family["identity_state"] == "documented":
+                if artifact_claim["state"] != "documented":
+                    raise ValueError("documented artifact family requires a documented artifact claim")
+                if not any((family["family_id"], family["physical_encoding"], family["tables_or_record_families"],
+                            family["roots"], family["session_id_fields"], family["join_keys"])):
+                    raise ValueError("documented artifact family requires at least one concrete format field")
+            elif (any((family["family_id"], family["physical_encoding"], family["tables_or_record_families"],
+                       family["roots"], family["session_id_fields"], family["join_keys"]))
+                  or family["surface_marker"] != "unknown" or family["retention"] != "unknown"):
+                raise ValueError("unknown artifact family cannot carry concrete format fields")
     return atlas
 
 
@@ -106,6 +135,12 @@ def render_atlas(atlas, as_of):
     """Render a reviewable snapshot; as_of is explicit for reproducible freshness labels."""
     validate_atlas(atlas)
     as_of_date = _date(as_of, "render as-of")
+    latest_inspection = max(
+        _date(entry["maintenance"]["source_inspected_at"], "source inspection")
+        for entry in atlas["entries"]
+    )
+    if as_of_date < latest_inspection:
+        raise ValueError("render as-of date precedes atlas source inspection")
     lines = [
         "# Session-Bench format atlas",
         "",
@@ -152,6 +187,8 @@ def render_atlas(atlas, as_of):
             f"Identity: `{identity['surface']}` / `{identity['launch_mode']}` / `{identity['os']}`; "
             f"version: `{identity['application_version'] or 'unknown'}`; provider/model: `{identity['model_provider']}`.",
             "",
+            _render_correction(entry["correction"]),
+            "",
             "| Claim partition | State | Evidence | Statement |",
             "|---|---|---|---|",
         ]
@@ -176,3 +213,11 @@ def render_atlas(atlas, as_of):
         "",
     ]
     return "\n".join(lines)
+
+
+def _render_correction(correction):
+    if correction["status"] == "none":
+        return "Correction status: **none**."
+    issue = f"[dispute record]({correction['issue_url']})"
+    supersedes = correction["supersedes_entry_id"] or "none"
+    return f"Correction status: **{correction['status']}**; {issue}; supersedes: `{supersedes}`."

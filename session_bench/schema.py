@@ -13,27 +13,96 @@ SCHEMAS = Path(__file__).resolve().parent.parent / "schemas" / "v1"
 KEYWORDS = {"$schema", "$id", "$defs", "$ref", "title", "description", "type", "properties", "required",
             "additionalProperties", "items", "enum", "const", "minimum",
             "minLength", "minItems", "pattern", "format", "anyOf"}
+TYPES = {"object", "array", "string", "integer", "number", "boolean", "null"}
+
+
+class SchemaDefinitionError(ValueError):
+    """The bundled schema itself uses an invalid or unsupported construct."""
 
 
 def _resolve_local_ref(root, reference):
     if not isinstance(reference, str) or not reference.startswith("#/"):
-        raise ValueError(f"unsupported schema reference: {reference!r}")
+        raise SchemaDefinitionError(f"unsupported schema reference: {reference!r}")
     target = root
     for encoded in reference[2:].split("/"):
         key = encoded.replace("~1", "/").replace("~0", "~")
         if not isinstance(target, dict) or key not in target:
-            raise ValueError(f"unresolved schema reference: {reference!r}")
+            raise SchemaDefinitionError(f"unresolved schema reference: {reference!r}")
         target = target[key]
     if not isinstance(target, dict):
-        raise ValueError(f"schema reference is not an object: {reference!r}")
+        raise SchemaDefinitionError(f"schema reference is not an object: {reference!r}")
     return target
+
+
+def _check_schema(schema, root, seen=None, active=None):
+    """Inspect every schema node before instance validation, including unused definitions."""
+    if not isinstance(schema, dict):
+        raise SchemaDefinitionError("schema node must be an object")
+    seen = set() if seen is None else seen
+    active = set() if active is None else active
+    marker = id(schema)
+    if marker in active:
+        raise SchemaDefinitionError("recursive schema references are unsupported")
+    if marker in seen:
+        return
+    seen.add(marker)
+    active.add(marker)
+    unsupported = set(schema) - KEYWORDS
+    if unsupported:
+        raise SchemaDefinitionError(f"unsupported schema keywords: {sorted(unsupported)}")
+    if "type" in schema:
+        declared = schema["type"] if isinstance(schema["type"], list) else [schema["type"]]
+        if not declared or any(item not in TYPES for item in declared):
+            raise SchemaDefinitionError(f"unsupported schema type: {schema['type']!r}")
+    if "format" in schema and schema["format"] != "uri":
+        raise SchemaDefinitionError(f"unsupported schema format: {schema['format']!r}")
+    for keyword in ("$schema", "$id", "$ref", "title", "description", "pattern"):
+        if keyword in schema and not isinstance(schema[keyword], str):
+            raise SchemaDefinitionError(f"schema {keyword} must be a string")
+    if "pattern" in schema:
+        try:
+            re.compile(schema["pattern"])
+        except re.error as exc:
+            raise SchemaDefinitionError("schema pattern is invalid") from exc
+    if "required" in schema and (not isinstance(schema["required"], list)
+                                  or any(not isinstance(item, str) for item in schema["required"])):
+        raise SchemaDefinitionError("schema required must be an array of strings")
+    if "enum" in schema and not isinstance(schema["enum"], list):
+        raise SchemaDefinitionError("schema enum must be an array")
+    if "additionalProperties" in schema and type(schema["additionalProperties"]) is not bool:
+        raise SchemaDefinitionError("schema additionalProperties must be boolean")
+    for keyword in ("minLength", "minItems"):
+        if keyword in schema and (type(schema[keyword]) is not int or schema[keyword] < 0):
+            raise SchemaDefinitionError(f"schema {keyword} must be a nonnegative integer")
+    if "minimum" in schema and type(schema["minimum"]) not in (int, float):
+        raise SchemaDefinitionError("schema minimum must be numeric")
+    if "$ref" in schema:
+        _check_schema(_resolve_local_ref(root, schema["$ref"]), root, seen, active)
+    mappings = []
+    for keyword in ("$defs", "properties"):
+        value = schema.get(keyword, {})
+        if not isinstance(value, dict):
+            raise SchemaDefinitionError(f"schema {keyword} must be an object")
+        mappings.extend(value.values())
+    for child in mappings:
+        _check_schema(child, root, seen, active)
+    if "items" in schema:
+        _check_schema(schema["items"], root, seen, active)
+    options = schema.get("anyOf", [])
+    if not isinstance(options, list) or ("anyOf" in schema and not options):
+        raise SchemaDefinitionError("schema anyOf must be a nonempty array")
+    for option in options:
+        _check_schema(option, root, seen, active)
+    active.remove(marker)
 
 
 def validate(value, schema, path="$", _root=None):
     root = schema if _root is None else _root
+    if _root is None:
+        _check_schema(schema, root)
     unsupported = set(schema) - KEYWORDS
     if unsupported:
-        raise ValueError(f"unsupported schema keywords: {sorted(unsupported)}")
+        raise SchemaDefinitionError(f"unsupported schema keywords: {sorted(unsupported)}")
     if "$ref" in schema:
         validate(value, _resolve_local_ref(root, schema["$ref"]), path, root)
     if "anyOf" in schema:
@@ -41,6 +110,8 @@ def validate(value, schema, path="$", _root=None):
             try:
                 validate(value, option, path, root)
                 break
+            except SchemaDefinitionError:
+                raise
             except ValueError:
                 pass
         else:
@@ -86,7 +157,7 @@ def validate(value, schema, path="$", _root=None):
             if not parsed.scheme or (parsed.scheme in ("http", "https") and not parsed.netloc):
                 raise ValueError(f"{path}: invalid URI")
         elif "format" in schema:
-            raise ValueError(f"unsupported schema format: {schema['format']!r}")
+            raise SchemaDefinitionError(f"unsupported schema format: {schema['format']!r}")
     if type(value) in (int, float) and value < schema.get("minimum", value):
         raise ValueError(f"{path}: below minimum")
 
