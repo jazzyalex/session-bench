@@ -31,6 +31,7 @@ Identity: `desktop` / `desktop_code_local` / `macOS`; version: `unknown`; provid
 |---|---|---|---|
 | surface_documentation | documented | public_documentation | Public documentation identifies Claude Desktop and its Code/local execution surface; this entry keeps desktop execution distinct from CLI execution. |
 | artifact_documentation | unknown | none | The native artifact family is unknown in this documentation-only entry. |
+| representability | unknown | none | No native schema or constructed vendor-format fixture has been inspected for feature representability. |
 | writer_behavior | not_tested | none | Writer behavior is not tested. |
 | decoder_correctness | not_tested | none | No vendor decoder qualification is claimed. |
 | reproduction | not_tested | none | No independent live or native-bundle reproduction is claimed. |
@@ -54,6 +55,7 @@ Identity: `cli` / `interactive_local` / `macOS`; version: `unknown`; provider/mo
 |---|---|---|---|
 | surface_documentation | documented | public_documentation | Public documentation identifies Codex developer commands and built-in slash commands; this entry records the proposed interactive local CLI surface only. |
 | artifact_documentation | unknown | none | The native artifact family is unknown in this documentation-only entry. |
+| representability | unknown | none | No native schema or constructed vendor-format fixture has been inspected for feature representability. |
 | writer_behavior | not_tested | none | Writer behavior is not tested. |
 | decoder_correctness | not_tested | none | No vendor decoder qualification is claimed. |
 | reproduction | not_tested | none | No independent live or native-bundle reproduction is claimed. |
@@ -77,6 +79,7 @@ Identity: `ide` / `vscode_agent_session` / `macOS`; version: `unknown`; provider
 |---|---|---|---|
 | surface_documentation | documented | public_documentation | Public VS Code documentation identifies agent sessions as an IDE surface; this entry keeps the IDE execution context distinct from CLI and desktop rows. |
 | artifact_documentation | unknown | none | The native artifact family is unknown in this documentation-only entry. |
+| representability | unknown | none | No native schema or constructed vendor-format fixture has been inspected for feature representability. |
 | writer_behavior | not_tested | none | Writer behavior is not tested. |
 | decoder_correctness | not_tested | none | No vendor decoder qualification is claimed. |
 | reproduction | not_tested | none | No independent live or native-bundle reproduction is claimed. |

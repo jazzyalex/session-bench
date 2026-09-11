@@ -25,10 +25,7 @@
       "const": "draft_unreleased"
     },
     "edition_status": {
-      "enum": [
-        "documentation_only",
-        "measured"
-      ]
+      "const": "documentation_only"
     },
     "purpose": {
       "const": "public format and surface inventory; not a conformance result"
@@ -311,10 +308,7 @@
           "pattern": "^[a-z0-9][a-z0-9._-]*$"
         },
         "status": {
-          "enum": [
-            "documented_candidate",
-            "measured"
-          ]
+          "const": "documented_candidate"
         },
         "identity": {
           "type": "object",
@@ -461,56 +455,7 @@
           }
         },
         "measurement": {
-          "anyOf": [
-            {
-              "type": "null"
-            },
-            {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "run_ids",
-                "capture_ids",
-                "evaluation_ids",
-                "evidence_bundle_urls"
-              ],
-              "properties": {
-                "run_ids": {
-                  "type": "array",
-                  "minItems": 1,
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                },
-                "capture_ids": {
-                  "type": "array",
-                  "minItems": 1,
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                },
-                "evaluation_ids": {
-                  "type": "array",
-                  "minItems": 1,
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                },
-                "evidence_bundle_urls": {
-                  "type": "array",
-                  "minItems": 1,
-                  "items": {
-                    "type": "string",
-                    "format": "uri",
-                    "pattern": "^https?://.+"
-                  }
-                }
-              }
-            }
-          ]
+          "type": "null"
         },
         "notes": {
           "type": "array",

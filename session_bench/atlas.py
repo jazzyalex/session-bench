@@ -8,6 +8,7 @@ from .schema import validate_named
 REQUIRED_CLAIM_SUBJECTS = {
     "surface_documentation",
     "artifact_documentation",
+    "representability",
     "writer_behavior",
     "decoder_correctness",
     "reproduction",
@@ -37,7 +38,6 @@ def validate_atlas(atlas):
     if not {"cli", "desktop", "ide"}.issubset(surfaces):
         raise ValueError("atlas must include CLI, desktop, and IDE surface identities")
 
-    any_measured = False
     for entry in entries:
         entry_id = entry["entry_id"]
         sources = entry["sources"]
@@ -95,26 +95,6 @@ def validate_atlas(atlas):
                 if claim["subject"] in {"writer_behavior", "decoder_correctness", "reproduction"}:
                     if claim["state"] not in {"unknown", "not_tested"} or claim["evidence_kind"] != "none":
                         raise ValueError("candidate cannot claim observed behavior, decoder correctness, or reproduction")
-        elif entry["status"] == "measured":
-            any_measured = True
-            if entry["measurement"] is None or maintenance["live_tested_at"] is None:
-                raise ValueError("measured entry requires measurement identities and live test date")
-            measurement = entry["measurement"]
-            for key in ("run_ids", "capture_ids", "evaluation_ids", "evidence_bundle_urls"):
-                if len(measurement[key]) != len(set(measurement[key])):
-                    raise ValueError(f"measured entry has duplicate {key}")
-            if entry["identity"]["identity_basis"] == "public_documentation":
-                raise ValueError("measured entry requires native inspection or independent reproduction identity")
-            family = entry["artifact_family"]
-            if family["identity_state"] == "unknown" or family["acquisition"] not in {
-                "native_local_capture", "explicit_export"
-            }:
-                raise ValueError("measured entry requires an identified native-capture or export artifact family")
-
-    if atlas["edition_status"] == "documentation_only" and any_measured:
-        raise ValueError("documentation-only atlas cannot contain measured entries")
-    if atlas["edition_status"] == "measured" and not any_measured:
-        raise ValueError("measured atlas must contain measured evidence")
     return atlas
 
 

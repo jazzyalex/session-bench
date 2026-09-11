@@ -27,6 +27,7 @@ def test_documentation_atlas_covers_cli_desktop_and_ide_without_measurement():
         assert entry["measurement"] is None
         assert entry["maintenance"]["live_tested_at"] is None
         assert entry["artifact_family"]["identity_state"] == "unknown"
+        assert "representability" in {claim["subject"] for claim in entry["claims"]}
 
 
 def test_atlas_rejects_duplicate_entries_and_missing_maintenance_metadata():
@@ -44,7 +45,7 @@ def test_atlas_rejects_duplicate_entries_and_missing_maintenance_metadata():
 def test_candidate_cannot_become_measured_by_status_or_date_alone():
     atlas = _atlas()
     atlas["entries"][0]["status"] = "measured"
-    with pytest.raises(ValueError, match="requires measurement identities"):
+    with pytest.raises(ValueError, match="documented_candidate"):
         validate_atlas(atlas)
 
     atlas = _atlas()
@@ -99,6 +100,18 @@ def test_atlas_cli_validation_and_render(tmp_path):
     )
     assert rendered.returncode == 0, rendered.stderr
     assert output.read_bytes() == RENDERED_PATH.read_bytes()
+
+    copied_input = tmp_path / "index.json"
+    copied_input.write_bytes(ATLAS_PATH.read_bytes())
+    before = copied_input.read_bytes()
+    refused = subprocess.run(
+        [sys.executable, "-m", "session_bench", "render-atlas", str(copied_input),
+         "--as-of", "2026-09-10", "--out", str(copied_input)],
+        cwd=REPO, capture_output=True, text=True,
+    )
+    assert refused.returncode == 2
+    assert "output must differ" in refused.stderr
+    assert copied_input.read_bytes() == before
 
 
 def test_atlas_is_independent_of_constructed_registry():

@@ -1,8 +1,10 @@
 """Run with python3 -m session_bench; all commands are offline."""
 import argparse
 import json
+import os
 from pathlib import Path
 import sys
+import tempfile
 import time
 
 from . import __version__
@@ -116,8 +118,21 @@ def main(argv=None):
         elif args.command=='render-atlas':
             atlas = read_json(args.input)
             rendered = render_atlas(atlas, args.as_of)
+            if args.out.resolve() == args.input.resolve():
+                raise ValueError('atlas output must differ from the machine-readable input')
             args.out.parent.mkdir(parents=True, exist_ok=True)
-            args.out.write_text(rendered, encoding='utf-8')
+            temporary = None
+            try:
+                with tempfile.NamedTemporaryFile('w', encoding='utf-8', dir=args.out.parent,
+                                                 prefix=f'.{args.out.name}.', delete=False) as stream:
+                    temporary = Path(stream.name)
+                    stream.write(rendered)
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                os.replace(temporary, args.out)
+            finally:
+                if temporary is not None:
+                    temporary.unlink(missing_ok=True)
             print(json.dumps({'atlas_id': atlas['atlas_id'], 'as_of': args.as_of,
                               'output': str(args.out)}, sort_keys=True))
         elif args.command=='decode':

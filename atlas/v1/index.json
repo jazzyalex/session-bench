@@ -61,6 +61,17 @@
           ]
         },
         {
+          "id": "representability",
+          "subject": "representability",
+          "state": "unknown",
+          "evidence_kind": "none",
+          "statement": "No native schema or constructed vendor-format fixture has been inspected for feature representability.",
+          "source_ids": [],
+          "unknowns": [
+            "Surface documentation alone does not establish what the native format can encode."
+          ]
+        },
+        {
           "id": "writer-behavior",
           "subject": "writer_behavior",
           "state": "not_tested",
@@ -168,6 +179,17 @@
           ]
         },
         {
+          "id": "representability",
+          "subject": "representability",
+          "state": "unknown",
+          "evidence_kind": "none",
+          "statement": "No native schema or constructed vendor-format fixture has been inspected for feature representability.",
+          "source_ids": [],
+          "unknowns": [
+            "Surface documentation alone does not establish what the native format can encode."
+          ]
+        },
+        {
           "id": "writer-behavior",
           "subject": "writer_behavior",
           "state": "not_tested",
@@ -272,6 +294,17 @@
           "source_ids": [],
           "unknowns": [
             "A native bundle, artifact roots, and required companions have not been acquired."
+          ]
+        },
+        {
+          "id": "representability",
+          "subject": "representability",
+          "state": "unknown",
+          "evidence_kind": "none",
+          "statement": "No native schema or constructed vendor-format fixture has been inspected for feature representability.",
+          "source_ids": [],
+          "unknowns": [
+            "Surface documentation alone does not establish what the native format can encode."
           ]
         },
         {
