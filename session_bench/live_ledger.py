@@ -18,7 +18,10 @@ def validate_live_ledger(ledger, plan):
     run_by_scenario = {}
     attempts_by_scenario = {scenario: 0 for scenario in plan["scenarios"]}
     config_identity = None
+    retry_forbidden = False
     for attempt in ledger["attempts"]:
+        if retry_forbidden:
+            raise ValueError("ledger contains an attempt after retries became forbidden")
         if attempt["attempt_id"] in seen_attempts:
             raise ValueError("duplicate attempt_id")
         seen_attempts.add(attempt["attempt_id"])
@@ -48,6 +51,8 @@ def validate_live_ledger(ledger, plan):
             raise ValueError("captured attempt requires native session identity")
         if attempt["quota_state"] == "unknown_after_launch" and attempt["retry_allowed"] is not False:
             raise ValueError("unknown post-launch quota must suppress retries")
+        if attempt["retry_allowed"] is False:
+            retry_forbidden = True
     if submitted > plan["limits"]["submitted_turns"]:
         raise ValueError("ledger exceeds submitted-turn limit")
     if len(seen_sessions) > plan["limits"]["native_sessions"]:

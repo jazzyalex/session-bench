@@ -1,0 +1,14 @@
+{
+  "reviewed_commit": "caec4a257aa36faf3553f3c25398c370c49572c3",
+  "source_access": "connected GitHub exact commit",
+  "model": "GPT-5.6 Sol",
+  "model_verified": true,
+  "effort": "Extra High",
+  "effort_verified": true,
+  "verdict": "NOT READY",
+  "p0_findings": 0,
+  "p1_findings": 1,
+  "p2_findings": 1,
+  "live_f0_correctly_blocked": true,
+  "followup": "fresh exact-commit acceptance review after final two fixes"
+}

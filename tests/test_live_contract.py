@@ -90,3 +90,16 @@ def test_ledger_binds_plan_and_aggregate_limits():
             "submitted_turns": 0, "config_identity": "cfg", "quota_state": "known", "retry_allowed": True, "usage": usage(), "events": [], "reason": "started"})
     with pytest.raises(ValueError, match="per-scenario"):
         validate_live_ledger(value, p)
+
+
+def test_ledger_rejects_any_attempt_after_unknown_quota_forbids_retry():
+    p, value = plan(), ledger()
+    base = {"scenario_id": "C01", "scenario_run_id": "run-c01", "state": "interrupted",
+            "native_session_ids": [], "submitted_turns": 1, "config_identity": "cfg",
+            "usage": usage(), "events": ["quota"], "reason": "quota state"}
+    value["attempts"] = [
+        {**base, "attempt_id": "attempt-1", "quota_state": "unknown_after_launch", "retry_allowed": False},
+        {**base, "attempt_id": "attempt-2", "quota_state": "known", "retry_allowed": True},
+    ]
+    with pytest.raises(ValueError, match="after retries became forbidden"):
+        validate_live_ledger(value, p)

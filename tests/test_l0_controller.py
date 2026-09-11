@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 
 import pytest
@@ -107,6 +108,30 @@ def test_verified_copy_rejects_path_replacement_after_selection(tmp_path):
     source.write_text('{"type":"session_meta","payload":{"id":"replacement"}}\n')
     with pytest.raises(ValueError, match="descriptor differs"):
         build_codex_decode_package(source, tmp_path / "package", verified_primary=selected)
+
+
+def test_verified_copy_rejects_same_inode_mutation_during_copy(tmp_path, monkeypatch):
+    source = tmp_path / "store" / "rollout-new.jsonl"
+    source.parent.mkdir()
+    source.write_text('{"type":"session_meta","payload":{"id":"s"}}\n')
+    selected = stat_inventory(source.parent)[0]
+    original_fstat = os.fstat
+    calls = 0
+    class Changed:
+        def __init__(self, value): self.value = value
+        def __getattr__(self, name):
+            if name == "st_size": return self.value.st_size + 1
+            return getattr(self.value, name)
+    def changing_fstat(descriptor):
+        nonlocal calls
+        calls += 1
+        value = original_fstat(descriptor)
+        return value if calls == 1 else Changed(value)
+    monkeypatch.setattr(os, "fstat", changing_fstat)
+    output = tmp_path / "package"
+    with pytest.raises(ValueError, match="changed during copy"):
+        build_codex_decode_package(source, output, verified_primary=selected)
+    assert not (output / source.name).exists()
 
 
 def test_capture_requires_frozen_observer_and_single_new_candidate(tmp_path):

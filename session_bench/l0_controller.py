@@ -227,8 +227,26 @@ def copy_verified_candidate(source: Path, target: Path, candidate: Any) -> None:
         if current != expected:
             raise ValueError("opened rollout descriptor differs from proven candidate")
         target.parent.mkdir(parents=True, exist_ok=True)
-        with os.fdopen(os.dup(descriptor), "rb") as source_stream, target.open("xb") as target_stream:
-            shutil.copyfileobj(source_stream, target_stream)
+        copied = 0
+        try:
+            with os.fdopen(os.dup(descriptor), "rb") as source_stream, target.open("xb") as target_stream:
+                while True:
+                    chunk = source_stream.read(1024 * 1024)
+                    if not chunk:
+                        break
+                    target_stream.write(chunk)
+                    copied += len(chunk)
+                target_stream.flush()
+            after = os.fstat(descriptor)
+            after_birth = getattr(after, "st_birthtime", None)
+            after_birth_ns = int(after_birth * 1_000_000_000) if after_birth is not None else None
+            final = (after.st_dev, after.st_ino, after.st_size, after_birth_ns,
+                     after.st_ctime_ns, after.st_mtime_ns)
+            if copied != candidate.size or final != expected:
+                raise ValueError("rollout descriptor changed during copy")
+        except Exception:
+            target.unlink(missing_ok=True)
+            raise
     finally:
         os.close(descriptor)
 
