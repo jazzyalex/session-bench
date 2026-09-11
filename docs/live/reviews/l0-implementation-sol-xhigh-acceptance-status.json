@@ -1,0 +1,19 @@
+{
+  "reviewed_commit": "efabeab6aaabdde5847029215bd6467bb700e693",
+  "source_access": "connected GitHub exact commit",
+  "model": "GPT-5.6 Sol",
+  "model_verified": true,
+  "effort": "Extra High",
+  "effort_verified": true,
+  "verdict": "READY",
+  "p0_findings": 0,
+  "p1_findings": 0,
+  "p2_findings": 0,
+  "bounded_offline_controller_ready": true,
+  "live_f0_gate": "BLOCKED",
+  "live_f0_blockers": [
+    "weekly usage 15 percent is above the 13 percent absolute stop",
+    "plugin-managed MCPs cannot all be disabled through the reviewed non-mutating configuration path"
+  ],
+  "live_execution_performed": false
+}
