@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0-proposed",
+  "gate_id": "codex-cli-f0",
+  "subject": {
+    "harness": "codex-cli",
+    "version": "0.154.0",
+    "surface": "cli",
+    "mode": "interactive_local",
+    "os": "macOS 15.7.9",
+    "model": "default_observed_after_run",
+    "configuration": "default_except_declared_launch_flags",
+    "artifact_family": "codex-rollout-jsonl",
+    "schema_version": "observed_after_run"
+  },
+  "scenarios": ["C01", "C02"],
+  "limits": {
+    "scenario_runs": 2,
+    "attempts_total": 4,
+    "attempts_per_scenario": 2,
+    "native_sessions": 4,
+    "submitted_turns": 8,
+    "tokens_total_when_observable": 100000,
+    "incremental_spend_usd": 0,
+    "weekly_used_percent_delta": 3,
+    "operator_minutes": 30,
+    "wall_clock_minutes": 90,
+    "artifact_files": 256,
+    "artifact_file_bytes": 16777216,
+    "artifact_total_bytes": 268435456,
+    "decoded_records": 100000
+  },
+  "retry_policy": {
+    "maximum_retries_per_scenario": 1,
+    "allowed_reason": "clearly corrected harness or capture defect",
+    "retain_all_attempts": true,
+    "uncertain_submitted_attempt": "do_not_duplicate"
+  },
+  "forbidden": [
+    "read_preexisting_session_content",
+    "private_history_collection",
+    "credential_copy_or_inspection",
+    "model_provider_or_endpoint_switch",
+    "purchase_or_credit_redemption",
+    "publication",
+    "L1_or_broader_collection"
+  ],
+  "execution_authority": "user instructed continuation without another approval; execute only after adapter/controller tests and Sol Extra High review",
+  "live_runs_completed": 0
+}
