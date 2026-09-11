@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0-review-record",
+  "review_id": "campaign-plan-sol-xhigh-2026-09-10",
+  "subject_commit": "4e2a9fd170e8ec7df73af4a471443cca52c54d29",
+  "fix_commit": "e37870dedf5b981b3301626124f11787c08e3afa",
+  "scope": "offline multi-surface campaign-plan contract",
+  "review": {
+    "session": "campaign-plan-sol-xhigh",
+    "requested_model": "gpt-5.6-sol",
+    "resolved_model_label": "GPT-5.6 Sol",
+    "model_selection_verified": true,
+    "requested_effort": "extra-high",
+    "resolved_effort_label": "Extra High",
+    "effort_verified": true,
+    "verdict": "NEEDS_FIXES",
+    "findings": {"P0": 0, "P1": 2, "P2": 2}
+  },
+  "resolution": {
+    "method": "local fixes, focused self-review, and full offline suite",
+    "oracle_followup_run": false,
+    "reason": "owner preference reserves Oracle for major reviews rather than small follow-up changes",
+    "local_pytest_passed": 235,
+    "diff_check": "passed",
+    "evaluator_implementation_sha256": "fe02e68fbdfa42e6f28ffdb6cc53b47a8ea784367152ba10d552308746364cb3",
+    "remaining_known_p0_p2": 0
+  },
+  "live_collection_performed": false,
+  "publication_authorized": false
+}
