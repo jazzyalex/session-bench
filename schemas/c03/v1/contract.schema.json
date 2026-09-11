@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Session-Bench C03 archive and continuation sidecar",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "contract_id", "base", "observation", "copy_receipt", "archive", "continuation", "c06_recovery", "controls", "designation"],
+  "properties": {
+    "schema_version": {"const": "1.0-c03"},
+    "contract_id": {"$ref": "#/$defs/id"},
+    "base": {
+      "type": "object", "additionalProperties": false,
+      "required": ["manifest_path", "manifest_sha256", "capture_id", "run_id", "track", "native_session_ids"],
+      "properties": {
+        "manifest_path": {"$ref": "#/$defs/text"},
+        "manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "capture_id": {"$ref": "#/$defs/id"},
+        "run_id": {"$ref": "#/$defs/id"},
+        "track": {"enum": ["native_local", "explicit_export"]},
+        "native_session_ids": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/id"}}
+      }
+    },
+    "observation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "independent", "complete", "blind_spots", "sha256"],
+      "properties": {
+        "method": {"enum": ["live_stream", "ui_accessibility", "helper_trace", "synthetic_control"]},
+        "independent": {"const": true},
+        "complete": {"type": "boolean"},
+        "blind_spots": {"type": "array", "items": {"$ref": "#/$defs/text"}},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "copy_receipt": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_bundle_sha256", "copied_bundle_sha256", "decoded_semantics_identical", "original_bundle_access", "original_code_access", "application_access", "backend_access", "network_access", "sha256"],
+      "properties": {
+        "source_bundle_sha256": {"$ref": "#/$defs/sha256"},
+        "copied_bundle_sha256": {"$ref": "#/$defs/sha256"},
+        "decoded_semantics_identical": {"type": "boolean"},
+        "original_bundle_access": {"const": "denied"},
+        "original_code_access": {"const": "denied"},
+        "application_access": {"const": "denied"},
+        "backend_access": {"const": "denied"},
+        "network_access": {"const": "denied"},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "archive": {
+      "type": "object", "additionalProperties": false,
+      "required": ["scenario", "state", "target_session_id", "close_observation_ids", "reopen_observation_ids", "expected_event_ids", "recovered_event_ids", "duplicate_event_ids", "decoder_evaluation_id"],
+      "properties": {
+        "scenario": {"const": "C03-A"},
+        "state": {"$ref": "#/$defs/state"},
+        "target_session_id": {"$ref": "#/$defs/id"},
+        "close_observation_ids": {"$ref": "#/$defs/id_array"},
+        "reopen_observation_ids": {"$ref": "#/$defs/id_array"},
+        "expected_event_ids": {"$ref": "#/$defs/id_array"},
+        "recovered_event_ids": {"$ref": "#/$defs/id_array"},
+        "duplicate_event_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "decoder_evaluation_id": {"$ref": "#/$defs/text"}
+      }
+    },
+    "continuation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["scenario", "state", "support", "accepted", "parent_session_id", "continued_session_id", "lineage_state", "selection_observation_ids", "continuation_observation_ids", "duplicate_event_ids", "reason"],
+      "properties": {
+        "scenario": {"const": "C03-B"},
+        "state": {"$ref": "#/$defs/continuation_state"},
+        "support": {"enum": ["exercised", "unsupported", "not_observed"]},
+        "accepted": {"type": ["boolean", "null"]},
+        "parent_session_id": {"type": ["string", "null"], "minLength": 1},
+        "continued_session_id": {"type": ["string", "null"], "minLength": 1},
+        "lineage_state": {"enum": ["linked", "wrong_target", "missing", "unknown"]},
+        "selection_observation_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "continuation_observation_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "duplicate_event_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "reason": {"$ref": "#/$defs/text"}
+      }
+    },
+    "c06_recovery": {
+      "type": "object", "additionalProperties": false,
+      "required": ["scenario", "state", "reason"],
+      "properties": {
+        "scenario": {"const": "C06"},
+        "state": {"enum": ["not_assessed", "incomplete"]},
+        "reason": {"$ref": "#/$defs/text"}
+      }
+    },
+    "controls": {"type": "array", "minItems": 3, "items": {"$ref": "#/$defs/control"}},
+    "designation": {"enum": ["archive_preservation_only", "archive_and_continuation", "incomplete"]}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+    "text": {"type": "string", "minLength": 1},
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "id_array": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/id"}},
+    "state": {"enum": ["pass", "fail", "unresolved", "invalid", "not_run"]},
+    "continuation_state": {"enum": ["pass", "fail", "unresolved", "unsupported", "invalid", "not_run"]},
+    "control": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "expected_measurement", "observed_measurement", "source_bundle_sha256", "derived_bundle_sha256", "frozen_observer_sha256", "frozen_assertions_sha256", "changed_native_locations", "receipt_sha256"],
+      "properties": {
+        "kind": {"enum": ["intact", "damaged", "missing_companion"]},
+        "expected_measurement": {"enum": ["preserved", "loss_detected", "invalid_evidence"]},
+        "observed_measurement": {"enum": ["pass", "fail", "unresolved", "invalid"]},
+        "source_bundle_sha256": {"$ref": "#/$defs/sha256"},
+        "derived_bundle_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+        "frozen_observer_sha256": {"$ref": "#/$defs/sha256"},
+        "frozen_assertions_sha256": {"$ref": "#/$defs/sha256"},
+        "changed_native_locations": {"type": "array", "items": {"$ref": "#/$defs/text"}},
+        "receipt_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

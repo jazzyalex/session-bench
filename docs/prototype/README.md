@@ -69,4 +69,11 @@ Prototype limits are 256 artifacts, 16 MiB per file, and 100,000 decoded records
 
 Not implemented or qualified: non-Codex vendor adapters; UI/terminal presentation emulation; native continuation; cancellation/crash collection; compaction/subagent/attachment lifecycle qualifications; frozen production repetition sets; Linux/Windows OS isolation; independent-person recomputation; atlas or result publication. Constructed attachment bytes and branch fixtures test decoder mechanics only. The accepted bounded Codex controller and native-live binding remain unexecuted because F0 stopped at its quota/configuration gates. The independent [format-atlas draft](../atlas/README.md) contains documentation-only candidate identities and no writer result. Production acquisition metadata and profiles still require explicitly versioned extensions beyond the strict constructed prototype.
 
+The additive [C03 sidecar](../scenarios/c03.md) now makes archive preservation,
+native continuation, and C06 recovery separate machine-checked states. The
+dedicated C04 constructed fixture uses two physical native session artifacts and
+a companion to test copied-package decoding, source attribution, damage, and
+missing-companion behavior. These are measurement-system controls; they add no
+vendor qualification or native continuation evidence.
+
 The bounded **L0/F0** plan, Codex adapter, controller, observation/capture contract, and spend/quota/operator caps are implemented and accepted for the named configuration. No live attempt ran: the recorded preflight stopped at 15% weekly usage against the 13% ceiling and could not establish the required MCP isolation. Scenario runs, attempts, and native sessions remain separate accounting units: C04 creates two native sessions per scenario run. Nothing here authorizes a broader live campaign, publication, reset redemption, or any change to v0.4’s status.

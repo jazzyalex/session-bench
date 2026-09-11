@@ -11,6 +11,7 @@ from . import __version__
 from .atlas import render_atlas, validate_atlas
 from .bundle import canonical, digest, read_json, validate_bundle, validate_registry, validate_result
 from .campaign_plan import campaign_plan_summary
+from .c03_contract import c03_contract_summary
 from .evaluate import evaluate_bundle
 from .fixtures import build_fixture
 from .isolation import isolated_decode
@@ -75,6 +76,9 @@ def main(argv=None):
     campaign_parser=subs.add_parser('validate-campaign-plan', help='validate an offline campaign preparation plan')
     campaign_parser.add_argument('input', type=Path)
     campaign_parser.add_argument('--as-of', help='independent authorization timestamp required for ready plans')
+    c03_parser=subs.add_parser('validate-c03', help='validate a C03 archive and continuation sidecar')
+    c03_parser.add_argument('input', type=Path)
+    c03_parser.add_argument('--root', type=Path, help='root used to resolve the bound base manifest')
     fixture=subs.add_parser('make-fixture')
     fixture.add_argument('--out',type=Path,required=True)
     fixture.add_argument('--format',choices=['constructed-jsonl-v1','constructed-sqlite-v1'],default='constructed-jsonl-v1')
@@ -141,6 +145,8 @@ def main(argv=None):
                               'output': str(args.out)}, sort_keys=True))
         elif args.command=='validate-campaign-plan':
             print(json.dumps(campaign_plan_summary(read_json(args.input), as_of=args.as_of), sort_keys=True))
+        elif args.command=='validate-c03':
+            print(json.dumps(c03_contract_summary(read_json(args.input), repository_root=args.root or Path.cwd()), sort_keys=True))
         elif args.command=='decode':
             decoded=isolated_decode(args.input)
             write_output(args.out,{'decoded.json':canonical(decoded)+b'\n'},args.input)
