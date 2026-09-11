@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0-f0-preflight",
+  "gate_id": "codex-cli-f0",
+  "observed_at": "2026-09-11T00:47:30Z",
+  "quota": {
+    "source": "codex_app_get_usage_limits.rateLimitsByLimitId.codex.primary.usedPercent",
+    "baseline_used_percent": 10,
+    "absolute_stop_used_percent": 13,
+    "observed_used_percent": 15
+  },
+  "result": "stop-quota-threshold",
+  "exit_code": 2,
+  "live_attempt_started": false,
+  "native_session_created": false,
+  "submitted_turns": 0,
+  "credit_or_reset_redeemed": false,
+  "later_preflight_stages_run": false
+}

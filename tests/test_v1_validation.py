@@ -212,3 +212,25 @@ def test_capture_invalid_is_distinct_from_captured_corruption(tmp_path):
     assert result["capture_status"] == "valid"
     assert result["evidence_state"] == "valid"
     assert any(item["code"] in {"decode_error", "malformed_record"} for item in decoded["diagnostics"])
+
+
+def test_bounded_codex_native_live_bundle_is_admitted(tmp_path):
+    bundle = _baseline(tmp_path)
+    decode_path = bundle / "native" / "decode.json"
+    decode = _json(decode_path)
+    decode["format"] = "codex-rollout-v1"
+    _write_json(decode_path, decode)
+    _rehash_artifact(bundle, "native/decode.json")
+    manifest_path = bundle / "manifest.json"
+    manifest = _json(manifest_path)
+    manifest["origin"] = "native_live"
+    manifest["subject"] = {
+        "harness": "codex-cli", "version": "0.154.0", "surface": "cli",
+        "mode": "interactive_local", "os": "macOS", "model": "observed",
+        "configuration": "bounded", "artifact_family": "codex-rollout-jsonl",
+        "schema_version": "observed",
+    }
+    manifest["decoder"]["format"] = "codex-rollout-v1"
+    manifest["provenance"]["privacy_review"] = "local-f0-synthetic-scan"
+    _write_json(manifest_path, manifest)
+    validate_bundle(bundle)

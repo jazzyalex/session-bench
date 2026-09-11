@@ -63,7 +63,8 @@
         "configuration": {
           "enum": [
             "default",
-            "enhanced"
+            "enhanced",
+            "bounded"
           ]
         },
         "artifact_family": {
@@ -177,7 +178,8 @@
         "format": {
           "enum": [
             "constructed-jsonl-v1",
-            "constructed-sqlite-v1"
+            "constructed-sqlite-v1",
+            "codex-rollout-v1"
           ]
         },
         "version": {

@@ -1,0 +1,13 @@
+{
+  "reviewed_commit": "59e6a753401f1f0fdb4db252fd02007bbd7649b1",
+  "source_access": "connected GitHub exact commit",
+  "model": "GPT-5.6 Sol",
+  "model_verified": true,
+  "effort": "Extra High",
+  "effort_verified": true,
+  "verdict": "READY TO IMPLEMENT L0 HARNESS",
+  "prior_blockers_resolved": 4,
+  "live_commands_executed_by_reviewer": false,
+  "automatic_first_f0_launch_after_tests_and_preflight": true,
+  "broader_authority": false
+}

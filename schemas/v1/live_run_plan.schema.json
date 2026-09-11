@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Session-Bench live feasibility run plan",
+  "type": "object",
+  "properties": {
+    "schema_version": {"const": "1.0-proposed"},
+    "gate_id": {"const": "codex-cli-f0"},
+    "subject": {
+      "type": "object",
+      "properties": {
+        "harness": {"const": "codex-cli"}, "version": {"type": "string", "minLength": 1},
+        "surface": {"const": "cli"}, "mode": {"const": "interactive_local"},
+        "os": {"type": "string", "minLength": 1}, "model": {"type": "string", "minLength": 1},
+        "configuration": {"type": "string", "minLength": 1},
+        "artifact_family": {"const": "codex-rollout-jsonl"},
+        "schema_version": {"const": "observed_after_run"}
+      },
+      "required": ["harness", "version", "surface", "mode", "os", "model", "configuration", "artifact_family", "schema_version"],
+      "additionalProperties": false
+    },
+    "scenarios": {"const": ["C01", "C02"]},
+    "limits": {
+      "type": "object",
+      "properties": {
+        "scenario_runs": {"const": 2}, "attempts_total": {"const": 4}, "attempts_per_scenario": {"const": 2},
+        "native_sessions": {"const": 4}, "submitted_turns": {"type": "integer", "minimum": 1},
+        "tokens_total_when_observable": {"type": "integer", "minimum": 1},
+        "incremental_spend_usd": {"const": 0}, "operator_minutes": {"type": "integer", "minimum": 1},
+        "wall_clock_minutes": {"type": "integer", "minimum": 1},
+        "wall_clock_anchor": {"type": "string", "minLength": 1},
+        "operator_time_includes": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "artifact_files": {"type": "integer", "minimum": 1},
+        "artifact_file_bytes": {"type": "integer", "minimum": 1},
+        "artifact_total_bytes": {"type": "integer", "minimum": 1},
+        "decoded_records": {"type": "integer", "minimum": 1},
+        "quota": {
+          "type": "object",
+          "properties": {
+            "source": {"type": "string", "minLength": 1}, "observed_at": {"type": "string", "minLength": 1},
+            "baseline_used_percent": {"type": "number", "minimum": 0},
+            "maximum_delta_percentage_points": {"type": "number", "minimum": 0},
+            "absolute_stop_used_percent": {"type": "number", "minimum": 0},
+            "check": {"type": "string", "minLength": 1},
+            "unreadable_before_first_launch": {"type": "string", "minLength": 1},
+            "unreadable_after_launch": {"type": "string", "minLength": 1}
+          },
+          "required": ["source", "observed_at", "baseline_used_percent", "maximum_delta_percentage_points", "absolute_stop_used_percent", "check", "unreadable_before_first_launch", "unreadable_after_launch"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["scenario_runs", "attempts_total", "attempts_per_scenario", "native_sessions", "submitted_turns", "tokens_total_when_observable", "incremental_spend_usd", "quota", "operator_minutes", "wall_clock_minutes", "wall_clock_anchor", "operator_time_includes", "artifact_files", "artifact_file_bytes", "artifact_total_bytes", "decoded_records"],
+      "additionalProperties": false
+    },
+    "effective_configuration": {
+      "type": "object",
+      "properties": {
+        "model_override": {"type": "null"}, "scalar_overrides": {"type": "object"},
+        "disabled_features": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "enabled_features": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "mcp_policy": {"type": "string", "minLength": 1},
+        "preflight": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "identity": {"type": "string", "minLength": 1}, "same_for_all_runs": {"type": "boolean"}
+      },
+      "required": ["model_override", "scalar_overrides", "disabled_features", "enabled_features", "mcp_policy", "preflight", "identity", "same_for_all_runs"],
+      "additionalProperties": false
+    },
+    "session_discovery": {
+      "type": "object",
+      "properties": {
+        "before_inventory": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "preexisting_file_hashing": {"const": false},
+        "candidate_rule": {"type": "string", "minLength": 1},
+        "ambiguous_candidates": {"type": "string", "minLength": 1}
+      },
+      "required": ["before_inventory", "preexisting_file_hashing", "candidate_rule", "ambiguous_candidates"],
+      "additionalProperties": false
+    },
+    "positive_control_candidates": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "positive_control_rule": {"type": "string", "minLength": 1},
+    "retry_policy": {
+      "type": "object",
+      "properties": {
+        "maximum_retries_per_scenario": {"const": 1}, "allowed_reason": {"type": "string", "minLength": 1},
+        "retain_all_attempts": {"const": true}, "uncertain_submitted_attempt": {"type": "string", "minLength": 1}
+      },
+      "required": ["maximum_retries_per_scenario", "allowed_reason", "retain_all_attempts", "uncertain_submitted_attempt"],
+      "additionalProperties": false
+    },
+    "forbidden": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "execution_authority": {"type": "string", "minLength": 1},
+    "live_runs_completed": {"const": 0}
+  },
+  "required": ["schema_version", "gate_id", "subject", "scenarios", "limits", "effective_configuration", "session_discovery", "positive_control_candidates", "positive_control_rule", "retry_policy", "forbidden", "execution_authority", "live_runs_completed"],
+  "additionalProperties": false
+}

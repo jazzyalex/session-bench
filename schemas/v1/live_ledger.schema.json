@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Session-Bench live attempt ledger",
+  "type": "object",
+  "properties": {
+    "schema_version": {"const": "1.0-live-ledger"},
+    "gate_id": {"const": "codex-cli-f0"},
+    "plan_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "attempts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "scenario_id": {"enum": ["C01", "C02"]}, "scenario_run_id": {"type": "string", "minLength": 1},
+          "attempt_id": {"type": "string", "minLength": 1},
+          "state": {"enum": ["planned", "started", "submitted", "captured", "invalid", "interrupted", "complete"]},
+          "native_session_ids": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "submitted_turns": {"type": "integer", "minimum": 0},
+          "config_identity": {"type": "string", "minLength": 1},
+          "events": {"type": "array", "items": {"type": "string", "minLength": 1}},
+          "reason": {"type": "string", "minLength": 1}
+        },
+        "required": ["scenario_id", "scenario_run_id", "attempt_id", "state", "native_session_ids", "submitted_turns", "config_identity", "events", "reason"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["schema_version", "gate_id", "plan_sha256", "attempts"],
+  "additionalProperties": false
+}

@@ -10,6 +10,7 @@ import hashlib
 import json
 import sqlite3
 import tempfile
+import shutil
 from pathlib import Path
 from typing import Any
 
@@ -336,3 +337,123 @@ def build_fixture(root: Path, format: str = _JSONL_FORMAT, mutation: str | None 
     }
     (root / "manifest.json").write_text(_json(manifest) + "\n", encoding="utf-8")
     return root
+
+
+def damage_codex_rollout(source: Path, destination: Path, event_id: str,
+                         mutation: str = "remove") -> tuple[Path, dict[str, Any]]:
+    """Create a deterministic damaged copy of an explicit Codex package.
+
+    Only the declared rollout JSONL is changed.  The source package is never
+    modified, and the copied package's decode manifest is rehashed so the
+    decoder can verify it as an independent derived input.
+    """
+    source = Path(source)
+    destination = Path(destination)
+    if mutation not in {"remove", "wrong_status"}:
+        raise ValueError("unsupported Codex damage mutation")
+    if destination.exists() and any(destination.iterdir()):
+        raise ValueError("damage destination must be new or empty")
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(source, destination, dirs_exist_ok=True)
+    manifest_path = destination / "decode.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("format") != "codex-rollout-v1":
+        raise ValueError("damage source must be a codex-rollout-v1 package")
+    changed = 0
+    for item in manifest.get("artifacts", []):
+        path = destination / item["path"]
+        if path.suffix.lower() != ".jsonl":
+            continue
+        output: list[bytes] = []
+        for raw in path.read_bytes().splitlines(keepends=True):
+            try:
+                obj = json.loads(raw)
+            except json.JSONDecodeError:
+                output.append(raw)
+                continue
+            payload = obj.get("payload") if isinstance(obj, dict) else None
+            nested = payload.get("payload") if isinstance(payload, dict) and isinstance(payload.get("payload"), dict) else payload
+            matches = isinstance(nested, dict) and any(
+                nested.get(key) == event_id for key in ("id", "message_id", "call_id")
+            )
+            if matches and mutation == "remove":
+                changed += 1
+                continue
+            if matches and mutation == "wrong_status":
+                if isinstance(nested, dict):
+                    nested["status"] = "success" if nested.get("status") != "success" else "failure"
+                encoded = json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+                changed += 1
+                if raw.endswith(b"\n"):
+                    encoded += b"\n"
+                output.append(encoded)
+            else:
+                output.append(raw)
+        path.write_bytes(b"".join(output))
+        item["sha256"] = _sha256(path)
+        item["size_bytes"] = path.stat().st_size
+    if changed != 1:
+        raise ValueError(f"Codex damage target must match exactly one record, found {changed}")
+    manifest_path.write_text(_json(manifest) + "\n", encoding="utf-8")
+    return destination, {"event_id": event_id, "mutation": mutation, "changed_records": changed}
+
+
+def damage_codex_fact(source: Path, destination: Path, fact: str,
+                      replacement: str = "[SB_DAMAGED]") -> tuple[Path, dict[str, Any]]:
+    """Replace every exact native string occurrence of a selected positive fact."""
+    if not fact or fact == replacement:
+        raise ValueError("damage fact and replacement must be distinct non-empty strings")
+    source = Path(source)
+    destination = Path(destination)
+    if destination.exists() and any(destination.iterdir()):
+        raise ValueError("damage destination must be new or empty")
+    shutil.copytree(source, destination, dirs_exist_ok=True)
+    manifest_path = destination / "decode.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("format") != "codex-rollout-v1":
+        raise ValueError("damage source must be a codex-rollout-v1 package")
+    occurrences = 0
+
+    def replace(value: Any) -> Any:
+        nonlocal occurrences
+        if isinstance(value, str):
+            count = value.count(fact)
+            occurrences += count
+            return value.replace(fact, replacement)
+        if isinstance(value, list):
+            return [replace(item) for item in value]
+        if isinstance(value, dict):
+            return {key: replace(item) for key, item in value.items()}
+        return value
+
+    changed_artifacts: list[str] = []
+    for item in manifest.get("artifacts", []):
+        path = destination / item["path"]
+        if path.suffix.lower() != ".jsonl":
+            continue
+        output: list[str] = []
+        changed = False
+        for raw in path.read_text(encoding="utf-8").splitlines(keepends=True):
+            obj = json.loads(raw)
+            before = occurrences
+            obj = replace(obj)
+            line_changed = occurrences != before
+            changed = changed or line_changed
+            if line_changed:
+                encoded = json.dumps(obj, ensure_ascii=False, separators=(",", ":"))
+                output.append(encoded + ("\n" if raw.endswith("\n") else ""))
+            else:
+                output.append(raw)
+        if changed:
+            path.write_text("".join(output), encoding="utf-8")
+            changed_artifacts.append(item["id"])
+        item["sha256"] = _sha256(path)
+        item["size_bytes"] = path.stat().st_size
+    if occurrences < 1:
+        raise ValueError("selected positive fact is absent from the native package")
+    manifest_path.write_text(_json(manifest) + "\n", encoding="utf-8")
+    return destination, {
+        "fact_sha256": hashlib.sha256(fact.encode("utf-8")).hexdigest(),
+        "replacement": replacement, "occurrences_changed": occurrences,
+        "changed_artifact_ids": changed_artifacts,
+    }

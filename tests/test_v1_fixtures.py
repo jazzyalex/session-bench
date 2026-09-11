@@ -1,3 +1,4 @@
+import hashlib
 import json
 import sqlite3
 import shutil
@@ -10,7 +11,7 @@ import pytest
 from session_bench.bundle import validate_bundle
 from session_bench.decoders import decode_native
 from session_bench.evaluate import evaluate_bundle
-from session_bench.fixtures import build_fixture
+from session_bench.fixtures import build_fixture, damage_codex_fact, damage_codex_rollout
 
 
 def _native_rows(bundle: Path, fmt: str):
@@ -140,3 +141,46 @@ def test_attachment_payload_control_with_new_parent(tmp_path,fmt):
     result,_=evaluate_bundle(bundle,decoder=decode_native)
     row=next(r for r in result['rows'] if r['id']=='event.attachment-1')
     assert row['state']=='fail' and 'attachment_payload_mismatch' in row['findings']
+
+
+def test_codex_damage_copy_is_deterministic_and_does_not_mutate_source(tmp_path):
+    source = tmp_path / "source"
+    source.mkdir()
+    rollout = source / "rollout.jsonl"
+    rows = [
+        {"type": "session_meta", "payload": {"id": "s"}},
+        {"type": "event_msg", "payload": {"type": "user_message", "id": "keep", "message": "keep"}},
+        {"type": "response_item", "payload": {"type": "function_call_output", "call_id": "damage", "output": "failure"}},
+    ]
+    rollout.write_text("".join(json.dumps(row) + "\n" for row in rows), encoding="utf-8")
+    digest_before = rollout.read_bytes()
+    (source / "decode.json").write_text(json.dumps({"format": "codex-rollout-v1", "artifacts": [{
+        "id": "rollout", "path": "rollout.jsonl",
+        "sha256": hashlib.sha256(rollout.read_bytes()).hexdigest(),
+        "size_bytes": rollout.stat().st_size, "depends_on": []}]}))
+    damaged, receipt = damage_codex_rollout(source, tmp_path / "damaged", "damage")
+    assert receipt == {"event_id": "damage", "mutation": "remove", "changed_records": 1}
+    assert len(damaged.joinpath("rollout.jsonl").read_text().splitlines()) == 2
+    assert rollout.read_bytes() == digest_before
+    decoded = decode_native(damaged)
+    assert [event["id"] for event in decoded["events"]] == ["s", "keep"]
+
+
+def test_codex_fact_damage_changes_every_native_representation(tmp_path):
+    source = tmp_path / "source"
+    source.mkdir()
+    marker = "SB_F0_DAMAGE_café_🙂"
+    rollout = source / "rollout.jsonl"
+    rollout.write_text("\n".join([
+        json.dumps({"type": "session_meta", "payload": {"id": "s"}}, ensure_ascii=False),
+        json.dumps({"type": "event_msg", "payload": {"type": "user_message", "message": marker}}, ensure_ascii=False),
+        json.dumps({"type": "response_item", "payload": {"type": "agent_message", "content": [{"text": marker}]}}, ensure_ascii=False),
+    ]) + "\n")
+    (source / "decode.json").write_text(json.dumps({"format": "codex-rollout-v1", "artifacts": [{
+        "id": "rollout", "path": "rollout.jsonl", "sha256": hashlib.sha256(rollout.read_bytes()).hexdigest(),
+        "size_bytes": rollout.stat().st_size, "depends_on": []}]}))
+    damaged, receipt = damage_codex_fact(source, tmp_path / "damaged", marker)
+    assert receipt["occurrences_changed"] == 2
+    assert marker in rollout.read_text()
+    assert marker not in damaged.joinpath("rollout.jsonl").read_text()
+    assert all(marker not in event.get("fields", {}).get("text", "") for event in decode_native(damaged)["events"])

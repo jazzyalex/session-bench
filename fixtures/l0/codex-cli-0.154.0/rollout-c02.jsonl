@@ -1,0 +1,8 @@
+{"timestamp":"2026-09-10T00:00:00Z","type":"session_meta","payload":{"id":"constructed-c02","cwd":"/tmp/session-bench-c02","originator":"codex_cli_rs","cli_version":"0.154.0","source":"cli","model_provider":"openai"}}
+{"timestamp":"2026-09-10T00:00:01Z","type":"response_item","payload":{"type":"local_shell_call","id":"shell-1","call_id":"call-1","status":"completed","action":{"type":"exec","command":["python3","fixture_project/test_target.py"],"working_directory":"/tmp/session-bench-c02"}}}
+{"timestamp":"2026-09-10T00:00:02Z","type":"response_item","payload":{"type":"function_call_output","call_id":"call-1","output":"synthetic regression failure: expected 2, got 1"}}
+{"timestamp":"2026-09-10T00:00:03Z","type":"response_item","payload":{"type":"function_call","name":"apply_patch","arguments":"*** Begin Patch\n*** Update File: fixture_project/target.py\n@@\n-    return 1\n+    return 2\n*** End Patch","call_id":"call-2"}}
+{"timestamp":"2026-09-10T00:00:04Z","type":"response_item","payload":{"type":"function_call_output","call_id":"call-2","output":"Done!"}}
+{"timestamp":"2026-09-10T00:00:05Z","type":"response_item","payload":{"type":"local_shell_call","id":"shell-2","call_id":"call-3","status":"completed","action":{"type":"exec","command":["python3","fixture_project/test_target.py"],"working_directory":"/tmp/session-bench-c02"}}}
+{"timestamp":"2026-09-10T00:00:06Z","type":"response_item","payload":{"type":"function_call_output","call_id":"call-3","output":""}}
+{"timestamp":"2026-09-10T00:00:07Z","type":"response_item","payload":{"type":"agent_message","content":[{"type":"output_text","text":"Observed the deterministic failure, applied the smallest edit, and the rerun passed."}]}}

@@ -1,6 +1,6 @@
 # Codex interactive CLI F0 run plan
 
-Status: revised after the first Sol Extra High review; READY recheck pending before implementation. This plan is limited to the one-CLI C01+C02 feasibility gate. It does not authorize L1 expansion, publication, purchases, private-history inspection, or reuse of unrelated sessions.
+Status: harness implemented; the first executable preflight stopped before launch because the observed weekly usage was 15%, above the predeclared 13% absolute stop. The plan was READY for harness implementation after a Sol Extra High recheck of commit `59e6a753401f1f0fdb4db252fd02007bbd7649b1`. The first F0 live launch may proceed automatically only after the constructed adapter/controller tests and the specified preflight pass. This plan is limited to the one-CLI C01+C02 feasibility gate. It does not authorize L1 expansion, publication, purchases, private-history inspection, or reuse of unrelated sessions.
 
 ## Subject and access
 
@@ -118,7 +118,7 @@ F0 is incomplete if authentication, observation, discovery, quiescence, or isola
 
 ## Implementation before execution
 
-The current prototype deliberately rejects `native_live` evidence and has no Codex adapter or capture controller. Before launching a live session, implement and test:
+The constructed implementation now admits bounded `native_live` evidence and includes the Codex adapter and capture-controller seams. Before launching a live session, the checked-in implementation and tests must continue to provide:
 
 - a versioned live run-plan schema and per-attempt ledger;
 - a Codex rollout JSONL decoder that accepts an explicit copied package and never discovers the user's home;
@@ -127,4 +127,4 @@ The current prototype deliberately rejects `native_live` evidence and has no Cod
 - native-live bundle validation, privacy scanning for the public synthetic marker set, and deterministic damage transformation;
 - dry-run and constructed Codex-shaped fixtures for all controller/adapter paths.
 
-Implementation tests may use constructed records only. The first actual Codex launch is the start of F0 and consumes the limits above.
+Implementation tests use constructed records only. The first actual Codex launch is the start of F0 and consumes the limits above. See [the implementation record](l0-harness-implementation.md).

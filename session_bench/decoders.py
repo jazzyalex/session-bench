@@ -17,7 +17,7 @@ from typing import Any
 import stat
 
 
-_FORMATS = {"constructed-jsonl-v1", "constructed-sqlite-v1"}
+_FORMATS = {"constructed-jsonl-v1", "constructed-sqlite-v1", "codex-rollout-v1"}
 _KINDS = {"message", "tool_call", "tool_result", "session", "branch", "attachment"}
 _ARTIFACT_KEYS = {"id", "path", "sha256", "size_bytes", "depends_on"}
 _MAX_FILES = 256
@@ -174,6 +174,9 @@ def _postprocess(events: list[dict[str, Any]], diagnostics: list[dict[str, Any]]
                 parents[(event["session_id"], event_id)] = (event["session_id"], parent)
         if event["kind"] == "tool_call" and isinstance(event_id, str):
             calls.add((event["session_id"], event_id))
+            call_id = event["fields"].get("call_id")
+            if isinstance(call_id, str):
+                calls.add((event["session_id"], call_id))
             parent_call = event["fields"].get("parent_call_id")
             if isinstance(parent_call, str):
                 parents[(event["session_id"], event_id)] = (event["session_id"], parent_call)
@@ -334,10 +337,132 @@ def _decode_sqlite(records: list[dict[str, Any]], paths: dict[str, Path]) -> dic
     return {"format": "constructed-sqlite-v1", "events": events, "diagnostics": diagnostics, "unknown_records": unknown}
 
 
+def _nested_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    nested = payload.get("payload")
+    return nested if isinstance(nested, dict) else payload
+
+
+def _text_content(value: Any) -> str | None:
+    if isinstance(value, str):
+        return value
+    if isinstance(value, list):
+        parts = []
+        for item in value:
+            if isinstance(item, str):
+                parts.append(item)
+            elif isinstance(item, dict):
+                text = item.get("text")
+                if isinstance(text, str):
+                    parts.append(text)
+        return "".join(parts) or None
+    if isinstance(value, dict):
+        text = value.get("text")
+        return text if isinstance(text, str) else None
+    return None
+
+
+def _codex_event(obj: dict[str, Any], locator: dict[str, Any], current_session_id: str | None) -> dict[str, Any] | None:
+    """Map a copied Codex rollout envelope to the v1 event vocabulary.
+
+    This intentionally accepts only records from the caller-supplied package;
+    it has no path discovery or Codex-client dependency.
+    """
+    outer_type = obj.get("type")
+    outer = obj.get("payload")
+    if not isinstance(outer_type, str) or not isinstance(outer, dict):
+        return None
+    payload = outer if outer_type == "session_meta" else _nested_payload(outer)
+    kind = outer_type if outer_type in {"session_meta", "turn_context"} else payload.get("type")
+    event_id = payload.get("id") or payload.get("message_id") or payload.get("call_id")
+    session_id = payload.get("session_id") or payload.get("conversation_id") or payload.get("thread_id") or obj.get("session_id") or current_session_id
+    if not isinstance(session_id, str):
+        return None
+    fields: dict[str, Any] = {}
+    if kind in {"session_meta", "session_started"}:
+        event_kind = "session"
+        fields = {key: payload[key] for key in ("session_id", "cwd", "model", "model_provider", "source", "origin", "originator", "cli_version") if key in payload}
+        event_id = event_id or session_id
+    elif kind == "turn_context":
+        event_kind = "session"
+        fields = {key: payload[key] for key in ("model", "model_provider", "cwd", "approval_policy", "sandbox_policy") if key in payload}
+    elif kind in {"user_message", "assistant_message", "agent_message", "message"}:
+        role = payload.get("role") or ("user" if kind == "user_message" else "assistant")
+        text = _text_content(payload.get("content", payload.get("message", payload.get("text"))))
+        event_kind = "message"
+        fields = {"role": role, "text": text or ""}
+        for key in ("turn", "status"):
+            if key in payload:
+                fields[key] = payload[key]
+    elif kind in {"function_call", "tool_call", "local_shell_call"}:
+        event_kind = "tool_call"
+        fields = {key: payload[key] for key in ("name", "arguments", "command", "call_id", "status", "working_directory") if key in payload}
+        action = payload.get("action")
+        if kind == "local_shell_call" and isinstance(action, dict):
+            fields["action_type"] = action.get("type")
+            for key in ("command", "working_directory"):
+                if key in action:
+                    fields[key] = action[key]
+    elif kind in {"function_call_output", "tool_result", "tool_output"}:
+        event_kind = "tool_result"
+        fields = {key: payload[key] for key in ("call_id", "tool_call_id", "output", "status", "exit_code", "error") if key in payload}
+    else:
+        return None
+    if not isinstance(event_id, str) or not event_id:
+        event_id = None
+    return {"id": event_id, "session_id": session_id, "kind": event_kind,
+            "fields": fields, "locator": locator,
+            "identity_origin": "native" if event_id is not None else "derived"}
+
+
+def _decode_codex_rollout(records: list[dict[str, Any]], paths: dict[str, Path]) -> dict[str, Any]:
+    events: list[dict[str, Any]] = []
+    diagnostics: list[dict[str, Any]] = []
+    unknown = 0
+    record_count = 0
+    current_session_id: str | None = None
+    for item in records:
+        path = paths[item["id"]]
+        if not path.exists():
+            diagnostics.append(_diagnostic("missing_artifact", item["id"], f"missing native artifact: {item['path']}"))
+            continue
+        if path.suffix.lower() != ".jsonl":
+            continue
+        for line_number, raw in enumerate(path.open("rb"), 1):
+            content = raw.rstrip(b"\r\n")
+            if not content.strip():
+                continue
+            locator = {"artifact_id": item["id"], "sha256": item["sha256"],
+                       "line": line_number, "record_sha256": hashlib.sha256(content).hexdigest()}
+            try:
+                obj = _strict_json(content.decode("utf-8"))
+            except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
+                diagnostics.append(_diagnostic("malformed_record", item["id"], f"line {line_number}: {exc}"))
+                continue
+            if isinstance(obj, dict) and obj.get("type") == "session_meta" and isinstance(obj.get("payload"), dict):
+                candidate = obj["payload"].get("id") or obj["payload"].get("session_id")
+                if isinstance(candidate, str) and candidate:
+                    current_session_id = candidate
+            event = _codex_event(obj, locator, current_session_id) if isinstance(obj, dict) else None
+            if event is None:
+                diagnostics.append(_diagnostic("unknown_record", item["id"], f"line {line_number}: unsupported rollout envelope"))
+                unknown += 1
+                continue
+            events.append(event)
+            record_count += 1
+            if record_count > _MAX_RECORDS:
+                raise ValueError(f"Codex rollout exceeds {_MAX_RECORDS}-record limit")
+            if event["id"] is None:
+                diagnostics.append(_diagnostic("missing_event_id", item["id"], f"line {line_number}: event id missing"))
+    _postprocess(events, diagnostics)
+    return {"format": "codex-rollout-v1", "events": events, "diagnostics": diagnostics, "unknown_records": unknown}
+
+
 def decode_native(package: Path) -> dict[str, Any]:
     """Decode only declared native files from a validated fixture package."""
     package = Path(package)
     fmt, records, paths = _validate_package(package)
     if fmt == "constructed-jsonl-v1":
         return _decode_jsonl(records, paths)
+    if fmt == "codex-rollout-v1":
+        return _decode_codex_rollout(records, paths)
     return _decode_sqlite(records, paths)

@@ -112,6 +112,17 @@ def validate_constructed_subject(subject, format):
         raise ValueError('prototype requires exact constructed subject and artifact family')
 
 
+def validate_live_subject(subject, format):
+    if format != 'codex-rollout-v1':
+        raise ValueError('native live prototype requires the Codex rollout adapter')
+    if subject['harness'] != 'codex-cli' or subject['surface'] != 'cli':
+        raise ValueError('native live subject must identify Codex CLI')
+    if subject['mode'] != 'interactive_local' or subject['configuration'] != 'bounded':
+        raise ValueError('native live subject must identify the reviewed bounded interactive mode')
+    if subject['artifact_family'] != 'codex-rollout-jsonl':
+        raise ValueError('native live artifact family mismatch')
+
+
 def validate_registry(registry):
     validate_named(registry, 'registry')
     unique(registry['surfaces'], 'id', 'registry')
@@ -140,16 +151,18 @@ def validate_bundle(root):
         raise ValueError('missing manifest')
     manifest = safe_json(root, 'manifest.json')
     validate_named(manifest, 'manifest')
-    # The offline prototype deliberately has no vendor adapter or live-evidence claim path.
     if manifest['origin'] == 'native_live':
-        raise ValueError('native_live evidence unsupported by constructed prototype adapters')
-    validate_constructed_subject(manifest['subject'], manifest['decoder']['format'])
+        validate_live_subject(manifest['subject'], manifest['decoder']['format'])
+    else:
+        validate_constructed_subject(manifest['subject'], manifest['decoder']['format'])
     provenance = manifest['provenance']
     if manifest['origin'] == 'derived_mutation':
         if not provenance['source_manifest_sha256'] or not provenance['transformation']:
             raise ValueError('derived mutation requires source digest and transformation')
     elif provenance['source_manifest_sha256'] is not None or provenance['transformation'] is not None:
-        raise ValueError('constructed original must not claim a derivation')
+        raise ValueError('original capture must not claim a derivation')
+    if manifest['origin'] == 'native_live' and provenance['privacy_review'] != 'local-f0-synthetic-scan':
+        raise ValueError('native live capture requires the F0 privacy scan')
     artifacts = manifest['artifacts']
     if len(artifacts)>256:
         raise ValueError('bundle exceeds 256-artifact prototype limit')
@@ -214,7 +227,7 @@ def validate_bundle(root):
     if manifest['execution']['native_sessions'] != len({e['session_id'] for e in observer['events']}):
         raise ValueError('native_sessions differs from independently specified observed session population')
     if manifest['execution']['scenario_runs'] != 1:
-        raise ValueError('prototype bundle represents one constructed scenario-run fixture pack')
+        raise ValueError('prototype bundle represents one scenario run')
     # Every primary observation must be represented exactly once in the scored
     # population. Supporting helper/file observations are deliberately separate.
     primary = {oid for oid, o in obs.items() if o['population_role']=='primary_scored'}
@@ -247,7 +260,7 @@ def validate_bundle(root):
             observed_fields[key]=value
     for a in expected['assertions']:
         unique(a['fields'], 'name', f"assertion {a['id']}")
-        if a['subject'] == 'writer_behavior':
+        if manifest['origin'] != 'native_live' and a['subject'] == 'writer_behavior':
             raise ValueError('constructed fixtures cannot establish writer behavior')
         if any(oid not in obs for oid in a['observation_ids']):
             raise ValueError('dangling observation ID')

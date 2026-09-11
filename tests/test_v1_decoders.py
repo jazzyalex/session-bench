@@ -250,3 +250,50 @@ def test_manifest_rejects_noncanonical_duplicate_and_boolean_paths(tmp_path: Pat
     (duplicate / "decode.json").write_text(json.dumps(manifest), encoding="utf-8")
     with pytest.raises(ValueError, match="unique"):
         decode_native(duplicate)
+
+
+def test_codex_rollout_requires_explicit_package_and_decodes_c01_c02(tmp_path: Path):
+    package = tmp_path / "codex"
+    package.mkdir()
+    rollout = package / "rollout.jsonl"
+    rows = [
+        {"timestamp": "2026-09-10T00:00:00Z", "type": "session_meta", "payload": {"id": "s1", "cwd": "/private/should-not-be-read", "cli_version": "0.154.0", "model_provider": "openai"}},
+        {"timestamp": "2026-09-10T00:00:01Z", "type": "event_msg", "payload": {"type": "user_message", "message": "SB_F0_C01_café_🙂"}},
+        {"timestamp": "2026-09-10T00:00:02Z", "type": "response_item", "payload": {"type": "local_shell_call", "id": "tc1", "call_id": "call-1", "status": "completed", "action": {"type": "exec", "command": ["python3", "fixture_project/test_target.py"], "working_directory": "."}}},
+        {"timestamp": "2026-09-10T00:00:03Z", "type": "response_item", "payload": {"type": "function_call_output", "call_id": "call-1", "output": "expected 2, got 1"}},
+        {"timestamp": "2026-09-10T00:00:04Z", "type": "response_item", "payload": {"type": "agent_message", "content": [{"type": "output_text", "text": "done"}]}},
+    ]
+    rollout.write_text("".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows), encoding="utf-8")
+    _manifest(package, "codex-rollout-v1", [("rollout", "rollout.jsonl", [])])
+    result = decode_native(package)
+    assert result["format"] == "codex-rollout-v1"
+    assert [event["kind"] for event in result["events"]] == ["session", "message", "tool_call", "tool_result", "message"]
+    assert result["events"][1]["fields"]["text"] == "SB_F0_C01_café_🙂"
+    assert result["events"][2]["fields"]["command"] == ["python3", "fixture_project/test_target.py"]
+    assert result["events"][3]["fields"]["output"] == "expected 2, got 1"
+    assert {event["session_id"] for event in result["events"]} == {"s1"}
+
+
+def test_codex_rollout_unknown_and_malformed_records_are_diagnostics(tmp_path: Path):
+    package = tmp_path / "codex"
+    package.mkdir()
+    rollout = package / "rollout.jsonl"
+    rollout.write_bytes(b'{"type":"turn_context","payload":{"id":"ignored"}}\n{"payload":\n')
+    _manifest(package, "codex-rollout-v1", [("rollout", "rollout.jsonl", [])])
+    result = decode_native(package)
+    assert not result["events"]
+    assert {item["code"] for item in result["diagnostics"]} == {"unknown_record", "malformed_record"}
+
+
+@pytest.mark.parametrize("name,session_id", [("rollout-c01.jsonl", "constructed-c01"), ("rollout-c02.jsonl", "constructed-c02")])
+def test_public_codex_l0_records_decode_as_explicit_packages(tmp_path: Path, name: str, session_id: str):
+    source = Path(__file__).resolve().parents[1] / "fixtures" / "l0" / "codex-cli-0.154.0" / name
+    package = tmp_path / name.removesuffix(".jsonl")
+    package.mkdir()
+    rollout = package / "rollout.jsonl"
+    rollout.write_bytes(source.read_bytes())
+    _manifest(package, "codex-rollout-v1", [("rollout", "rollout.jsonl", [])])
+    decoded = decode_native(package)
+    assert decoded["events"]
+    assert {event["session_id"] for event in decoded["events"]} == {session_id}
+    assert not any(item["code"] == "dangling_tool_result" for item in decoded["diagnostics"])

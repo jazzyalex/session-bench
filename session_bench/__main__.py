@@ -3,6 +3,7 @@ import argparse
 import json
 from pathlib import Path
 import sys
+import time
 
 from . import __version__
 from .bundle import canonical, digest, read_json, validate_bundle, validate_registry, validate_result
@@ -10,6 +11,9 @@ from .evaluate import evaluate_bundle
 from .fixtures import build_fixture
 from .isolation import isolated_decode
 from .result_contract import semantic_sha256
+from .l0_controller import dry_run as l0_dry_run
+from .l0_controller import L0Controller, LocalCodexRunner
+from .l0_preflight import QuotaSnapshot
 
 
 def write_output(out, files, source=None):
@@ -62,10 +66,34 @@ def main(argv=None):
     fixture.add_argument('--out',type=Path,required=True)
     fixture.add_argument('--format',choices=['constructed-jsonl-v1','constructed-sqlite-v1'],default='constructed-jsonl-v1')
     fixture.add_argument('--mutation')
+    l0 = subs.add_parser('l0-preflight', help='validate and preview the bounded L0 controller')
+    l0.add_argument('--plan', type=Path, required=True)
+    l0.add_argument('--scratch', type=Path, required=True)
+    l0.add_argument('--mcp-name', action='append', default=[])
+    l0.add_argument('--dry-run', action='store_true')
+    l0.add_argument('--sibling', type=Path)
+    l0.add_argument('--quota-used-percent', type=float)
+    l0.add_argument('--quota-observed-at')
     args=parser.parse_args(argv)
     try:
         if args.command=='collect':
             raise ValueError('live collection is not implemented or authorized; stop before L0/F0')
+        if args.command=='l0-preflight':
+            plan = read_json(args.plan)
+            if args.dry_run:
+                print(json.dumps(l0_dry_run(plan, args.mcp_name, args.scratch), ensure_ascii=False, sort_keys=True))
+            else:
+                if args.sibling is None or args.quota_used_percent is None or not args.quota_observed_at:
+                    raise ValueError('actual preflight requires --sibling, --quota-used-percent, and --quota-observed-at')
+                started = time.monotonic()
+                contract = plan['limits']['quota']
+                quota = QuotaSnapshot(contract['source'], args.quota_observed_at,
+                    args.quota_used_percent, contract['baseline_used_percent'], started, time.monotonic())
+                result = L0Controller(plan, LocalCodexRunner()).preflight(
+                    args.scratch, args.sibling, quota=quota, now_monotonic=time.monotonic())
+                safe = {key: result[key] for key in ('override_fingerprint', 'resolved_fingerprint', 'mcp_names', 'sandbox', 'plan_sha256')}
+                print(json.dumps(safe, ensure_ascii=False, sort_keys=True))
+            return 0
         if args.command=='make-fixture':
             build_fixture(args.out,args.format,args.mutation)
             print(f'constructed fixture: {args.out}')
@@ -95,7 +123,7 @@ def main(argv=None):
             receipt = read_json(receipt_path) if receipt_path.exists() else None
             write_output(args.out,{'report.md':render(result, receipt)},args.input.parent)
         return 0
-    except (ValueError,OSError,KeyError,TypeError,RecursionError) as exc:
+    except (ValueError,OSError,KeyError,TypeError,RecursionError,RuntimeError) as exc:
         print(f'session-bench: {exc}',file=sys.stderr)
         return 2
 

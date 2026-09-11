@@ -177,7 +177,9 @@ def evaluate_decoded(manifest, expected, decoded, manifest_sha, *, observer=None
     result={'schema_version':'1.0-prototype','evaluation_id':'pending','run_id':manifest['run_id'],
             'capture_id':manifest['capture_id'],'manifest_sha256':manifest_sha,'decoder_version':__version__,
             'evaluator_version':__version__,'implementation_sha256':implementation_digest(),'decoded_sha256':digest(canonical(decoded)),'origin':manifest['origin'],
-            'claim_scope':'constructed measurement-system test; no vendor qualification',
+            'claim_scope':('bounded native-live F0 measurement; no recovery or broader qualification'
+                           if manifest['origin']=='native_live'
+                           else 'constructed measurement-system test; no vendor qualification'),
             'capture_status':manifest['capture']['status'],'evidence_state':'valid' if capture_valid else 'invalid',
             'rows':rows,'metrics':metrics,'diagnostics':decoded['diagnostics'],'unknown_records':decoded['unknown_records']}
     result['evaluation_id']=evaluation_id(result)
