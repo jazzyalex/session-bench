@@ -8,7 +8,7 @@
     "mode": "interactive_local",
     "os": "macOS 15.7.9",
     "model": "default_observed_after_run",
-    "configuration": "default_except_declared_launch_flags",
+    "configuration": "default_model_bounded_tools_context_v1",
     "artifact_family": "codex-rollout-jsonl",
     "schema_version": "observed_after_run"
   },
@@ -21,14 +21,65 @@
     "submitted_turns": 8,
     "tokens_total_when_observable": 100000,
     "incremental_spend_usd": 0,
-    "weekly_used_percent_delta": 3,
+    "quota": {
+      "source": "codex_app_get_usage_limits.rateLimitsByLimitId.codex.primary.usedPercent",
+      "observed_at": "2026-09-11T00:00:00Z",
+      "baseline_used_percent": 10,
+      "maximum_delta_percentage_points": 3,
+      "absolute_stop_used_percent": 13,
+      "check": "before_every_submission_and_retry",
+      "unreadable_before_first_launch": "stop_without_live_attempt",
+      "unreadable_after_launch": "finish_current_attempt_only_no_retry_report_unknown"
+    },
     "operator_minutes": 30,
     "wall_clock_minutes": 90,
+    "wall_clock_anchor": "immediately_before_first_cli_launch",
+    "operator_time_includes": ["setup", "observation", "capture", "adjudication", "retry"],
     "artifact_files": 256,
     "artifact_file_bytes": 16777216,
     "artifact_total_bytes": 268435456,
     "decoded_records": 100000
   },
+  "effective_configuration": {
+    "model_override": null,
+    "scalar_overrides": {
+      "web_search": "disabled",
+      "sandbox_workspace_write.network_access": false,
+      "sandbox_workspace_write.writable_roots": [],
+      "hooks": {},
+      "project_doc_max_bytes": 0
+    },
+    "disabled_features": [
+      "apps", "browser_use", "browser_use_external", "computer_use", "hooks",
+      "image_generation", "in_app_browser", "memories", "multi_agent", "plugins",
+      "skill_search", "tool_suggest", "workspace_dependencies"
+    ],
+    "enabled_features": ["skip_host_skill_discovery"],
+    "mcp_policy": "enumerate_names_only_then_disable_every_configured_server_and_require_all_disabled",
+    "preflight": [
+      "feature_states_match",
+      "all_mcp_servers_disabled",
+      "scratch_write_allowed",
+      "undeclared_sibling_write_denied",
+      "outbound_network_denied"
+    ],
+    "identity": "sha256_of_canonical_override_vector_and_resolved_preflight_state",
+    "same_for_all_runs": true
+  },
+  "session_discovery": {
+    "before_inventory": ["relative_path", "filesystem_id", "birth_time_when_available", "ctime", "mtime", "size"],
+    "preexisting_file_hashing": false,
+    "candidate_rule": "exactly_one_file_proven_new_for_attempt_before_open",
+    "ambiguous_candidates": "stop_without_opening_candidates"
+  },
+  "positive_control_candidates": [
+    "C02.failing_test_status_and_exit_code",
+    "C02.inspect_target_and_source_bytes",
+    "C02.accepted_prompt_bytes",
+    "C01.correction_prompt_bytes",
+    "C01.first_prompt_marker_bytes"
+  ],
+  "positive_control_rule": "first_candidate_independently_observed_present_and_correctly_reconstructed",
   "retry_policy": {
     "maximum_retries_per_scenario": 1,
     "allowed_reason": "clearly corrected harness or capture defect",

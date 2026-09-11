@@ -1,6 +1,6 @@
 # Codex interactive CLI F0 run plan
 
-Status: proposed L0 envelope for independent Sol Extra High review. This plan is limited to the one-CLI C01+C02 feasibility gate. It does not authorize L1 expansion, publication, purchases, private-history inspection, or reuse of unrelated sessions.
+Status: revised after the first Sol Extra High review; READY recheck pending before implementation. This plan is limited to the one-CLI C01+C02 feasibility gate. It does not authorize L1 expansion, publication, purchases, private-history inspection, or reuse of unrelated sessions.
 
 ## Subject and access
 
@@ -8,14 +8,35 @@ Status: proposed L0 envelope for independent Sol Extra High review. This plan is
 |---|---|---|
 | Harness | Codex CLI | `/opt/homebrew/bin/codex` |
 | Installed build | `codex-cli 0.154.0` | `codex --version`, checked 2026-09-10 |
-| Surface / launch mode | CLI / interactive local TUI | `codex --no-alt-screen -C <scratch> --sandbox workspace-write --ask-for-approval never` |
+| Surface / launch mode | CLI / interactive local TUI | The controller supplies the bounded override set below, followed by `--no-alt-screen -C <scratch> --sandbox workspace-write --ask-for-approval never` |
 | Authentication | Existing ChatGPT login | `codex login status`; no credential contents inspected or copied |
-| Configuration | Installed default, with only the declared directory, sandbox, approval, and screen flags | Model/provider are recorded from the new session evidence; no model override |
+| Configuration | Default model with a measured, bounded tool/context configuration | Model/provider are recorded from the new session evidence; no model override |
 | OS | macOS 15.7.9 | Existing O1-O5 acceptance environment |
 | Persistence family | Codex dated rollout JSONL under the Codex session root | Discovery shape is `*/sessions/YYYY/MM/DD/rollout-*.jsonl`; exact new path must be established by metadata-only before/after inventory |
 | Current account envelope | 10% of the observable weekly Codex window used; no paid credits | Read-only Codex usage query on 2026-09-10; do not redeem resets |
 
-The operator may list filenames, sizes, mtimes, and hashes under the expected dated session directory before and after each run solely to identify newly created files. The operator must not read pre-existing session contents. Only files first created by this plan may be opened or copied. If more than one unexplained new session appears, stop and retain the attempt as invalid.
+The operator may collect relative path, filesystem identity, birth/creation time where available, ctime, mtime, and size under the expected dated session directory before and after each run solely to identify newly created files. This inventory is stat-only: it must never open or hash a pre-existing file. Only after exactly one candidate has been proven newly created by the current attempt may the controller open, hash, and copy it. Apply the same rule to companions. If the candidate set is ambiguous, stop without opening any candidate and retain the attempt as invalid.
+
+## Effective configuration preflight
+
+Omission does not disable inherited capabilities. Before every launch, the controller builds one explicit override vector and records its canonical SHA-256. It leaves the model unset, while setting:
+
+```text
+-c web_search="disabled"
+-c sandbox_workspace_write.network_access=false
+-c sandbox_workspace_write.writable_roots=[]
+-c hooks={}
+-c project_doc_max_bytes=0
+--disable apps --disable browser_use --disable browser_use_external
+--disable computer_use --disable hooks --disable image_generation
+--disable in_app_browser --disable memories --disable multi_agent
+--disable plugins --disable skill_search --disable tool_suggest
+--disable workspace_dependencies --enable skip_host_skill_discovery
+```
+
+The current CLI merges `mcp_servers` tables, so `-c mcp_servers={}` is insufficient. The controller runs `codex mcp list --json`, keeps only server names and enabled states, and discards transport, URL, environment, and authentication fields. For every configured name it appends a separately argument-encoded `-c mcp_servers.<name>.enabled=false` override; names are validated against the CLI's accepted dotted-key component grammar before use. It then runs `codex features list` and `codex mcp list --json` with the complete vector. Every named feature above must resolve to the requested state and every MCP server must resolve disabled. Unknown names, parse failures, enabled external tools, or changed output schemas stop before launch.
+
+The controller also probes the workspace-write sandbox before launch: the scratch root must be writable, an undeclared sibling must be denied, and outbound network must be denied. It records only pass/fail, command identity, exit status, and timestamps. C01 and C02 must use the same override fingerprint and resolved feature/MCP/sandbox state. The native session must record one consistent model/provider identity; any mid-gate model, provider, endpoint, or effective-configuration change stops F0 incomplete.
 
 ## Hard limits
 
@@ -27,23 +48,23 @@ The operator may list filenames, sizes, mtimes, and hashes under the expected da
 | Submitted user turns | 8 total |
 | Observable aggregate tokens | 100,000 input plus output |
 | Incremental spend / purchases | USD 0; no credits, resets, upgrades, API keys, or paid fallback |
-| Weekly account consumption | Stop if the observable weekly used percentage rises by 3 percentage points from the 10% preflight reading |
+| Weekly account consumption | Baseline 10% used at `2026-09-11T00:00:00Z`; absolute stop at 13% used |
 | Operator time | 30 active minutes |
 | Wall clock | 90 minutes from first launch |
 | Captured evidence | 256 files, 16 MiB each, 256 MiB total |
 | Decoded records | 100,000 total |
 
-Stop at the first applicable limit. If token counts or account percentage cannot be read, report them as unknown and use the submitted-turn, wall-clock, and zero-purchase limits. One retry may address a clearly corrected harness/capture defect. Repeated auth, isolation, discovery, or capture failure ends F0 incomplete.
+Stop at the first applicable limit. The controller checks the weekly value before every submission and retry. If it is unreadable before the first launch, stop without consuming a live attempt. If it becomes unreadable after launch, record it as unknown and allow no retry; the current attempt may finish under the submitted-turn, wall-clock, token-when-observable, and zero-purchase limits. One retry may address a clearly corrected harness/capture defect while all preflight data remain readable. Repeated auth, isolation, discovery, or capture failure ends F0 incomplete. Wall clock begins immediately before the first CLI launch; active operator time includes setup, observation, capture, adjudication, and retry work from that point.
 
 ## Isolation and capture
 
 1. Create a fresh temporary Git repository containing only the synthetic files below. Record hashes and a recursive metadata inventory before launch.
-2. Use the existing authenticated Codex installation without reading its configuration or credentials. Disable web search by omission. Grant only workspace-write access to the scratch repository; do not add directories.
+2. Use the existing authenticated Codex installation without reading its configuration or credentials. Apply and verify the complete effective-configuration preflight above. Grant only workspace-write access to the scratch repository; do not add directories.
 3. Record the PTY stream independently, including submitted input, displayed output, timestamps, and terminal exit. The observation ledger is frozen before native decoding.
 4. Use metadata-only before/after inventory to identify the single new dated rollout file. Do not use `--last`, a session picker, broad content search, or any pre-existing transcript.
 5. Exit the CLI cleanly, wait for the new file to quiesce, hash and copy only that new file plus companions that share its new session identity. Never reopen, repair, truncate, or migrate the native source.
 6. Decode and evaluate a copied bundle with network, the original session path, observer ledger, and expectations unavailable to the decoder. The evaluator receives the frozen observer and assertions separately.
-7. Make a second copy, remove or alter the independently observed C02 failing-test fact through an adapter-defined transformation, and bind the derived bundle to the intact capture digest. The original remains immutable.
+7. Select a positive control from the frozen candidate order below, make a second copy, remove or alter every native representation of that selected fact through an adapter-defined transformation, and bind the derived bundle to the intact capture digest. The original and the observer/expectation data remain immutable.
 
 The identity chain is `gate_id -> scenario_run_id -> attempt_id -> native_session_id -> capture_id -> evaluation_id`. Every invalid or interrupted attempt remains recorded. Scenario runs, attempts, and native sessions are reported separately; a damaged copy adds no live run or native session.
 
@@ -76,6 +97,18 @@ Submit one turn in a separate fresh session:
 `Open fixture_project/target.py, inspect it, run the deterministic test with: python3 fixture_project/test_target.py, make the smallest edit so it passes, then run the same test again. Do not change test_target.py or README.txt. Report the observed failure and final pass.`
 
 The independent controller records the inspect, failing test, edit, and rerun boundaries; exact arguments; relative targets; exit codes/output; and before/after hashes. The expected project transition is `target.py: return 1 -> return 2`, first test exit `1`, second test exit `0`, with no changes to the test or marker file. Skipped steps remain unexercised. A wrong agent result is a measured product failure, not invalid evidence.
+
+### Positive-control selection
+
+Freeze this candidate order before decoding:
+
+1. C02 failing-test status and exit code;
+2. C02 inspect target and returned source bytes;
+3. C02 accepted prompt bytes;
+4. C01 correction prompt bytes;
+5. C01 first prompt marker bytes.
+
+Choose the first candidate that was independently observed, exists in the intact native capture, and was correctly reconstructed by the decoder. If none qualifies, F0 is incomplete. The damage receipt names the selected assertion, all native locations changed or removed, source manifest digest, transformation, and derived digest. The derived evaluation must use the unchanged frozen observations and expectations.
 
 ## Gate decision
 

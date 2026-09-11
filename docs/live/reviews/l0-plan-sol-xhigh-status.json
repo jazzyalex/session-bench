@@ -1,0 +1,13 @@
+{
+  "reviewed_commit": "bb59e61950b424b320bf8f1989fb1b8c09629ee2",
+  "source_access": "connected GitHub exact commit",
+  "model": "GPT-5.6 Sol",
+  "model_verified": true,
+  "effort": "Extra High",
+  "effort_verified": true,
+  "verdict": "NOT READY",
+  "blockers": 4,
+  "live_commands_executed_by_reviewer": false,
+  "automatic_launch_after_ready_recheck": true,
+  "broader_authority": false
+}
