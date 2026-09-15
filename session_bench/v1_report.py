@@ -1835,12 +1835,28 @@ def _authoritative_view(document: Mapping[str, Any]) -> dict[str, Any]:
         timeline = []
         for run in row["runs"]:
             for event in run["timeline"]:
+                native_locators = event["native_locators"]
+                locator_text = ", ".join(
+                    locator.get("record_location") or locator["artifact_id"]
+                    for locator in native_locators
+                )
                 timeline.append({
                     "step": f"R{run['repetition']}.{event['step']}",
                     "label": event["label"],
+                    "metric_id": event["metric_id"],
+                    "state": event["state"],
                     "observed": event["observed"],
                     "recorded": event["recorded"],
-                    "join": event["state"],
+                    # The editorial renderer reads ``state`` and ``locator``.
+                    # Keep the original structured evidence beside those
+                    # display fields so the view cannot silently lose the
+                    # observer/native binding.
+                    "locator": locator_text,
+                    "locator_id": locator_text,
+                    "observer_ids": list(event["observer_ids"]),
+                    "native_locators": [dict(locator) for locator in native_locators],
+                    "order_basis": event["order_basis"],
+                    "temporal_order_available": event["temporal_order_available"],
                 })
         rows.append({
             "id": row["configuration_id"],
@@ -2248,7 +2264,7 @@ def _gate_table(config: Mapping[str, Any]) -> str:
 def _timeline_table(config: Mapping[str, Any]) -> str:
     timeline = config.get("timeline")
     if not isinstance(timeline, list) or not timeline:
-        return '<p class="empty-note">No timeline supplied. The evidence boundary is unresolved.</p>'
+        return '<p class="empty-note">No evidence comparison supplied. The evidence boundary is unresolved.</p>'
     rows: list[str] = []
     for event in timeline:
         if not isinstance(event, Mapping):
@@ -2266,7 +2282,7 @@ def _timeline_table(config: Mapping[str, Any]) -> str:
         )
     return (
         '<div class="table-wrap"><table class="timeline-table">'
-        '<caption class="sr-only">Observed versus recorded timeline</caption>'
+        '<caption class="sr-only">Evidence comparison in metric-contract order</caption>'
         '<thead><tr><th scope="col">Event</th><th scope="col">Observed by independent observer</th><th scope="col">Recorded in native artifact</th><th scope="col">Join</th></tr></thead>'
         f'<tbody>{"".join(rows)}</tbody></table></div>'
     )
@@ -2334,7 +2350,7 @@ def _configuration_card(config: Mapping[str, Any], categories: Sequence[Mapping[
         <div class="score-cell"><span class="score-number">{_esc(score)}</span><span class="score-detail">{_esc(score_detail)}</span><span class="run-range">{_esc(_range_label(config))}</span></div>
       </div>
       <div class="category-grid" aria-label="Five category scores for {_esc(config.get("name"), "configuration")}">{bars}</div>
-      <div class="configuration-links"><a href="#{_esc(details_id)}">Open gate matrix</a><a href="#timeline-{_esc(config_id)}">Open timeline</a><a href="#evidence-{_esc(config_id)}">Open evidence</a></div>
+      <div class="configuration-links"><a href="#{_esc(details_id)}">Open gate matrix</a><a href="#timeline-{_esc(config_id)}">Open evidence comparison</a><a href="#evidence-{_esc(config_id)}">Open evidence</a></div>
       <details class="deep-dive" id="{_esc(details_id)}">
         <summary><span>Gate matrix</span><span class="summary-note">{_esc(len(config.get("gate_matrix", [])) if isinstance(config.get("gate_matrix"), list) else 0)} gates · expandable</span></summary>
         {_gate_table(config)}
@@ -2368,7 +2384,7 @@ def _recommendation_panel(report: Mapping[str, Any], rows: Sequence[Mapping[str,
         )
     return f'''<section class="recommendations panel" id="recommendations" aria-labelledby="recommendations-title">
       <div class="section-kicker">02 / QUALIFICATION</div><h2 id="recommendations-title">What should I use?</h2>
-      <p class="section-lede">Recommendations are evidence-generated rows. The fixture below is a constructed control; it is not vendor guidance.</p>
+      <p class="section-lede">Recommendations are evidence-generated rows. “Audit ready” means the best preserved work trail under this task, using Fidelity and Causality only; Usage is evaluated separately, so a row can qualify here with Usage 0/15. The fixture below is a constructed control; it is not vendor guidance.</p>
       <div class="table-wrap"><table class="recommendation-table"><caption class="sr-only">Evidence-generated recommendations</caption><thead><tr><th scope="col">Use case</th><th scope="col">Qualified row</th><th scope="col">Observed claim</th><th scope="col">Citations</th></tr></thead><tbody>{"".join(body)}</tbody></table></div>
     </section>'''
 
@@ -2490,7 +2506,7 @@ def render_index_html(report: Mapping[str, Any]) -> str:
           <div class="leaderboard-main"><div class="identity-line"><h3>{_esc(config.get("name"), f"Configuration {index + 1}")}</h3><span class="surface-badge surface-{_esc(_slug(surface))}">{_esc(surface)}</span></div><p class="config-meta">{_esc(config.get("version"), "Build unknown")} · {_esc(config.get("model"), "Model unknown")}</p><div class="badge-row"><span class="status-badge status-{_esc(_slug(status))}">{_esc(status)}</span><span class="verification-badge verification-{_esc(_slug(verification))}">{_esc(verification)}</span></div></div>
           <div class="leaderboard-score"><span class="score-number">{_esc(score)}</span><span class="score-detail">{'ranked score / 100' if rank is not None else 'overall score withheld'}</span><span class="run-range">{_esc(_range_label(config))}</span></div>
           <div class="leaderboard-bars" aria-label="Five category scores for {_esc(config.get("name"), "configuration")}">{categories_markup}</div>
-          <div class="row-actions"><a href="#config-{_esc(config_id)}">Report card</a><a href="#timeline-{_esc(config_id)}">Timeline</a><a href="#evidence-{_esc(config_id)}">Evidence</a></div>
+          <div class="row-actions"><a href="#config-{_esc(config_id)}">Report card</a><a href="#timeline-{_esc(config_id)}">Evidence comparison</a><a href="#evidence-{_esc(config_id)}">Evidence</a></div>
         </article>''')
     report_card_markup = "".join(_configuration_card(config, categories, index) for index, config in enumerate(rows))
     timeline_blocks: list[str] = []
@@ -2537,11 +2553,11 @@ def render_index_html(report: Mapping[str, Any]) -> str:
     <header class="masthead"><div><span class="masthead-brand">Session-Bench</span><span class="masthead-label"> / v1 report-card prototype</span></div><nav class="masthead-nav" aria-label="Report navigation"><a href="#leaderboard">Leaderboard</a><a href="#recommendations">Recommendations</a><a href="#method">Method</a><a href="#scope">Scope</a></nav></header>
     <section class="hero"><div><div class="eyebrow">{_esc(report.get("edition"), "V1 FIELD REPORT")}</div><h1>{_esc(report.get("headline"), "What did the session keep?")}</h1><p class="hero-deck">{_esc(report.get("deck"), "A report card for the durable, inspectable record left after a coding-agent session.")}</p></div><aside class="hero-aside"><strong>{ranked_count} of {total_count} rows rank</strong><span>Every incomplete row remains visible. The category profile can be useful before an overall score is earned.</span></aside></section>
     {data_banner}
-    <section class="panel leaderboard" id="leaderboard" aria-labelledby="leaderboard-title"><div class="leaderboard-intro"><div><div class="section-kicker">01 / COMPACT LEADERBOARD</div><h2 id="leaderboard-title">The report card</h2><p class="section-lede">Five angles keep the v0.4 scan-ability; deeper evidence sits below each row.</p></div><div class="leaderboard-count">{ranked_count} ranked · {total_count - ranked_count} unranked<br>Scores shown only with complete evidence</div></div><div class="leaderboard-list">{"".join(leaderboard_rows)}</div></section>
+    <section class="panel leaderboard" id="leaderboard" aria-labelledby="leaderboard-title"><div class="leaderboard-intro"><div><div class="section-kicker">01 / COMPACT LEADERBOARD</div><h2 id="leaderboard-title">The report card</h2><p class="section-lede">Five angles keep the v0.4 scan-ability; deeper evidence sits below each row. Ties use the displayed one-decimal score.</p></div><div class="leaderboard-count">{ranked_count} ranked · {total_count - ranked_count} unranked<br>Scores shown only with complete evidence</div></div><div class="leaderboard-list">{"".join(leaderboard_rows)}</div></section>
     <section class="report-cards" aria-labelledby="report-cards-title"><div class="section-kicker">REPORT CARD DETAIL</div><h2 id="report-cards-title" class="sr-only">Report card detail</h2>{report_card_markup}</section>
     {_recommendation_panel(report, rows)}
     {_use_case_table(report, rows)}
-    <section class="timeline-section" aria-labelledby="timeline-title"><div class="section-kicker">04 / DEPTH</div><h2 id="timeline-title">Observed versus recorded</h2><p class="section-lede">Independent observation is the left lane. Native evidence is the right lane. A join is only as strong as its locator.</p>{"".join(timeline_blocks)}</section>
+    <section class="timeline-section" aria-labelledby="timeline-title"><div class="section-kicker">04 / DEPTH</div><h2 id="timeline-title">Evidence comparison</h2><p class="section-lede">Independent observation is the left lane. Native evidence is the right lane. Rows follow metric-contract order unless temporal ordering is available. A join is only as strong as its locator.</p>{"".join(timeline_blocks)}</section>
     <section class="evidence-section" aria-labelledby="evidence-title"><div class="section-kicker">05 / CITABLE EVIDENCE</div><h2 id="evidence-title">Locator snippets</h2><p class="section-lede">Short excerpts keep the public page inspectable while the original capture remains the source of truth.</p>{"".join(f'<article class="config-evidence-block" id="evidence-{_esc(_slug(config.get("id"), f"configuration-{idx + 1}"))}"><h3>{_esc(config.get("name"), "Configuration")}</h3>{_evidence_cards(config)}</article>' for idx, config in enumerate(rows))}</section>
     <section class="method-grid panel" id="method" aria-labelledby="method-title"><article><div class="section-kicker">METHOD</div><h3 id="method-title">What is measured</h3><p>{_esc(method)}</p></article><article id="scope"><div class="section-kicker">SCOPE</div><h3>What this report means</h3><p>{_esc(scope)}</p></article><article><div class="section-kicker">LIMITATIONS</div><h3>Read the boundary</h3><ul>{limitation_items}</ul></article></section>
     <footer class="site-footer"><span>Generated {_esc(generated)} · local files only</span><span>{_esc(data_status_text)}</span><span><a href="#leaderboard">Back to leaderboard ↑</a></span></footer>

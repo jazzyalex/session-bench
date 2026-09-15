@@ -23,7 +23,7 @@ Review-candidate order (not yet a public leaderboard):
 - Public evidence index: exactly 5 configs, 177 files, zero privacy findings.
 - Exact model labels: Codex gpt-5.6-sol; Claude CLI `claude-sonnet-5[1m]`; Claude Desktop `claude-opus-5`; OpenCode `opencode/muse-spark-1.3-contributor-free`.
 - Strong findings: (1) Codex CLI/Desktop tie at 87.0, nearly identical bars; (2) Claude CLI leads Fidelity 30/30 + Causality 20/20 but Usage 0/15 (native label strips `[1m]` vs observed `claude-sonnet-5[1m]`; native usage contradicts observed CLI stream counts); (3) Desktop is measured: Codex Desktop ties CLI, Claude Desktop +1.8 over Claude CLI with lower fidelity/causality from batched actions; (4) OpenCode 83.3, Causality 20/20, public semantic/score verification, native public replay source-attested (raw SQLite/runtime withheld).
-- Generated review-candidate recommendations: Claude CLI for audit-ready records; Codex CLI + Desktop for portable archives; Codex CLI/Desktop for cross-surface consistency. Usage accounting, lean complete records, and long-term archives emit `no_recommendation`. These remain unpublished local outputs.
+- Generated review-candidate recommendations: Claude CLI for the best preserved work trail under this task (`audit_ready`, based on Fidelity and Causality; Usage is outside this rule); Codex CLI + Desktop for portable archives; Codex CLI/Desktop for cross-surface consistency. Usage accounting, lean complete records, and long-term archives emit `no_recommendation`. These remain unpublished local outputs.
 
 ## Public promise (review-candidate wording)
 
@@ -46,7 +46,7 @@ The 19-metric survival audit supplies the deep task evidence. Twelve broad forma
 1. Compact review-candidate table with exact CLI/Desktop surface, build, date, `/100`, range, category bars, local-controls note, and result ID slots.
 2. Generated **If you're building on session files** table — pending/`no_recommendation` in this kit, with rule version and reason.
 3. Vendor report cards with the gate matrix and separate generated **To pass, fix** items only.
-4. Observed-vs-recorded task timeline and native locators.
+4. Evidence comparison in metric-contract order, with observer and native locators.
 5. Method, local evidence index (5 configs / 177 files), machine-readable results, and correction history.
 
 Recommendations are not editorial badges. They follow the frozen rubric, cite scoped surface/build/date/result IDs, and emit no recommendation when evidence is unresolved.
@@ -60,6 +60,7 @@ Read the launch set in order:
 5. [Product specification](05-product-spec.md)
 6. [Implementation plan](06-implementation-plan.md)
 7. [OpenCode prototype launch draft](07-opencode-prototype-draft.md)
+8. [The Rollout article](08-the-rollout-v1-limited.md) — vibe-coder value, limited-v1 findings, and expansion case
 
 Every quantitative statement requires a result ID slot, denominator, exact tested scope, and matching evidence. V0.4 and v1.0 use different rubrics; cross-edition rank changes do not prove product change.
 
@@ -69,6 +70,7 @@ Every quantitative statement requires a result ID slot, denominator, exact teste
 - [ ] `02-press-and-outreach.md`: release + pitch + maintainer note drafted with review-candidate numbers; placeholders kept; no send.
 - [ ] `03-blog-template.md`: concrete draft with leaderboard, five angles, four descriptive findings, pending recommendations, limits.
 - [ ] `04-promotion-strategy.md`: message order, claim contract, 7-day draft sequence present; planning-only, no scheduling.
+- [x] `08-the-rollout-v1-limited.md`: publication-ready article draft with the local/unpublished and independent-reproduction boundaries.
 - [ ] Placeholders `[REPORT_URL]`, `[EVIDENCE_URL]`, `[METHOD_URL]`, `[CORRECTION_URL]`, `[DATE]`, `[NAME]` preserved where final values unavailable.
 - [ ] No publication / independent-reproduction / Oracle-approval / crash / final-rank claims present.
 - [x] Generated recommendations match the frozen rule output and remain labelled unpublished local results.

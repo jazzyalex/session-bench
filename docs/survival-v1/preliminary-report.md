@@ -31,17 +31,24 @@ candidate now exists at `artifacts/survival-v1-review-candidate`; it is explicit
 ineligible for publication. No full independent native replay, crash result,
 Oracle approval, commit/push, or publication is claimed.
 
-Generated review-candidate recommendations select Claude CLI for audit-ready
-records; Codex CLI and Codex Desktop as the qualified portable-archive set; and
-the Codex CLI/Desktop pair for cross-surface consistency. Usage accounting,
-lean complete records, and long-term archives emit `no_recommendation`. These
-are deterministic local outputs from the frozen rubric, not published buying advice.
+Generated review-candidate recommendations select Claude CLI for the **best
+preserved work trail under this task** (`audit_ready`); Codex CLI and Codex
+Desktop as the qualified portable-archive set; and the Codex CLI/Desktop pair
+for cross-surface consistency. The `audit_ready` rule uses Fidelity and
+Causality only, so Claude CLI can qualify there even with Usage 0/15. Usage
+accounting, lean complete records, and long-term archives emit
+`no_recommendation`. These are deterministic local outputs from the frozen
+rubric, not published buying advice.
+
+Ranks use competition ranking, with ties calculated from the displayed
+one-decimal score. This explains the two `87.0` rows sharing rank 1 even though
+their unrounded internal means differ slightly.
 
 | Surface | Evidence now | Preliminary status |
 |---|---|---|
 | Codex CLI (`gpt-5.6-sol`) | Three evaluated runs, each 31/31 resolved cells with local copied-root replay/equality/loss evidence; sanitized packet 87.0 range 86.9-87.0; categories 21.0 / 20.0 / 12.0 / 20.0 / 14.0. | Measured review candidate, unpublished; no public rank. |
 | Codex Desktop (`gpt-5.6-sol`) | Three evaluated runs, each 31/31 resolved cells with local copied-root replay/equality/loss evidence; sanitized packet 87.0 range 87.0-87.0; categories 21.0 / 20.0 / 12.0 / 20.0 / 14.0. | Measured review candidate, unpublished; no public rank. |
-| Claude Code CLI 2.1.270 (`claude-sonnet-5[1m]`) | Three evaluated runs, each 31/31 resolved cells with local copied-root replay/equality/loss evidence; sanitized packet 81.0 range 81.0-81.0; categories 30.0 / 20.0 / 0.0 / 18.0 / 13.0. | Measured review candidate, unpublished; no public rank. |
+| Claude Code CLI 2.1.272 (`claude-sonnet-5[1m]`) | Three evaluated runs, each 31/31 resolved cells with local copied-root replay/equality/loss evidence; sanitized packet 81.0 range 81.0-81.0; categories 30.0 / 20.0 / 0.0 / 18.0 / 13.0. | Measured review candidate, unpublished; no public rank. |
 | Claude Desktop Code (Local) (`claude-opus-5`) | Three evaluated runs, each 31/31 resolved cells with local copied-root replay/equality/loss evidence; sanitized packet 82.8 range 82.8-82.8; categories 25.0 / 14.8 / 12.0 / 18.0 / 13.0. | Measured review candidate, unpublished; no public rank. |
 | OpenCode CLI 1.18.30, `opencode/muse-spark-1.3-contributor-free` | Three evaluated runs, each 31/31 resolved cells with local copied-root replay/equality/loss evidence; sanitized packet 83.3 range 83.3-83.3; categories 20.3 / 20.0 / 12.0 / 18.0 / 13.0. Public semantic/score packet independently recomputed in a fresh sandbox copy; native SQLite decode and damaged-native replay remain source-attested. | Measured review candidate, unpublished; no public rank and no full native reproduction claimed. |
 

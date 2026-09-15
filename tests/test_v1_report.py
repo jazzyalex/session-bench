@@ -168,6 +168,21 @@ def test_authoritative_runs_retain_identity_and_deep_timeline():
             assert all(event["temporal_order_available"] is False for event in run["timeline"])
 
 
+def test_authoritative_view_renders_resolved_evidence_comparisons_with_locators(tmp_path: Path):
+    report = build_authoritative_control_report()
+    output = render_authoritative_report(report, tmp_path / "authoritative")
+    page = (output / "index.html").read_text(encoding="utf-8")
+    comparison = page[page.index('<h2 id="timeline-title">Evidence comparison</h2>'):]
+
+    expected_rows = len(TARGET_CONFIGURATIONS) * 3 * len(SURVIVAL_METRICS)
+    assert comparison.count('class="state-chip state-measured"') == expected_rows
+    assert "No locator" not in comparison
+    assert "native_locators:" in comparison
+    assert "observer_ids:" in comparison
+    assert "Rows follow metric-contract order unless temporal ordering is available." in page
+    assert "Observed versus recorded" not in page
+
+
 @pytest.mark.parametrize("model", [None, "different-model"])
 def test_serialized_rank_rejects_missing_or_mixed_model_identity(model):
     report = build_authoritative_control_report()

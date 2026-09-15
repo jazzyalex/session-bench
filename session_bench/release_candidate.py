@@ -671,12 +671,18 @@ def _review_candidate_evidence_index(
             "result_ids": [run.result_id for run in packet.runs],
             "evaluation_ids": [run.survival_evaluation_id for run in packet.runs],
             "metric_counts": [len(run.metrics) for run in packet.runs],
-            "local_verification": score_row["verification"]["state"],
+            "local_verification": "Locally reproduced",
+            "verification": "Locally reproduced",
+            "publication_status": "unpublished",
+            "independent_native_reproduction": False,
         })
     return {
         "schema_version": EVIDENCE_INDEX_SCHEMA_VERSION,
         "generated_at": report["generated_at"],
         "status": "unpublished_review_candidate",
+        "verification": "Locally reproduced",
+        "publication_status": "unpublished",
+        "independent_native_reproduction": False,
         "cohort": {
             "required_configuration_ids": list(TARGET_CONFIGURATIONS),
             "configuration_ids": [packet.configuration_id for packet in packets],
@@ -690,15 +696,25 @@ def _review_candidate_evidence_index(
     }
 
 
-def _leaderboard_csv(report: Mapping[str, Any]) -> str:
+def _leaderboard_csv(report: Mapping[str, Any], *, review_candidate: bool = False) -> str:
+    """Serialize the leaderboard with an explicit provenance boundary.
+
+    The authoritative release path keeps its historical CSV schema and
+    verification values. A detached review candidate gets additional columns
+    so opening the CSV alone cannot turn local packet replay into a claim of
+    independent native reproduction or publication.
+    """
+
     columns = [
         "rank", "configuration_id", "name", "surface", "overall", "range",
         "record_fidelity", "causality_context", "usage_attribution",
         "portability_openness", "durability_signal", "verification",
     ]
+    if review_candidate:
+        columns.extend(("publication_status", "independent_native_reproduction"))
     rows = []
     for row in report["configurations"]:
-        rows.append({
+        output = {
             "rank": "" if row["rank"] is None else row["rank"],
             "configuration_id": row["configuration_id"],
             "name": row["name"],
@@ -706,9 +722,14 @@ def _leaderboard_csv(report: Mapping[str, Any]) -> str:
             "overall": "" if row["overall_points"] is None else row["overall_points"],
             "range": "" if row["overall_range_points"] is None else "–".join(str(value) for value in row["overall_range_points"]),
             **{category: row["categories"][category]["points"] for category in PUBLIC_CATEGORY_POINTS},
-            "verification": row["verification"]["state"],
-        })
-    output = []
+            "verification": "Locally reproduced" if review_candidate else row["verification"]["state"],
+        }
+        if review_candidate:
+            output.update({
+                "publication_status": "unpublished",
+                "independent_native_reproduction": "false",
+            })
+        rows.append(output)
     from io import StringIO
     stream = StringIO()
     writer = csv.DictWriter(stream, fieldnames=columns, lineterminator="\n")
@@ -884,13 +905,16 @@ def assemble_review_candidate(
     temporary = Path(tempfile.mkdtemp(prefix=".session-bench-v1-review-candidate-", dir=output.parent))
     try:
         render_authoritative_report(report, temporary)
-        (temporary / "leaderboard.csv").write_text(_leaderboard_csv(report), encoding="utf-8")
+        (temporary / "leaderboard.csv").write_text(_leaderboard_csv(report, review_candidate=True), encoding="utf-8")
         evidence_index = _review_candidate_evidence_index(packets, report)
         _write_json(temporary / "evidence-index.json", evidence_index)
         candidate = {
             "schema_version": REVIEW_CANDIDATE_SCHEMA_VERSION,
             "generated_at": generated_at,
             "status": "unpublished_review_candidate",
+            "verification": "Locally reproduced",
+            "publication_status": "unpublished",
+            "independent_native_reproduction": False,
             "publication": {
                 "published": False,
                 "eligible": False,

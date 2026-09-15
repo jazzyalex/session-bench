@@ -1,6 +1,6 @@
-rank,configuration_id,name,surface,overall,range,record_fidelity,causality_context,usage_attribution,portability_openness,durability_signal,verification
-5,claude-cli,Claude CLI,CLI,81.0,81.0–81.0,30.0,20.0,0.0,18.0,13.0,Fully reproduced
-4,claude-desktop,Claude Desktop,Desktop,82.75,82.75–82.75,25.0,14.75,12.0,18.0,13.0,Fully reproduced
-1,codex-cli,Codex CLI,CLI,86.96302853284081,86.94881899460604–86.97330558320515,21.0,20.0,12.0,20.0,13.963028532840807,Fully reproduced
-1,codex-desktop,Codex Desktop,Desktop,87.02137602535545,87.01964419944876–87.02373371684138,21.0,20.0,12.0,20.0,14.021376025355456,Fully reproduced
-3,opencode-cli,OpenCode CLI,CLI,83.25,83.25–83.25,20.25,20.0,12.0,18.0,13.0,Fully reproduced
+rank,configuration_id,name,surface,overall,range,record_fidelity,causality_context,usage_attribution,portability_openness,durability_signal,verification,publication_status,independent_native_reproduction
+5,claude-cli,Claude CLI,CLI,81.0,81.0–81.0,30.0,20.0,0.0,18.0,13.0,Locally reproduced,unpublished,false
+4,claude-desktop,Claude Desktop,Desktop,82.75,82.75–82.75,25.0,14.75,12.0,18.0,13.0,Locally reproduced,unpublished,false
+1,codex-cli,Codex CLI,CLI,86.96302853284081,86.94881899460604–86.97330558320515,21.0,20.0,12.0,20.0,13.963028532840807,Locally reproduced,unpublished,false
+1,codex-desktop,Codex Desktop,Desktop,87.02137602535545,87.01964419944876–87.02373371684138,21.0,20.0,12.0,20.0,14.021376025355456,Locally reproduced,unpublished,false
+3,opencode-cli,OpenCode CLI,CLI,83.25,83.25–83.25,20.25,20.0,12.0,18.0,13.0,Locally reproduced,unpublished,false
