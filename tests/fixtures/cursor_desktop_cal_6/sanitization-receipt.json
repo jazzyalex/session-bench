@@ -1,0 +1,21 @@
+{
+  "kind": "sanitized_native_derivative",
+  "raw_publication_state": "withheld",
+  "native_session_id": "fff67116-fec2-4a78-9ef1-9c5c5d5bc090",
+  "raw_sha256": "ee54e85455f0b287a26394fba51c071125a39d98db7017f86c06b76d6c35a45e",
+  "sanitized_sha256": "004da91e3571eb9be99cc4c7187fcd916a8ef1d1e62866409e8f249179b4a62a",
+  "line_count": 12,
+  "replacement_count": 9,
+  "rules": [
+    {
+      "source": "/private/tmp/sbcd6/project",
+      "target": "$RUN_PROJECT"
+    },
+    {
+      "source": "/tmp/sbcd6/project",
+      "target": "$RUN_PROJECT"
+    }
+  ],
+  "companion_sha256": "b138327859d0e1a171a736e4cc73563509df08b373fd3beff885851fcaea5df0",
+  "companion_row_count": 29
+}

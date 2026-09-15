@@ -1,0 +1,859 @@
+{
+  "build": "1.18.30",
+  "collected_on": "2026-09-14",
+  "configuration_id": "opencode-cli",
+  "metric_evidence": [
+    {
+      "metric_id": "broad.readable_rationale",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "735d3d083aedb15264a1ec3f99fd9fa097a5565304ffa1b6d175681aa8525c73"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-1"
+      ]
+    },
+    {
+      "metric_id": "broad.thread_structure",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "735d3d083aedb15264a1ec3f99fd9fa097a5565304ffa1b6d175681aa8525c73"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-1"
+      ]
+    },
+    {
+      "metric_id": "broad.standard_tools_readable",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "735d3d083aedb15264a1ec3f99fd9fa097a5565304ffa1b6d175681aa8525c73"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-1"
+      ]
+    },
+    {
+      "metric_id": "broad.documented_format",
+      "native_locators": [
+        {
+          "id": "documentation:opencode-cli",
+          "sha256": "5d47fc678018e2cc1298a68b74c27f83451e7cd308c5cc3406f371cf8840f1a6"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-1"
+      ]
+    },
+    {
+      "metric_id": "broad.self_contained_identity",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "735d3d083aedb15264a1ec3f99fd9fa097a5565304ffa1b6d175681aa8525c73"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-1"
+      ]
+    },
+    {
+      "metric_id": "broad.declared_format_version",
+      "native_locators": [
+        {
+          "id": "runtime:manifest",
+          "sha256": "d1236c5d58244787d5392900bb934cffbd0dbe9802cc4edac15149bfa6e7b299"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-1"
+      ]
+    },
+    {
+      "metric_id": "broad.event_timestamps",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "735d3d083aedb15264a1ec3f99fd9fa097a5565304ffa1b6d175681aa8525c73"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-1"
+      ]
+    },
+    {
+      "metric_id": "broad.honest_version_signal",
+      "native_locators": [
+        {
+          "id": "runtime:manifest",
+          "sha256": "d1236c5d58244787d5392900bb934cffbd0dbe9802cc4edac15149bfa6e7b299"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-1"
+      ]
+    },
+    {
+      "metric_id": "broad.observed_schema_stability",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "735d3d083aedb15264a1ec3f99fd9fa097a5565304ffa1b6d175681aa8525c73"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-1"
+      ]
+    },
+    {
+      "metric_id": "broad.stable_root_location",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "735d3d083aedb15264a1ec3f99fd9fa097a5565304ffa1b6d175681aa8525c73"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-1"
+      ]
+    },
+    {
+      "metric_id": "broad.naive_reader_duplicate_safety",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "735d3d083aedb15264a1ec3f99fd9fa097a5565304ffa1b6d175681aa8525c73"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-1"
+      ]
+    },
+    {
+      "metric_id": "broad.classified_content_density",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "735d3d083aedb15264a1ec3f99fd9fa097a5565304ffa1b6d175681aa8525c73"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-1"
+      ]
+    }
+  ],
+  "native_manifest": {
+    "id": "manifest:opencode-cli-eval-1",
+    "sha256": "619e277c230aaf2ce63ba8b5d44b30f4c7ed0294a5cacb0d5752638c23089fcc"
+  },
+  "observer": {
+    "id": "observer:opencode-cli-eval-1",
+    "sha256": "237c63a5e040c352f71d682a0f72889aa856e0fd951156fb0f8596de8b0cad84"
+  },
+  "profile": {
+    "broad_evidence": {
+      "broad.classified_content_density": {
+        "classification_rule": "logical-record-role-v1",
+        "evidence_complete": true,
+        "records": [
+          {
+            "classification": "useful",
+            "logical_bytes": 666,
+            "record_id": "0:msg_093e7b13a00126DVWQwM7BwdYg",
+            "record_kind": "user_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "1:prt_093e7bb0e001oQ62NAFdohJ22Q",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "2:prt_093e7bb0e001oQ62NAFdohJ22Q",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 65,
+            "record_id": "3:msg_093e7b224001Ef1lRUYXDaxNAh",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "4:prt_093e7be1b001MuHFEQoEGTHM37",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "5:prt_093e7be1b001MuHFEQoEGTHM37",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "6:msg_093e7bb56001K6fWaGCAnJoV1x",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "7:prt_093e7c30d001KM0qzoRrd7QFNn",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "8:prt_093e7c30d001KM0qzoRrd7QFNn",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "9:prt_093e7c310001mUDb2DwC1N3Nx6",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "10:prt_093e7c310001mUDb2DwC1N3Nx6",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "11:msg_093e7be76001j5POnjX6C7gxYA",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "12:prt_093e7ca5c001nAv8gEOje708Im",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "13:prt_093e7ca5c001nAv8gEOje708Im",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 74,
+            "record_id": "14:msg_093e7c35f001HYJeV7g4S15blx",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "15:prt_093e7cdff001H2Ly6TT1PyF74x",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "16:prt_093e7cdff001H2Ly6TT1PyF74x",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "17:msg_093e7cbb6001fCwuwpwhDusxKI",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 421,
+            "record_id": "18:msg_093e7cef3001kE6GEr8ifQr1fc",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 515,
+            "record_id": "19:msg_093e861f6001RS9mFq61cjpvRV",
+            "record_kind": "user_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "20:prt_093e86cdd0018JCeNGbW5INLDR",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "21:prt_093e86cdd0018JCeNGbW5INLDR",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "22:prt_093e86cf5001BkoaBNw1ZWhKQO",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "23:prt_093e86cf5001BkoaBNw1ZWhKQO",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 96,
+            "record_id": "24:msg_093e862e8001xkG2Pc5SokyVpK",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "25:prt_093e87114001HkQ0ooQaotzddc",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "26:prt_093e87114001HkQ0ooQaotzddc",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "27:prt_093e87114001HkQ0ooQaotzddc:fixture_project/checkout.py",
+            "record_kind": "file_change"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "28:msg_093e86d9c001wjm2dFJk3HrqHm",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "29:prt_093e876ed001d0V2gHZa4HXrrd",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "30:prt_093e876ed001d0V2gHZa4HXrrd",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "31:msg_093e872d6001oW42vEWHj12VpN",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 237,
+            "record_id": "32:msg_093e8776a001lAIpl97Sww4R0r",
+            "record_kind": "assistant_message"
+          }
+        ]
+      },
+      "broad.declared_format_version": {
+        "bundle_binding": "runtime:manifest",
+        "evidence_complete": true,
+        "format_version": "",
+        "machine_readable": false
+      },
+      "broad.documented_format": {
+        "document_id": "docs/survival-v1/adapters/opencode-cli.md",
+        "evidence_complete": true,
+        "mapping": {
+          "containers": "Quiescent SQLite/WAL/SHM capture",
+          "identities": "session ID",
+          "joins": "message and part session/message IDs",
+          "record_types": "session, message, part",
+          "version_semantics": "decoder contract is versioned"
+        }
+      },
+      "broad.event_timestamps": {
+        "event_ids": [
+          "msg_093e7b13a00126DVWQwM7BwdYg",
+          "prt_093e7bb0e001oQ62NAFdohJ22Q",
+          "msg_093e7b224001Ef1lRUYXDaxNAh",
+          "prt_093e7be1b001MuHFEQoEGTHM37",
+          "msg_093e7bb56001K6fWaGCAnJoV1x",
+          "prt_093e7c30d001KM0qzoRrd7QFNn",
+          "prt_093e7c310001mUDb2DwC1N3Nx6",
+          "msg_093e7be76001j5POnjX6C7gxYA",
+          "prt_093e7ca5c001nAv8gEOje708Im",
+          "msg_093e7c35f001HYJeV7g4S15blx",
+          "prt_093e7cdff001H2Ly6TT1PyF74x",
+          "msg_093e7cbb6001fCwuwpwhDusxKI",
+          "msg_093e7cef3001kE6GEr8ifQr1fc",
+          "msg_093e861f6001RS9mFq61cjpvRV",
+          "prt_093e86cdd0018JCeNGbW5INLDR",
+          "prt_093e86cf5001BkoaBNw1ZWhKQO",
+          "msg_093e862e8001xkG2Pc5SokyVpK",
+          "prt_093e87114001HkQ0ooQaotzddc",
+          "msg_093e86d9c001wjm2dFJk3HrqHm",
+          "prt_093e876ed001d0V2gHZa4HXrrd",
+          "msg_093e872d6001oW42vEWHj12VpN",
+          "msg_093e8776a001lAIpl97Sww4R0r"
+        ],
+        "evidence_complete": true,
+        "records": [
+          {
+            "id": "msg_093e7b13a00126DVWQwM7BwdYg",
+            "time_zone": "UTC",
+            "timestamp": 1789187830074,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093e7bb0e001oQ62NAFdohJ22Q",
+            "time_zone": "UTC",
+            "timestamp": 1789187832590,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093e7b224001Ef1lRUYXDaxNAh",
+            "time_zone": "UTC",
+            "timestamp": 1789187830308,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093e7be1b001MuHFEQoEGTHM37",
+            "time_zone": "UTC",
+            "timestamp": 1789187833372,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093e7bb56001K6fWaGCAnJoV1x",
+            "time_zone": "UTC",
+            "timestamp": 1789187832662,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093e7c30d001KM0qzoRrd7QFNn",
+            "time_zone": "UTC",
+            "timestamp": 1789187834637,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093e7c310001mUDb2DwC1N3Nx6",
+            "time_zone": "UTC",
+            "timestamp": 1789187834640,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093e7be76001j5POnjX6C7gxYA",
+            "time_zone": "UTC",
+            "timestamp": 1789187833462,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093e7ca5c001nAv8gEOje708Im",
+            "time_zone": "UTC",
+            "timestamp": 1789187836508,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093e7c35f001HYJeV7g4S15blx",
+            "time_zone": "UTC",
+            "timestamp": 1789187834719,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093e7cdff001H2Ly6TT1PyF74x",
+            "time_zone": "UTC",
+            "timestamp": 1789187837439,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093e7cbb6001fCwuwpwhDusxKI",
+            "time_zone": "UTC",
+            "timestamp": 1789187836854,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093e7cef3001kE6GEr8ifQr1fc",
+            "time_zone": "UTC",
+            "timestamp": 1789187837683,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093e861f6001RS9mFq61cjpvRV",
+            "time_zone": "UTC",
+            "timestamp": 1789187875318,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093e86cdd0018JCeNGbW5INLDR",
+            "time_zone": "UTC",
+            "timestamp": 1789187878109,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093e86cf5001BkoaBNw1ZWhKQO",
+            "time_zone": "UTC",
+            "timestamp": 1789187878133,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093e862e8001xkG2Pc5SokyVpK",
+            "time_zone": "UTC",
+            "timestamp": 1789187875560,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093e87114001HkQ0ooQaotzddc",
+            "time_zone": "UTC",
+            "timestamp": 1789187879188,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093e86d9c001wjm2dFJk3HrqHm",
+            "time_zone": "UTC",
+            "timestamp": 1789187878300,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093e876ed001d0V2gHZa4HXrrd",
+            "time_zone": "UTC",
+            "timestamp": 1789187880685,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093e872d6001oW42vEWHj12VpN",
+            "time_zone": "UTC",
+            "timestamp": 1789187879638,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093e8776a001lAIpl97Sww4R0r",
+            "time_zone": "UTC",
+            "timestamp": 1789187880810,
+            "unit": "unix_ms"
+          }
+        ]
+      },
+      "broad.honest_version_signal": {
+        "declared_version": "1.18.30",
+        "decoder_contract_version": "opencode-sqlite-session-v1",
+        "evidence_complete": true,
+        "incompatible_schema_distinguished": false,
+        "matches_decoder_contract": false
+      },
+      "broad.naive_reader_duplicate_safety": {
+        "deduplication": {
+          "documented": true,
+          "rule": "semantic identity is native record kind plus native row ID"
+        },
+        "event_ids": [
+          "user_message:msg_093e7b13a00126DVWQwM7BwdYg",
+          "tool_call:prt_093e7bb0e001oQ62NAFdohJ22Q",
+          "tool_result:prt_093e7bb0e001oQ62NAFdohJ22Q",
+          "assistant_message:msg_093e7b224001Ef1lRUYXDaxNAh",
+          "tool_call:prt_093e7be1b001MuHFEQoEGTHM37",
+          "tool_result:prt_093e7be1b001MuHFEQoEGTHM37",
+          "assistant_message:msg_093e7bb56001K6fWaGCAnJoV1x",
+          "tool_call:prt_093e7c30d001KM0qzoRrd7QFNn",
+          "tool_result:prt_093e7c30d001KM0qzoRrd7QFNn",
+          "tool_call:prt_093e7c310001mUDb2DwC1N3Nx6",
+          "tool_result:prt_093e7c310001mUDb2DwC1N3Nx6",
+          "assistant_message:msg_093e7be76001j5POnjX6C7gxYA",
+          "tool_call:prt_093e7ca5c001nAv8gEOje708Im",
+          "tool_result:prt_093e7ca5c001nAv8gEOje708Im",
+          "assistant_message:msg_093e7c35f001HYJeV7g4S15blx",
+          "tool_call:prt_093e7cdff001H2Ly6TT1PyF74x",
+          "tool_result:prt_093e7cdff001H2Ly6TT1PyF74x",
+          "assistant_message:msg_093e7cbb6001fCwuwpwhDusxKI",
+          "assistant_message:msg_093e7cef3001kE6GEr8ifQr1fc",
+          "user_message:msg_093e861f6001RS9mFq61cjpvRV",
+          "tool_call:prt_093e86cdd0018JCeNGbW5INLDR",
+          "tool_result:prt_093e86cdd0018JCeNGbW5INLDR",
+          "tool_call:prt_093e86cf5001BkoaBNw1ZWhKQO",
+          "tool_result:prt_093e86cf5001BkoaBNw1ZWhKQO",
+          "assistant_message:msg_093e862e8001xkG2Pc5SokyVpK",
+          "tool_call:prt_093e87114001HkQ0ooQaotzddc",
+          "tool_result:prt_093e87114001HkQ0ooQaotzddc",
+          "file_change:prt_093e87114001HkQ0ooQaotzddc:fixture_project/checkout.py",
+          "assistant_message:msg_093e86d9c001wjm2dFJk3HrqHm",
+          "tool_call:prt_093e876ed001d0V2gHZa4HXrrd",
+          "tool_result:prt_093e876ed001d0V2gHZa4HXrrd",
+          "assistant_message:msg_093e872d6001oW42vEWHj12VpN",
+          "assistant_message:msg_093e8776a001lAIpl97Sww4R0r"
+        ],
+        "evidence_complete": true,
+        "forward_records": [
+          {
+            "event_id": "user_message:msg_093e7b13a00126DVWQwM7BwdYg",
+            "occurrence_id": "row-0",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093e7bb0e001oQ62NAFdohJ22Q",
+            "occurrence_id": "row-1",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093e7bb0e001oQ62NAFdohJ22Q",
+            "occurrence_id": "row-2",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093e7b224001Ef1lRUYXDaxNAh",
+            "occurrence_id": "row-3",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093e7be1b001MuHFEQoEGTHM37",
+            "occurrence_id": "row-4",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093e7be1b001MuHFEQoEGTHM37",
+            "occurrence_id": "row-5",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093e7bb56001K6fWaGCAnJoV1x",
+            "occurrence_id": "row-6",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093e7c30d001KM0qzoRrd7QFNn",
+            "occurrence_id": "row-7",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093e7c30d001KM0qzoRrd7QFNn",
+            "occurrence_id": "row-8",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093e7c310001mUDb2DwC1N3Nx6",
+            "occurrence_id": "row-9",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093e7c310001mUDb2DwC1N3Nx6",
+            "occurrence_id": "row-10",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093e7be76001j5POnjX6C7gxYA",
+            "occurrence_id": "row-11",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093e7ca5c001nAv8gEOje708Im",
+            "occurrence_id": "row-12",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093e7ca5c001nAv8gEOje708Im",
+            "occurrence_id": "row-13",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093e7c35f001HYJeV7g4S15blx",
+            "occurrence_id": "row-14",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093e7cdff001H2Ly6TT1PyF74x",
+            "occurrence_id": "row-15",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093e7cdff001H2Ly6TT1PyF74x",
+            "occurrence_id": "row-16",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093e7cbb6001fCwuwpwhDusxKI",
+            "occurrence_id": "row-17",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093e7cef3001kE6GEr8ifQr1fc",
+            "occurrence_id": "row-18",
+            "state": "active"
+          },
+          {
+            "event_id": "user_message:msg_093e861f6001RS9mFq61cjpvRV",
+            "occurrence_id": "row-19",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093e86cdd0018JCeNGbW5INLDR",
+            "occurrence_id": "row-20",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093e86cdd0018JCeNGbW5INLDR",
+            "occurrence_id": "row-21",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093e86cf5001BkoaBNw1ZWhKQO",
+            "occurrence_id": "row-22",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093e86cf5001BkoaBNw1ZWhKQO",
+            "occurrence_id": "row-23",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093e862e8001xkG2Pc5SokyVpK",
+            "occurrence_id": "row-24",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093e87114001HkQ0ooQaotzddc",
+            "occurrence_id": "row-25",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093e87114001HkQ0ooQaotzddc",
+            "occurrence_id": "row-26",
+            "state": "active"
+          },
+          {
+            "event_id": "file_change:prt_093e87114001HkQ0ooQaotzddc:fixture_project/checkout.py",
+            "occurrence_id": "row-27",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093e86d9c001wjm2dFJk3HrqHm",
+            "occurrence_id": "row-28",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093e876ed001d0V2gHZa4HXrrd",
+            "occurrence_id": "row-29",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093e876ed001d0V2gHZa4HXrrd",
+            "occurrence_id": "row-30",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093e872d6001oW42vEWHj12VpN",
+            "occurrence_id": "row-31",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093e8776a001lAIpl97Sww4R0r",
+            "occurrence_id": "row-32",
+            "state": "active"
+          }
+        ]
+      },
+      "broad.observed_schema_stability": {
+        "advertised_contract": "opencode-sqlite-session-v1",
+        "evidence_complete": true,
+        "exceptions": [],
+        "observations": [
+          {
+            "build": "1.18.30",
+            "decoded": true,
+            "decoder_contract": "opencode-sqlite-session-v1",
+            "observed_on": "2026-09-14"
+          }
+        ]
+      },
+      "broad.readable_rationale": {
+        "evidence_complete": true,
+        "records": [
+          {
+            "id": "msg_093e7cef3001kE6GEr8ifQr1fc",
+            "ordered_text": "Inspect shows `checkout.py` sums only `price` and always adds 5, ignoring `quantity`.\n\nBaseline (`SB_SURVIVAL_V1_CONTEXT_cafe_🙂`):\n- `[[10,2],[5,1]]`: actual 20 vs expected 30 -> fail (quantity ignored)\n- `[[25,2]]`: actual 30 vs expected 50 -> fail (quantity ignored)\n- `[[49,1]]`: actual 54 vs expected 54 -> pass\n\nResult: 1/3 passed, 2/3 failed. Defect confirmed. No edit made.\n\nSB_SURVIVAL_V1_RESPONSE_R1_cafe_🙂"
+          },
+          {
+            "id": "msg_093e8776a001lAIpl97Sww4R0r",
+            "ordered_text": "Changed `fixture_project/checkout.py` to `sum(price*quantity)` and return `subtotal` if >=50 else `subtotal+5` (`SB_SURVIVAL_V1_CONTEXT_cafe_🙂`).\n\nFinal: 3/3 passed — 30==30, 50==50, 54==54.\n\nSB_SURVIVAL_V1_RESPONSE_R2_correction_Δ"
+          }
+        ],
+        "response_ids": [
+          "msg_093e7cef3001kE6GEr8ifQr1fc",
+          "msg_093e8776a001lAIpl97Sww4R0r"
+        ]
+      },
+      "broad.self_contained_identity": {
+        "absolute_path_required": false,
+        "evidence_complete": true,
+        "external_lookup_required": false,
+        "harness": "Session-Bench OpenCode controller v1",
+        "record_family": "opencode-sqlite-v1",
+        "session_id": "ses_f6c184ee6ffe3jZXsnk8LxRS1F",
+        "surface": "cli"
+      },
+      "broad.stable_root_location": {
+        "evidence_complete": true,
+        "repetitions": [
+          {
+            "isolated_discovery": true,
+            "personal_history_scanned": false,
+            "repetition": 1,
+            "root_locator": "isolated/opencode-cli-eval-1/database"
+          },
+          {
+            "isolated_discovery": true,
+            "personal_history_scanned": false,
+            "repetition": 2,
+            "root_locator": "isolated/opencode-cli-eval-2/database"
+          },
+          {
+            "isolated_discovery": true,
+            "personal_history_scanned": false,
+            "repetition": 3,
+            "root_locator": "isolated/opencode-cli-eval-3/database"
+          }
+        ]
+      },
+      "broad.standard_tools_readable": {
+        "account_required": false,
+        "backend_required": false,
+        "container": "sqlite",
+        "evidence_complete": true,
+        "network_required": false,
+        "parser": "Python sqlite3 plus Session-Bench decoder",
+        "vendor_binary_required": false
+      },
+      "broad.thread_structure": {
+        "evidence_complete": true,
+        "explicit_parentage": false,
+        "session_id": "ses_f6c184ee6ffe3jZXsnk8LxRS1F",
+        "turns": [
+          {
+            "id": "msg_093e7b13a00126DVWQwM7BwdYg",
+            "ordinal": 1,
+            "parent_id": null,
+            "role": "user"
+          },
+          {
+            "id": "msg_093e861f6001RS9mFq61cjpvRV",
+            "ordinal": 2,
+            "parent_id": null,
+            "role": "user"
+          }
+        ]
+      }
+    },
+    "configuration_id": "opencode-cli",
+    "repetition": 1,
+    "run_id": "opencode_cli_eval_1",
+    "schema_version": "session-bench-format-profile-v1"
+  },
+  "repetition": 1,
+  "result_id": "survival-result-288bebe137b5a7ff7e47f230",
+  "run_id": "opencode_cli_eval_1",
+  "schema_version": "session-bench-format-evidence-v1"
+}

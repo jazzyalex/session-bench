@@ -1,0 +1,125 @@
+{
+  "schema_version": "session-bench-survival-mutations-v1",
+  "mutations": [
+    {
+      "name": "remove_prompt",
+      "updates": {"work.submitted_turns": {"correct": 1, "decoded_eligible": 1}},
+      "changed_metrics": ["work.submitted_turns"],
+      "portable_gate": true
+    },
+    {
+      "name": "remove_visible_response",
+      "updates": {
+        "work.visible_responses": {"correct": 1, "decoded_eligible": 1},
+        "causal.turn_response": {"correct": 1, "decoded_eligible": 1}
+      },
+      "changed_metrics": ["work.visible_responses", "causal.turn_response"],
+      "portable_gate": true
+    },
+    {
+      "name": "remove_action",
+      "updates": {"work.actions": {"correct": 3, "decoded_eligible": 3}},
+      "changed_metrics": ["work.actions"],
+      "portable_gate": true
+    },
+    {
+      "name": "remove_result",
+      "updates": {
+        "work.results": {"correct": 3, "decoded_eligible": 3},
+        "causal.action_result": {"correct": 3, "decoded_eligible": 3}
+      },
+      "changed_metrics": ["work.results", "causal.action_result"],
+      "portable_gate": true
+    },
+    {
+      "name": "remove_changed_file_evidence",
+      "updates": {"work.changed_files": {"state": "contradiction", "correct": 0}},
+      "changed_metrics": ["work.changed_files"],
+      "portable_gate": true
+    },
+    {
+      "name": "remove_r1",
+      "updates": {"revision.r1": {"state": "native_absent", "correct": 0, "decoded_eligible": 0}},
+      "changed_metrics": ["revision.r1"],
+      "portable_gate": true
+    },
+    {
+      "name": "remove_r2",
+      "updates": {"revision.r2": {"state": "native_absent", "correct": 0, "decoded_eligible": 0}},
+      "changed_metrics": ["revision.r2"],
+      "portable_gate": true
+    },
+    {
+      "name": "reverse_revision_order",
+      "updates": {"revision.r1_r2_order": {"state": "contradiction", "correct": 0}},
+      "changed_metrics": ["revision.r1_r2_order"],
+      "portable_gate": true
+    },
+    {
+      "name": "remove_correction_link",
+      "updates": {"revision.final_after_r2": {"state": "contradiction", "correct": 0}},
+      "changed_metrics": ["revision.final_after_r2"],
+      "portable_gate": true
+    },
+    {
+      "name": "remove_model_config_join",
+      "updates": {"attribution.model_config": {"correct": 1}},
+      "changed_metrics": ["attribution.model_config"],
+      "portable_gate": true
+    },
+    {
+      "name": "remove_usage_join",
+      "updates": {"attribution.usage": {"correct": 1}},
+      "changed_metrics": ["attribution.usage"],
+      "portable_gate": true
+    },
+    {
+      "name": "remove_token_semantics",
+      "updates": {"attribution.token_semantics": {"correct": 1}},
+      "changed_metrics": ["attribution.token_semantics"],
+      "portable_gate": true
+    },
+    {
+      "name": "break_usage_reconciliation",
+      "updates": {"attribution.reconciliation": {"state": "contradiction", "correct": 0}},
+      "changed_metrics": ["attribution.reconciliation"],
+      "portable_gate": true
+    },
+    {
+      "name": "incomplete_declared_root",
+      "updates": {"portable.complete_root": {"state": "contradiction", "correct": 0}},
+      "changed_metrics": ["portable.complete_root"],
+      "portable_gate": false
+    },
+    {
+      "name": "missing_companion",
+      "updates": {"portable.companions": {"state": "native_absent", "correct": 0, "decoded_eligible": 0}},
+      "changed_metrics": ["portable.companions"],
+      "portable_gate": false
+    },
+    {
+      "name": "swap_action_result_joins",
+      "updates": {"causal.action_result": {"correct": 2}},
+      "changed_metrics": ["causal.action_result"],
+      "portable_gate": true
+    },
+    {
+      "name": "duplicate_prompt_id",
+      "updates": {"work.submitted_turns": {"correct": 2, "decoded_eligible": 3}},
+      "changed_metrics": ["work.submitted_turns"],
+      "portable_gate": true
+    },
+    {
+      "name": "original_root_dependency",
+      "updates": {"portable.isolated_decode": {"state": "contradiction", "correct": 0}},
+      "changed_metrics": ["portable.isolated_decode"],
+      "portable_gate": false
+    },
+    {
+      "name": "canonical_reconstruction_mismatch",
+      "updates": {"portable.canonical_equality": {"state": "contradiction", "correct": 0}},
+      "changed_metrics": ["portable.canonical_equality"],
+      "portable_gate": false
+    }
+  ]
+}

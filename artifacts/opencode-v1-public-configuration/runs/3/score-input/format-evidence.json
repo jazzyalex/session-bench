@@ -1,0 +1,778 @@
+{
+  "build": "1.18.30",
+  "collected_on": "2026-09-14",
+  "configuration_id": "opencode-cli",
+  "metric_evidence": [
+    {
+      "metric_id": "broad.readable_rationale",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "14abe9f00beeca68a5dc3ad7f4f51ad3582597af9273ceb276c982b629c09f1b"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-3"
+      ]
+    },
+    {
+      "metric_id": "broad.thread_structure",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "14abe9f00beeca68a5dc3ad7f4f51ad3582597af9273ceb276c982b629c09f1b"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-3"
+      ]
+    },
+    {
+      "metric_id": "broad.standard_tools_readable",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "14abe9f00beeca68a5dc3ad7f4f51ad3582597af9273ceb276c982b629c09f1b"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-3"
+      ]
+    },
+    {
+      "metric_id": "broad.documented_format",
+      "native_locators": [
+        {
+          "id": "documentation:opencode-cli",
+          "sha256": "5d47fc678018e2cc1298a68b74c27f83451e7cd308c5cc3406f371cf8840f1a6"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-3"
+      ]
+    },
+    {
+      "metric_id": "broad.self_contained_identity",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "14abe9f00beeca68a5dc3ad7f4f51ad3582597af9273ceb276c982b629c09f1b"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-3"
+      ]
+    },
+    {
+      "metric_id": "broad.declared_format_version",
+      "native_locators": [
+        {
+          "id": "runtime:manifest",
+          "sha256": "d1236c5d58244787d5392900bb934cffbd0dbe9802cc4edac15149bfa6e7b299"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-3"
+      ]
+    },
+    {
+      "metric_id": "broad.event_timestamps",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "14abe9f00beeca68a5dc3ad7f4f51ad3582597af9273ceb276c982b629c09f1b"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-3"
+      ]
+    },
+    {
+      "metric_id": "broad.honest_version_signal",
+      "native_locators": [
+        {
+          "id": "runtime:manifest",
+          "sha256": "d1236c5d58244787d5392900bb934cffbd0dbe9802cc4edac15149bfa6e7b299"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-3"
+      ]
+    },
+    {
+      "metric_id": "broad.observed_schema_stability",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "14abe9f00beeca68a5dc3ad7f4f51ad3582597af9273ceb276c982b629c09f1b"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-3"
+      ]
+    },
+    {
+      "metric_id": "broad.stable_root_location",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "14abe9f00beeca68a5dc3ad7f4f51ad3582597af9273ceb276c982b629c09f1b"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-3"
+      ]
+    },
+    {
+      "metric_id": "broad.naive_reader_duplicate_safety",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "14abe9f00beeca68a5dc3ad7f4f51ad3582597af9273ceb276c982b629c09f1b"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-3"
+      ]
+    },
+    {
+      "metric_id": "broad.classified_content_density",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "14abe9f00beeca68a5dc3ad7f4f51ad3582597af9273ceb276c982b629c09f1b"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-3"
+      ]
+    }
+  ],
+  "native_manifest": {
+    "id": "manifest:opencode-cli-eval-3",
+    "sha256": "1f99eedbfe5a89d3b8d0382c18d8ff6bb45eb55badbb7eb20a4f7a93e529da65"
+  },
+  "observer": {
+    "id": "observer:opencode-cli-eval-3",
+    "sha256": "a5ea00e775b12900208a03dd67bbe1d99677c65ac7867ca9080207e2237c5034"
+  },
+  "profile": {
+    "broad_evidence": {
+      "broad.classified_content_density": {
+        "classification_rule": "logical-record-role-v1",
+        "evidence_complete": true,
+        "records": [
+          {
+            "classification": "useful",
+            "logical_bytes": 669,
+            "record_id": "0:msg_093f1ecd2001ZdP5bGEohrNk3T",
+            "record_kind": "user_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "1:prt_093f1f7f90011603o0EyLeQfMG",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "2:prt_093f1f7f90011603o0EyLeQfMG",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 71,
+            "record_id": "3:msg_093f1edda001WRopLsKH6ClENj",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "4:prt_093f20004001fi396LDZnI7pCD",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "5:prt_093f20004001fi396LDZnI7pCD",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "6:msg_093f1f9b30015G38CLJKY6LtRN",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "7:prt_093f2065c001cmEMyoviEYVLhu",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "8:prt_093f2065c001cmEMyoviEYVLhu",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "9:msg_093f20055001GV2ocjoUcLd3AT",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "10:prt_093f20b15001kxOJJ1RztEZ7LN",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "11:prt_093f20b15001kxOJJ1RztEZ7LN",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "12:msg_093f20829001d41Y4FReZ28y2K",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 597,
+            "record_id": "13:msg_093f20b7a0014yOee1aA5Vpzo6",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 518,
+            "record_id": "14:msg_093f24a90001m1gKuLKtK9udts",
+            "record_kind": "user_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "15:prt_093f25328001JkXVJzg31Erj8d",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "16:prt_093f25328001JkXVJzg31Erj8d",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "17:prt_093f25404001XXo7t0yysbO6sZ",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "18:prt_093f25404001XXo7t0yysbO6sZ",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 68,
+            "record_id": "19:msg_093f24b83001ymUE8nftdwj0Ih",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "20:prt_093f25aea001iq34n0AN0crvcT",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "21:prt_093f25aea001iq34n0AN0crvcT",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "22:prt_093f25aea001iq34n0AN0crvcT:fixture_project/checkout.py",
+            "record_kind": "file_change"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "23:msg_093f25521001gWiILQpqk87Dhe",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "24:prt_093f2603900174a3kFIAe6XOFS",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "25:prt_093f2603900174a3kFIAe6XOFS",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "26:msg_093f25d08001JZwxpUiX21aSu2",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 334,
+            "record_id": "27:msg_093f260db0012hAfVhm4V36OiE",
+            "record_kind": "assistant_message"
+          }
+        ]
+      },
+      "broad.declared_format_version": {
+        "bundle_binding": "runtime:manifest",
+        "evidence_complete": true,
+        "format_version": "",
+        "machine_readable": false
+      },
+      "broad.documented_format": {
+        "document_id": "docs/survival-v1/adapters/opencode-cli.md",
+        "evidence_complete": true,
+        "mapping": {
+          "containers": "Quiescent SQLite/WAL/SHM capture",
+          "identities": "session ID",
+          "joins": "message and part session/message IDs",
+          "record_types": "session, message, part",
+          "version_semantics": "decoder contract is versioned"
+        }
+      },
+      "broad.event_timestamps": {
+        "event_ids": [
+          "msg_093f1ecd2001ZdP5bGEohrNk3T",
+          "prt_093f1f7f90011603o0EyLeQfMG",
+          "msg_093f1edda001WRopLsKH6ClENj",
+          "prt_093f20004001fi396LDZnI7pCD",
+          "msg_093f1f9b30015G38CLJKY6LtRN",
+          "prt_093f2065c001cmEMyoviEYVLhu",
+          "msg_093f20055001GV2ocjoUcLd3AT",
+          "prt_093f20b15001kxOJJ1RztEZ7LN",
+          "msg_093f20829001d41Y4FReZ28y2K",
+          "msg_093f20b7a0014yOee1aA5Vpzo6",
+          "msg_093f24a90001m1gKuLKtK9udts",
+          "prt_093f25328001JkXVJzg31Erj8d",
+          "prt_093f25404001XXo7t0yysbO6sZ",
+          "msg_093f24b83001ymUE8nftdwj0Ih",
+          "prt_093f25aea001iq34n0AN0crvcT",
+          "msg_093f25521001gWiILQpqk87Dhe",
+          "prt_093f2603900174a3kFIAe6XOFS",
+          "msg_093f25d08001JZwxpUiX21aSu2",
+          "msg_093f260db0012hAfVhm4V36OiE"
+        ],
+        "evidence_complete": true,
+        "records": [
+          {
+            "id": "msg_093f1ecd2001ZdP5bGEohrNk3T",
+            "time_zone": "UTC",
+            "timestamp": 1789188500690,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f1f7f90011603o0EyLeQfMG",
+            "time_zone": "UTC",
+            "timestamp": 1789188503545,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f1edda001WRopLsKH6ClENj",
+            "time_zone": "UTC",
+            "timestamp": 1789188500954,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f20004001fi396LDZnI7pCD",
+            "time_zone": "UTC",
+            "timestamp": 1789188505604,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f1f9b30015G38CLJKY6LtRN",
+            "time_zone": "UTC",
+            "timestamp": 1789188503987,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f2065c001cmEMyoviEYVLhu",
+            "time_zone": "UTC",
+            "timestamp": 1789188507229,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f20055001GV2ocjoUcLd3AT",
+            "time_zone": "UTC",
+            "timestamp": 1789188505685,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f20b15001kxOJJ1RztEZ7LN",
+            "time_zone": "UTC",
+            "timestamp": 1789188508437,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f20829001d41Y4FReZ28y2K",
+            "time_zone": "UTC",
+            "timestamp": 1789188507689,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f20b7a0014yOee1aA5Vpzo6",
+            "time_zone": "UTC",
+            "timestamp": 1789188508538,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f24a90001m1gKuLKtK9udts",
+            "time_zone": "UTC",
+            "timestamp": 1789188524688,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f25328001JkXVJzg31Erj8d",
+            "time_zone": "UTC",
+            "timestamp": 1789188526889,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f25404001XXo7t0yysbO6sZ",
+            "time_zone": "UTC",
+            "timestamp": 1789188527108,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f24b83001ymUE8nftdwj0Ih",
+            "time_zone": "UTC",
+            "timestamp": 1789188524931,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f25aea001iq34n0AN0crvcT",
+            "time_zone": "UTC",
+            "timestamp": 1789188528874,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f25521001gWiILQpqk87Dhe",
+            "time_zone": "UTC",
+            "timestamp": 1789188527393,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f2603900174a3kFIAe6XOFS",
+            "time_zone": "UTC",
+            "timestamp": 1789188530233,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f25d08001JZwxpUiX21aSu2",
+            "time_zone": "UTC",
+            "timestamp": 1789188529416,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f260db0012hAfVhm4V36OiE",
+            "time_zone": "UTC",
+            "timestamp": 1789188530395,
+            "unit": "unix_ms"
+          }
+        ]
+      },
+      "broad.honest_version_signal": {
+        "declared_version": "1.18.30",
+        "decoder_contract_version": "opencode-sqlite-session-v1",
+        "evidence_complete": true,
+        "incompatible_schema_distinguished": false,
+        "matches_decoder_contract": false
+      },
+      "broad.naive_reader_duplicate_safety": {
+        "deduplication": {
+          "documented": true,
+          "rule": "semantic identity is native record kind plus native row ID"
+        },
+        "event_ids": [
+          "user_message:msg_093f1ecd2001ZdP5bGEohrNk3T",
+          "tool_call:prt_093f1f7f90011603o0EyLeQfMG",
+          "tool_result:prt_093f1f7f90011603o0EyLeQfMG",
+          "assistant_message:msg_093f1edda001WRopLsKH6ClENj",
+          "tool_call:prt_093f20004001fi396LDZnI7pCD",
+          "tool_result:prt_093f20004001fi396LDZnI7pCD",
+          "assistant_message:msg_093f1f9b30015G38CLJKY6LtRN",
+          "tool_call:prt_093f2065c001cmEMyoviEYVLhu",
+          "tool_result:prt_093f2065c001cmEMyoviEYVLhu",
+          "assistant_message:msg_093f20055001GV2ocjoUcLd3AT",
+          "tool_call:prt_093f20b15001kxOJJ1RztEZ7LN",
+          "tool_result:prt_093f20b15001kxOJJ1RztEZ7LN",
+          "assistant_message:msg_093f20829001d41Y4FReZ28y2K",
+          "assistant_message:msg_093f20b7a0014yOee1aA5Vpzo6",
+          "user_message:msg_093f24a90001m1gKuLKtK9udts",
+          "tool_call:prt_093f25328001JkXVJzg31Erj8d",
+          "tool_result:prt_093f25328001JkXVJzg31Erj8d",
+          "tool_call:prt_093f25404001XXo7t0yysbO6sZ",
+          "tool_result:prt_093f25404001XXo7t0yysbO6sZ",
+          "assistant_message:msg_093f24b83001ymUE8nftdwj0Ih",
+          "tool_call:prt_093f25aea001iq34n0AN0crvcT",
+          "tool_result:prt_093f25aea001iq34n0AN0crvcT",
+          "file_change:prt_093f25aea001iq34n0AN0crvcT:fixture_project/checkout.py",
+          "assistant_message:msg_093f25521001gWiILQpqk87Dhe",
+          "tool_call:prt_093f2603900174a3kFIAe6XOFS",
+          "tool_result:prt_093f2603900174a3kFIAe6XOFS",
+          "assistant_message:msg_093f25d08001JZwxpUiX21aSu2",
+          "assistant_message:msg_093f260db0012hAfVhm4V36OiE"
+        ],
+        "evidence_complete": true,
+        "forward_records": [
+          {
+            "event_id": "user_message:msg_093f1ecd2001ZdP5bGEohrNk3T",
+            "occurrence_id": "row-0",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f1f7f90011603o0EyLeQfMG",
+            "occurrence_id": "row-1",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f1f7f90011603o0EyLeQfMG",
+            "occurrence_id": "row-2",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f1edda001WRopLsKH6ClENj",
+            "occurrence_id": "row-3",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f20004001fi396LDZnI7pCD",
+            "occurrence_id": "row-4",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f20004001fi396LDZnI7pCD",
+            "occurrence_id": "row-5",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f1f9b30015G38CLJKY6LtRN",
+            "occurrence_id": "row-6",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f2065c001cmEMyoviEYVLhu",
+            "occurrence_id": "row-7",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f2065c001cmEMyoviEYVLhu",
+            "occurrence_id": "row-8",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f20055001GV2ocjoUcLd3AT",
+            "occurrence_id": "row-9",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f20b15001kxOJJ1RztEZ7LN",
+            "occurrence_id": "row-10",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f20b15001kxOJJ1RztEZ7LN",
+            "occurrence_id": "row-11",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f20829001d41Y4FReZ28y2K",
+            "occurrence_id": "row-12",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f20b7a0014yOee1aA5Vpzo6",
+            "occurrence_id": "row-13",
+            "state": "active"
+          },
+          {
+            "event_id": "user_message:msg_093f24a90001m1gKuLKtK9udts",
+            "occurrence_id": "row-14",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f25328001JkXVJzg31Erj8d",
+            "occurrence_id": "row-15",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f25328001JkXVJzg31Erj8d",
+            "occurrence_id": "row-16",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f25404001XXo7t0yysbO6sZ",
+            "occurrence_id": "row-17",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f25404001XXo7t0yysbO6sZ",
+            "occurrence_id": "row-18",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f24b83001ymUE8nftdwj0Ih",
+            "occurrence_id": "row-19",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f25aea001iq34n0AN0crvcT",
+            "occurrence_id": "row-20",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f25aea001iq34n0AN0crvcT",
+            "occurrence_id": "row-21",
+            "state": "active"
+          },
+          {
+            "event_id": "file_change:prt_093f25aea001iq34n0AN0crvcT:fixture_project/checkout.py",
+            "occurrence_id": "row-22",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f25521001gWiILQpqk87Dhe",
+            "occurrence_id": "row-23",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f2603900174a3kFIAe6XOFS",
+            "occurrence_id": "row-24",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f2603900174a3kFIAe6XOFS",
+            "occurrence_id": "row-25",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f25d08001JZwxpUiX21aSu2",
+            "occurrence_id": "row-26",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f260db0012hAfVhm4V36OiE",
+            "occurrence_id": "row-27",
+            "state": "active"
+          }
+        ]
+      },
+      "broad.observed_schema_stability": {
+        "advertised_contract": "opencode-sqlite-session-v1",
+        "evidence_complete": true,
+        "exceptions": [],
+        "observations": [
+          {
+            "build": "1.18.30",
+            "decoded": true,
+            "decoder_contract": "opencode-sqlite-session-v1",
+            "observed_on": "2026-09-14"
+          }
+        ]
+      },
+      "broad.readable_rationale": {
+        "evidence_complete": true,
+        "records": [
+          {
+            "id": "msg_093f20b7a0014yOee1aA5Vpzo6",
+            "ordered_text": "Baseline inspection shows R1 defect in `checkout.py`:\n\n- `inspect` source: `subtotal = sum(price for price, quantity in items)` ignores `quantity`, then always `+5`.\n- `baseline`: 2/3 fail:\n  - `[[10,2],[5,1]]` expected 30 (10*2+5*1+5) got 20\n  - `[[25,2]]` expected 50 (25*2+5) got 30\n  - `[[49,1]]` passed (54) only because quantity=1 hides defect.\n- Matches Requirement R1: must total `unit_price * quantity` + delivery 5. No edit made to `checkout.py`.\n\nContext marker: SB_SURVIVAL_V1_CONTEXT_cafe_🙂\nRun canary: SB_SURVIVAL_V1_RUN_opencode-cli-eval-3-r3\nSB_SURVIVAL_V1_RESPONSE_R1_cafe_🙂"
+          },
+          {
+            "id": "msg_093f260db0012hAfVhm4V36OiE",
+            "ordered_text": "Fixed `fixture_project/checkout.py`: subtotal now `sum(price*quantity)`, delivery `0 if subtotal>=50 else 5`.\n\n`final`: 3/3 pass — `[[10,2],[5,1]]→30`, `[[25,2]]→50`, `[[49,1]]→54`.\n\nContext marker: SB_SURVIVAL_V1_CONTEXT_cafe_🙂\nRun canary: SB_SURVIVAL_V1_RUN_opencode-cli-eval-3-r3\nSB_SURVIVAL_V1_RESPONSE_R2_correction_Δ"
+          }
+        ],
+        "response_ids": [
+          "msg_093f20b7a0014yOee1aA5Vpzo6",
+          "msg_093f260db0012hAfVhm4V36OiE"
+        ]
+      },
+      "broad.self_contained_identity": {
+        "absolute_path_required": false,
+        "evidence_complete": true,
+        "external_lookup_required": false,
+        "harness": "Session-Bench OpenCode controller v1",
+        "record_family": "opencode-sqlite-v1",
+        "session_id": "ses_f6c0e1354ffeQjpG2PYfSL79JT",
+        "surface": "cli"
+      },
+      "broad.stable_root_location": {
+        "evidence_complete": true,
+        "repetitions": [
+          {
+            "isolated_discovery": true,
+            "personal_history_scanned": false,
+            "repetition": 1,
+            "root_locator": "isolated/opencode-cli-eval-1/database"
+          },
+          {
+            "isolated_discovery": true,
+            "personal_history_scanned": false,
+            "repetition": 2,
+            "root_locator": "isolated/opencode-cli-eval-2/database"
+          },
+          {
+            "isolated_discovery": true,
+            "personal_history_scanned": false,
+            "repetition": 3,
+            "root_locator": "isolated/opencode-cli-eval-3/database"
+          }
+        ]
+      },
+      "broad.standard_tools_readable": {
+        "account_required": false,
+        "backend_required": false,
+        "container": "sqlite",
+        "evidence_complete": true,
+        "network_required": false,
+        "parser": "Python sqlite3 plus Session-Bench decoder",
+        "vendor_binary_required": false
+      },
+      "broad.thread_structure": {
+        "evidence_complete": true,
+        "explicit_parentage": false,
+        "session_id": "ses_f6c0e1354ffeQjpG2PYfSL79JT",
+        "turns": [
+          {
+            "id": "msg_093f1ecd2001ZdP5bGEohrNk3T",
+            "ordinal": 1,
+            "parent_id": null,
+            "role": "user"
+          },
+          {
+            "id": "msg_093f24a90001m1gKuLKtK9udts",
+            "ordinal": 2,
+            "parent_id": null,
+            "role": "user"
+          }
+        ]
+      }
+    },
+    "configuration_id": "opencode-cli",
+    "repetition": 3,
+    "run_id": "opencode-cli-eval-3-r3",
+    "schema_version": "session-bench-format-profile-v1"
+  },
+  "repetition": 3,
+  "result_id": "survival-result-2535b4cb5914f82d146b88e4",
+  "run_id": "opencode-cli-eval-3-r3",
+  "schema_version": "session-bench-format-evidence-v1"
+}

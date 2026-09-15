@@ -1,2 +1,16 @@
 __pycache__/
 *.pyc
+artifacts/prototype-v1/
+artifacts/v1-report-demo/
+artifacts/v1-report-authoritative-control/
+artifacts/survival-v1-runs/
+artifacts/*
+!artifacts/survival-v1-public-configurations/
+!artifacts/survival-v1-public-configurations/**
+!artifacts/opencode-v1-public-configuration/
+!artifacts/opencode-v1-public-configuration/**
+!artifacts/survival-v1-public-evidence-index/
+!artifacts/survival-v1-public-evidence-index/**
+!artifacts/survival-v1-review-candidate/
+!artifacts/survival-v1-review-candidate/**
+fixture_project/

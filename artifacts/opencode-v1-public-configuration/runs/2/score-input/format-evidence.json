@@ -1,0 +1,828 @@
+{
+  "build": "1.18.30",
+  "collected_on": "2026-09-14",
+  "configuration_id": "opencode-cli",
+  "metric_evidence": [
+    {
+      "metric_id": "broad.readable_rationale",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "b3bf9e78ffcc0365af644abc7c6efac84b5d916bba4d54e8471c0606fb391cc5"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-2"
+      ]
+    },
+    {
+      "metric_id": "broad.thread_structure",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "b3bf9e78ffcc0365af644abc7c6efac84b5d916bba4d54e8471c0606fb391cc5"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-2"
+      ]
+    },
+    {
+      "metric_id": "broad.standard_tools_readable",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "b3bf9e78ffcc0365af644abc7c6efac84b5d916bba4d54e8471c0606fb391cc5"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-2"
+      ]
+    },
+    {
+      "metric_id": "broad.documented_format",
+      "native_locators": [
+        {
+          "id": "documentation:opencode-cli",
+          "sha256": "5d47fc678018e2cc1298a68b74c27f83451e7cd308c5cc3406f371cf8840f1a6"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-2"
+      ]
+    },
+    {
+      "metric_id": "broad.self_contained_identity",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "b3bf9e78ffcc0365af644abc7c6efac84b5d916bba4d54e8471c0606fb391cc5"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-2"
+      ]
+    },
+    {
+      "metric_id": "broad.declared_format_version",
+      "native_locators": [
+        {
+          "id": "runtime:manifest",
+          "sha256": "d1236c5d58244787d5392900bb934cffbd0dbe9802cc4edac15149bfa6e7b299"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-2"
+      ]
+    },
+    {
+      "metric_id": "broad.event_timestamps",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "b3bf9e78ffcc0365af644abc7c6efac84b5d916bba4d54e8471c0606fb391cc5"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-2"
+      ]
+    },
+    {
+      "metric_id": "broad.honest_version_signal",
+      "native_locators": [
+        {
+          "id": "runtime:manifest",
+          "sha256": "d1236c5d58244787d5392900bb934cffbd0dbe9802cc4edac15149bfa6e7b299"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-2"
+      ]
+    },
+    {
+      "metric_id": "broad.observed_schema_stability",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "b3bf9e78ffcc0365af644abc7c6efac84b5d916bba4d54e8471c0606fb391cc5"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-2"
+      ]
+    },
+    {
+      "metric_id": "broad.stable_root_location",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "b3bf9e78ffcc0365af644abc7c6efac84b5d916bba4d54e8471c0606fb391cc5"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-2"
+      ]
+    },
+    {
+      "metric_id": "broad.naive_reader_duplicate_safety",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "b3bf9e78ffcc0365af644abc7c6efac84b5d916bba4d54e8471c0606fb391cc5"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-2"
+      ]
+    },
+    {
+      "metric_id": "broad.classified_content_density",
+      "native_locators": [
+        {
+          "id": "native:opencode.db",
+          "sha256": "b3bf9e78ffcc0365af644abc7c6efac84b5d916bba4d54e8471c0606fb391cc5"
+        }
+      ],
+      "observer_ids": [
+        "observer:opencode-cli-eval-2"
+      ]
+    }
+  ],
+  "native_manifest": {
+    "id": "manifest:opencode-cli-eval-2",
+    "sha256": "7e1872780adf061b4dbe65295bd0303189b6f974e9d3c7c6e17a593dd2687b41"
+  },
+  "observer": {
+    "id": "observer:opencode-cli-eval-2",
+    "sha256": "5e197fd9f279d178f8060c7ecedc5a690fac86becc6361bc5e70fa8e4f4fc783"
+  },
+  "profile": {
+    "broad_evidence": {
+      "broad.classified_content_density": {
+        "classification_rule": "logical-record-role-v1",
+        "evidence_complete": true,
+        "records": [
+          {
+            "classification": "useful",
+            "logical_bytes": 669,
+            "record_id": "0:msg_093f0f683001NNK3D5afNVJGSy",
+            "record_kind": "user_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "1:prt_093f101f7001P7pQ9kY0PeWbey",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "2:prt_093f101f7001P7pQ9kY0PeWbey",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 59,
+            "record_id": "3:msg_093f0f76b001ooN4RufEt2Vq8U",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "4:prt_093f107830015euaYzKzgTmzox",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "5:prt_093f107830015euaYzKzgTmzox",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "6:msg_093f102a5001D94dlu0Lwbvh51",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "7:prt_093f10ab2001hAsNsu5rFtWO0s",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "8:prt_093f10ab2001hAsNsu5rFtWO0s",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "9:prt_093f10ab4001A045vkhMxHdWuL",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "10:prt_093f10ab4001A045vkhMxHdWuL",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "11:msg_093f107ca001oWFFiic9Xwg3Tz",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "12:prt_093f114970011XQs8CN3z6T6fr",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "13:prt_093f114970011XQs8CN3z6T6fr",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "14:msg_093f10ba8001orp8V12MpgdIqd",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "15:prt_093f118e9001VQIKlqOV1yu72G",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "16:prt_093f118e9001VQIKlqOV1yu72G",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "17:msg_093f115ae0015rGlYou7vEK6TT",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 613,
+            "record_id": "18:msg_093f119a9001QVV4CHMABvDyMx",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 518,
+            "record_id": "19:msg_093f14485001yuoX5KiRfNqrpW",
+            "record_kind": "user_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "20:prt_093f150b0001k5jB5vHfVUjgNO",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "21:prt_093f150b0001k5jB5vHfVUjgNO",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 68,
+            "record_id": "22:msg_093f1457e001e0Wx57XWJkEO85",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "23:prt_093f156a0001sUSAWb19Xo4NOr",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "24:prt_093f156a0001sUSAWb19Xo4NOr",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "25:prt_093f156a0001sUSAWb19Xo4NOr:fixture_project/checkout.py",
+            "record_kind": "file_change"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "26:msg_093f151530013Gv1RK8UsfxrDp",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "27:prt_093f15a4a001Z3kLkeRzZ7oLhM",
+            "record_kind": "tool_call"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "28:prt_093f15a4a001Z3kLkeRzZ7oLhM",
+            "record_kind": "tool_result"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 0,
+            "record_id": "29:msg_093f156e6001uZIoh5yZ5ZZ1cM",
+            "record_kind": "assistant_message"
+          },
+          {
+            "classification": "useful",
+            "logical_bytes": 374,
+            "record_id": "30:msg_093f15ae2001AHucQpX4HAE972",
+            "record_kind": "assistant_message"
+          }
+        ]
+      },
+      "broad.declared_format_version": {
+        "bundle_binding": "runtime:manifest",
+        "evidence_complete": true,
+        "format_version": "",
+        "machine_readable": false
+      },
+      "broad.documented_format": {
+        "document_id": "docs/survival-v1/adapters/opencode-cli.md",
+        "evidence_complete": true,
+        "mapping": {
+          "containers": "Quiescent SQLite/WAL/SHM capture",
+          "identities": "session ID",
+          "joins": "message and part session/message IDs",
+          "record_types": "session, message, part",
+          "version_semantics": "decoder contract is versioned"
+        }
+      },
+      "broad.event_timestamps": {
+        "event_ids": [
+          "msg_093f0f683001NNK3D5afNVJGSy",
+          "prt_093f101f7001P7pQ9kY0PeWbey",
+          "msg_093f0f76b001ooN4RufEt2Vq8U",
+          "prt_093f107830015euaYzKzgTmzox",
+          "msg_093f102a5001D94dlu0Lwbvh51",
+          "prt_093f10ab2001hAsNsu5rFtWO0s",
+          "prt_093f10ab4001A045vkhMxHdWuL",
+          "msg_093f107ca001oWFFiic9Xwg3Tz",
+          "prt_093f114970011XQs8CN3z6T6fr",
+          "msg_093f10ba8001orp8V12MpgdIqd",
+          "prt_093f118e9001VQIKlqOV1yu72G",
+          "msg_093f115ae0015rGlYou7vEK6TT",
+          "msg_093f119a9001QVV4CHMABvDyMx",
+          "msg_093f14485001yuoX5KiRfNqrpW",
+          "prt_093f150b0001k5jB5vHfVUjgNO",
+          "msg_093f1457e001e0Wx57XWJkEO85",
+          "prt_093f156a0001sUSAWb19Xo4NOr",
+          "msg_093f151530013Gv1RK8UsfxrDp",
+          "prt_093f15a4a001Z3kLkeRzZ7oLhM",
+          "msg_093f156e6001uZIoh5yZ5ZZ1cM",
+          "msg_093f15ae2001AHucQpX4HAE972"
+        ],
+        "evidence_complete": true,
+        "records": [
+          {
+            "id": "msg_093f0f683001NNK3D5afNVJGSy",
+            "time_zone": "UTC",
+            "timestamp": 1789188437635,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f101f7001P7pQ9kY0PeWbey",
+            "time_zone": "UTC",
+            "timestamp": 1789188440567,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f0f76b001ooN4RufEt2Vq8U",
+            "time_zone": "UTC",
+            "timestamp": 1789188437867,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f107830015euaYzKzgTmzox",
+            "time_zone": "UTC",
+            "timestamp": 1789188441987,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f102a5001D94dlu0Lwbvh51",
+            "time_zone": "UTC",
+            "timestamp": 1789188440741,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f10ab2001hAsNsu5rFtWO0s",
+            "time_zone": "UTC",
+            "timestamp": 1789188442802,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f10ab4001A045vkhMxHdWuL",
+            "time_zone": "UTC",
+            "timestamp": 1789188442804,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f107ca001oWFFiic9Xwg3Tz",
+            "time_zone": "UTC",
+            "timestamp": 1789188442058,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f114970011XQs8CN3z6T6fr",
+            "time_zone": "UTC",
+            "timestamp": 1789188445335,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f10ba8001orp8V12MpgdIqd",
+            "time_zone": "UTC",
+            "timestamp": 1789188443048,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f118e9001VQIKlqOV1yu72G",
+            "time_zone": "UTC",
+            "timestamp": 1789188446441,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f115ae0015rGlYou7vEK6TT",
+            "time_zone": "UTC",
+            "timestamp": 1789188445614,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f119a9001QVV4CHMABvDyMx",
+            "time_zone": "UTC",
+            "timestamp": 1789188446633,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f14485001yuoX5KiRfNqrpW",
+            "time_zone": "UTC",
+            "timestamp": 1789188457605,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f150b0001k5jB5vHfVUjgNO",
+            "time_zone": "UTC",
+            "timestamp": 1789188460720,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f1457e001e0Wx57XWJkEO85",
+            "time_zone": "UTC",
+            "timestamp": 1789188457854,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f156a0001sUSAWb19Xo4NOr",
+            "time_zone": "UTC",
+            "timestamp": 1789188462240,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f151530013Gv1RK8UsfxrDp",
+            "time_zone": "UTC",
+            "timestamp": 1789188460883,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "prt_093f15a4a001Z3kLkeRzZ7oLhM",
+            "time_zone": "UTC",
+            "timestamp": 1789188463178,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f156e6001uZIoh5yZ5ZZ1cM",
+            "time_zone": "UTC",
+            "timestamp": 1789188462310,
+            "unit": "unix_ms"
+          },
+          {
+            "id": "msg_093f15ae2001AHucQpX4HAE972",
+            "time_zone": "UTC",
+            "timestamp": 1789188463330,
+            "unit": "unix_ms"
+          }
+        ]
+      },
+      "broad.honest_version_signal": {
+        "declared_version": "1.18.30",
+        "decoder_contract_version": "opencode-sqlite-session-v1",
+        "evidence_complete": true,
+        "incompatible_schema_distinguished": false,
+        "matches_decoder_contract": false
+      },
+      "broad.naive_reader_duplicate_safety": {
+        "deduplication": {
+          "documented": true,
+          "rule": "semantic identity is native record kind plus native row ID"
+        },
+        "event_ids": [
+          "user_message:msg_093f0f683001NNK3D5afNVJGSy",
+          "tool_call:prt_093f101f7001P7pQ9kY0PeWbey",
+          "tool_result:prt_093f101f7001P7pQ9kY0PeWbey",
+          "assistant_message:msg_093f0f76b001ooN4RufEt2Vq8U",
+          "tool_call:prt_093f107830015euaYzKzgTmzox",
+          "tool_result:prt_093f107830015euaYzKzgTmzox",
+          "assistant_message:msg_093f102a5001D94dlu0Lwbvh51",
+          "tool_call:prt_093f10ab2001hAsNsu5rFtWO0s",
+          "tool_result:prt_093f10ab2001hAsNsu5rFtWO0s",
+          "tool_call:prt_093f10ab4001A045vkhMxHdWuL",
+          "tool_result:prt_093f10ab4001A045vkhMxHdWuL",
+          "assistant_message:msg_093f107ca001oWFFiic9Xwg3Tz",
+          "tool_call:prt_093f114970011XQs8CN3z6T6fr",
+          "tool_result:prt_093f114970011XQs8CN3z6T6fr",
+          "assistant_message:msg_093f10ba8001orp8V12MpgdIqd",
+          "tool_call:prt_093f118e9001VQIKlqOV1yu72G",
+          "tool_result:prt_093f118e9001VQIKlqOV1yu72G",
+          "assistant_message:msg_093f115ae0015rGlYou7vEK6TT",
+          "assistant_message:msg_093f119a9001QVV4CHMABvDyMx",
+          "user_message:msg_093f14485001yuoX5KiRfNqrpW",
+          "tool_call:prt_093f150b0001k5jB5vHfVUjgNO",
+          "tool_result:prt_093f150b0001k5jB5vHfVUjgNO",
+          "assistant_message:msg_093f1457e001e0Wx57XWJkEO85",
+          "tool_call:prt_093f156a0001sUSAWb19Xo4NOr",
+          "tool_result:prt_093f156a0001sUSAWb19Xo4NOr",
+          "file_change:prt_093f156a0001sUSAWb19Xo4NOr:fixture_project/checkout.py",
+          "assistant_message:msg_093f151530013Gv1RK8UsfxrDp",
+          "tool_call:prt_093f15a4a001Z3kLkeRzZ7oLhM",
+          "tool_result:prt_093f15a4a001Z3kLkeRzZ7oLhM",
+          "assistant_message:msg_093f156e6001uZIoh5yZ5ZZ1cM",
+          "assistant_message:msg_093f15ae2001AHucQpX4HAE972"
+        ],
+        "evidence_complete": true,
+        "forward_records": [
+          {
+            "event_id": "user_message:msg_093f0f683001NNK3D5afNVJGSy",
+            "occurrence_id": "row-0",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f101f7001P7pQ9kY0PeWbey",
+            "occurrence_id": "row-1",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f101f7001P7pQ9kY0PeWbey",
+            "occurrence_id": "row-2",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f0f76b001ooN4RufEt2Vq8U",
+            "occurrence_id": "row-3",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f107830015euaYzKzgTmzox",
+            "occurrence_id": "row-4",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f107830015euaYzKzgTmzox",
+            "occurrence_id": "row-5",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f102a5001D94dlu0Lwbvh51",
+            "occurrence_id": "row-6",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f10ab2001hAsNsu5rFtWO0s",
+            "occurrence_id": "row-7",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f10ab2001hAsNsu5rFtWO0s",
+            "occurrence_id": "row-8",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f10ab4001A045vkhMxHdWuL",
+            "occurrence_id": "row-9",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f10ab4001A045vkhMxHdWuL",
+            "occurrence_id": "row-10",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f107ca001oWFFiic9Xwg3Tz",
+            "occurrence_id": "row-11",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f114970011XQs8CN3z6T6fr",
+            "occurrence_id": "row-12",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f114970011XQs8CN3z6T6fr",
+            "occurrence_id": "row-13",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f10ba8001orp8V12MpgdIqd",
+            "occurrence_id": "row-14",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f118e9001VQIKlqOV1yu72G",
+            "occurrence_id": "row-15",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f118e9001VQIKlqOV1yu72G",
+            "occurrence_id": "row-16",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f115ae0015rGlYou7vEK6TT",
+            "occurrence_id": "row-17",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f119a9001QVV4CHMABvDyMx",
+            "occurrence_id": "row-18",
+            "state": "active"
+          },
+          {
+            "event_id": "user_message:msg_093f14485001yuoX5KiRfNqrpW",
+            "occurrence_id": "row-19",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f150b0001k5jB5vHfVUjgNO",
+            "occurrence_id": "row-20",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f150b0001k5jB5vHfVUjgNO",
+            "occurrence_id": "row-21",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f1457e001e0Wx57XWJkEO85",
+            "occurrence_id": "row-22",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f156a0001sUSAWb19Xo4NOr",
+            "occurrence_id": "row-23",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f156a0001sUSAWb19Xo4NOr",
+            "occurrence_id": "row-24",
+            "state": "active"
+          },
+          {
+            "event_id": "file_change:prt_093f156a0001sUSAWb19Xo4NOr:fixture_project/checkout.py",
+            "occurrence_id": "row-25",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f151530013Gv1RK8UsfxrDp",
+            "occurrence_id": "row-26",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_call:prt_093f15a4a001Z3kLkeRzZ7oLhM",
+            "occurrence_id": "row-27",
+            "state": "active"
+          },
+          {
+            "event_id": "tool_result:prt_093f15a4a001Z3kLkeRzZ7oLhM",
+            "occurrence_id": "row-28",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f156e6001uZIoh5yZ5ZZ1cM",
+            "occurrence_id": "row-29",
+            "state": "active"
+          },
+          {
+            "event_id": "assistant_message:msg_093f15ae2001AHucQpX4HAE972",
+            "occurrence_id": "row-30",
+            "state": "active"
+          }
+        ]
+      },
+      "broad.observed_schema_stability": {
+        "advertised_contract": "opencode-sqlite-session-v1",
+        "evidence_complete": true,
+        "exceptions": [],
+        "observations": [
+          {
+            "build": "1.18.30",
+            "decoded": true,
+            "decoder_contract": "opencode-sqlite-session-v1",
+            "observed_on": "2026-09-14"
+          }
+        ]
+      },
+      "broad.readable_rationale": {
+        "evidence_complete": true,
+        "records": [
+          {
+            "id": "msg_093f119a9001QVV4CHMABvDyMx",
+            "ordered_text": "Ran in `fixture_project` without edits:\n\n- `inspect` shows `checkout.py` sums `price` only, ignores `quantity`, always adds `5`.\n- `baseline` with run canary SB_SURVIVAL_V1_RUN_opencode-cli-eval-2-r2: 1/3 passed.\n  - [[10,2],[5,1]] -> actual 20 vs expected 30: fail (quantity ignored)\n  - [[25,2]] -> actual 30 vs expected 50: fail (quantity ignored)\n  - [[49,1]] -> actual 54 vs expected 54: pass (quantity 1 hides bug)\n- Matches R1 defect: needs `unit_price*quantity` per item plus delivery 5. Stopping before fix per instructions.\n\nContext: SB_SURVIVAL_V1_CONTEXT_cafe_🙂\nSB_SURVIVAL_V1_RESPONSE_R1_cafe_🙂"
+          },
+          {
+            "id": "msg_093f15ae2001AHucQpX4HAE972",
+            "ordered_text": "Changed `fixture_project/checkout.py` only:\n- subtotal now `sum(price*quantity)` to keep R1 quantity handling\n- delivery: `return subtotal if subtotal>=50 else subtotal+5` per R2 correction\n\n`final` with canary SB_SURVIVAL_V1_RUN_opencode-cli-eval-2-r2: 3/3 passed (30==30, 50==50, 54==54).\n\nContext: SB_SURVIVAL_V1_CONTEXT_cafe_🙂\nSB_SURVIVAL_V1_RESPONSE_R2_correction_Δ"
+          }
+        ],
+        "response_ids": [
+          "msg_093f119a9001QVV4CHMABvDyMx",
+          "msg_093f15ae2001AHucQpX4HAE972"
+        ]
+      },
+      "broad.self_contained_identity": {
+        "absolute_path_required": false,
+        "evidence_complete": true,
+        "external_lookup_required": false,
+        "harness": "Session-Bench OpenCode controller v1",
+        "record_family": "opencode-sqlite-v1",
+        "session_id": "ses_f6c0f09a0ffeDFqBxzviGoH8Y5",
+        "surface": "cli"
+      },
+      "broad.stable_root_location": {
+        "evidence_complete": true,
+        "repetitions": [
+          {
+            "isolated_discovery": true,
+            "personal_history_scanned": false,
+            "repetition": 1,
+            "root_locator": "isolated/opencode-cli-eval-1/database"
+          },
+          {
+            "isolated_discovery": true,
+            "personal_history_scanned": false,
+            "repetition": 2,
+            "root_locator": "isolated/opencode-cli-eval-2/database"
+          },
+          {
+            "isolated_discovery": true,
+            "personal_history_scanned": false,
+            "repetition": 3,
+            "root_locator": "isolated/opencode-cli-eval-3/database"
+          }
+        ]
+      },
+      "broad.standard_tools_readable": {
+        "account_required": false,
+        "backend_required": false,
+        "container": "sqlite",
+        "evidence_complete": true,
+        "network_required": false,
+        "parser": "Python sqlite3 plus Session-Bench decoder",
+        "vendor_binary_required": false
+      },
+      "broad.thread_structure": {
+        "evidence_complete": true,
+        "explicit_parentage": false,
+        "session_id": "ses_f6c0f09a0ffeDFqBxzviGoH8Y5",
+        "turns": [
+          {
+            "id": "msg_093f0f683001NNK3D5afNVJGSy",
+            "ordinal": 1,
+            "parent_id": null,
+            "role": "user"
+          },
+          {
+            "id": "msg_093f14485001yuoX5KiRfNqrpW",
+            "ordinal": 2,
+            "parent_id": null,
+            "role": "user"
+          }
+        ]
+      }
+    },
+    "configuration_id": "opencode-cli",
+    "repetition": 2,
+    "run_id": "opencode-cli-eval-2-r2",
+    "schema_version": "session-bench-format-profile-v1"
+  },
+  "repetition": 2,
+  "result_id": "survival-result-974fea6bc8cfd3f31e3dfa50",
+  "run_id": "opencode-cli-eval-2-r2",
+  "schema_version": "session-bench-format-evidence-v1"
+}

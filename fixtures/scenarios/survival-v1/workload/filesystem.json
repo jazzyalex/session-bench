@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0-survival-filesystem",
+  "protocol_version": "1.0-survival",
+  "project_root": "fixture_project",
+  "before": [
+    {
+      "path": "fixture_project/checkout.py",
+      "sha256": "f4482bd25089ad5c521d2d8c75d17607d5dec0582b9bb687b5716c9673546401",
+      "size_bytes": 265
+    },
+    {
+      "path": "fixture_project/bench_check.py",
+      "sha256": "6f5c6ea8eec716b04c0ed5ea3040fd5f985048ba02cb98b9835166ef5ec97f66",
+      "size_bytes": 3008
+    }
+  ],
+  "after": [
+    {
+      "path": "fixture_project/checkout.py",
+      "sha256": "1cb54df9eebcbb2a3ce580c4ef24afde8b89f2fc6bd1636431931642d013376d",
+      "size_bytes": 223
+    },
+    {
+      "path": "fixture_project/bench_check.py",
+      "sha256": "6f5c6ea8eec716b04c0ed5ea3040fd5f985048ba02cb98b9835166ef5ec97f66",
+      "size_bytes": 3008
+    }
+  ],
+  "changed": [
+    {
+      "path": "fixture_project/checkout.py",
+      "before_sha256": "f4482bd25089ad5c521d2d8c75d17607d5dec0582b9bb687b5716c9673546401",
+      "after_sha256": "1cb54df9eebcbb2a3ce580c4ef24afde8b89f2fc6bd1636431931642d013376d"
+    }
+  ],
+  "protected_paths": [
+    "fixture_project/bench_check.py",
+    "fixture_project/.survival-observer.jsonl"
+  ],
+  "after_snapshot_role": "reference valid solution; evaluated runs may use different bytes",
+  "success_rule": "final helper exit_code 0 with all declared cases passed"
+}

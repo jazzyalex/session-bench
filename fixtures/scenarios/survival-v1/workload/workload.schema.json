@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Session-Bench survival-v1 deterministic workload",
+  "type": "object",
+  "properties": {
+    "schema_version": {"const": "1.0-survival-workload"},
+    "protocol_version": {"const": "1.0-survival"},
+    "scenario_id": {"const": "survival-v1-repair"},
+    "fixture_id": {"type": "string", "minLength": 1},
+    "run_id": {"type": "string", "minLength": 1},
+    "run_canary": {"type": "string", "pattern": "^SB_SURVIVAL_V1_RUN_[A-Za-z0-9_-]+$"},
+    "context_marker": {"type": "string", "pattern": "^SB_SURVIVAL_V1_CONTEXT_.+$"},
+    "project": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "relative_root": {"type": "string", "minLength": 1},
+        "protected_paths": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "changed_paths": {"type": "array", "items": {"type": "string", "minLength": 1}}
+      },
+      "required": ["name", "relative_root", "protected_paths", "changed_paths"],
+      "additionalProperties": false
+    },
+    "turns": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "sequence": {"type": "integer", "minimum": 1},
+          "revision": {"enum": ["r1", "r2"]},
+          "text": {"type": "string", "minLength": 1},
+          "response_canary": {"type": "string", "minLength": 1},
+          "context_marker": {"type": "string", "minLength": 1},
+          "run_canary": {"type": "string", "minLength": 1}
+        },
+        "required": ["id", "sequence", "revision", "text", "response_canary", "context_marker", "run_canary"],
+        "additionalProperties": false
+      }
+    },
+    "response_canaries": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "turn_id": {"type": "string", "minLength": 1},
+          "value": {"type": "string", "minLength": 1},
+          "suffix_exact": {"type": "boolean"},
+          "surface_scope": {"type": "array", "minItems": 5, "items": {"type": "string", "minLength": 1}}
+        },
+        "required": ["id", "turn_id", "value", "suffix_exact", "surface_scope"],
+        "additionalProperties": false
+      }
+    },
+    "actions": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "sequence": {"type": "integer", "minimum": 1},
+          "turn_id": {"type": "string", "minLength": 1},
+          "kind": {"enum": ["inspect", "test", "edit"]},
+          "name": {"type": "string", "minLength": 1},
+          "cwd": {"type": "string", "minLength": 1},
+          "argv": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+          "target": {"type": "string", "minLength": 1},
+          "helper_nonce": {"type": ["string", "null"]}
+        },
+        "required": ["id", "sequence", "turn_id", "kind", "name", "cwd", "argv", "target", "helper_nonce"],
+        "additionalProperties": false
+      }
+    },
+    "results": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "sequence": {"type": "integer", "minimum": 1},
+          "action_id": {"type": "string", "minLength": 1},
+          "status": {"enum": ["success", "failure"]},
+          "exit_code": {"type": "integer"},
+          "helper_nonce": {"type": ["string", "null"]}
+        },
+        "required": ["id", "sequence", "action_id", "status", "exit_code", "helper_nonce"],
+        "additionalProperties": false
+      }
+    },
+    "relations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "kind": {"enum": ["action_result", "turn_response", "supersedes", "final_after"]},
+          "from_id": {"type": "string", "minLength": 1},
+          "to_id": {"type": "string", "minLength": 1},
+          "sequence": {"type": "integer", "minimum": 1}
+        },
+        "required": ["id", "kind", "from_id", "to_id", "sequence"],
+        "additionalProperties": false
+      }
+    },
+    "helper": {
+      "type": "object",
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "ledger_path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "phases": {"type": "array", "minItems": 3, "items": {"type": "string", "minLength": 1}},
+        "nonces": {"type": "object"}
+      },
+      "required": ["path", "ledger_path", "sha256", "phases", "nonces"],
+      "additionalProperties": false
+    },
+    "filesystem": {
+      "type": "object",
+      "properties": {
+        "truth_path": {"type": "string", "minLength": 1},
+        "before_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "reference_after_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "success_rule": {"type": "string", "minLength": 1},
+        "changed_path": {"type": "string", "minLength": 1}
+      },
+      "required": ["truth_path", "before_sha256", "reference_after_sha256", "success_rule", "changed_path"],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version", "protocol_version", "scenario_id", "fixture_id", "run_id",
+    "run_canary", "context_marker", "project", "turns", "response_canaries",
+    "actions", "results", "relations", "helper", "filesystem"
+  ],
+  "additionalProperties": false
+}

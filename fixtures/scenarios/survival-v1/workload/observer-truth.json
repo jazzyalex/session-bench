@@ -1,0 +1,580 @@
+{
+  "schema_version": "1.0-survival-observer",
+  "protocol_version": "1.0-survival",
+  "scenario_id": "survival-v1-repair",
+  "run_id": "survival-v1-fixture-0001",
+  "independent": true,
+  "method": "constructed independent specification; live adapters must use submitted input, live response stream or reviewed Desktop accessibility evidence, helper ledger, filesystem snapshot, and a separate usage trace",
+  "events": [
+    {
+      "id": "turn-r1",
+      "sequence": 1,
+      "boundary": "accepted",
+      "population_role": "primary_scored",
+      "kind": "user_turn",
+      "session_id": "survival-v1-fixture-session",
+      "source": "submitted_input",
+      "fields": {
+        "turn_id": "turn-r1",
+        "revision": "r1",
+        "role": "user",
+        "text": "This is a synthetic Session-Bench survival-v1 coding task. Work only inside fixture_project. Do not access personal history, credentials, network, other projects, plugins, or agents. Preserve bench_check.py and .survival-observer.jsonl. Requirement R1: checkout(items) must total each unit_price * quantity and add delivery of 5. First run python3 bench_check.py inspect, then python3 bench_check.py baseline. Do not edit checkout.py yet. Explain the observed baseline result and stop. End your visible response with exactly SB_SURVIVAL_V1_RESPONSE_R1_cafe_🙂. Context marker: SB_SURVIVAL_V1_CONTEXT_cafe_🙂. Run canary: SB_SURVIVAL_V1_RUN_fixture_0001.",
+        "context_marker": "SB_SURVIVAL_V1_CONTEXT_cafe_🙂",
+        "run_canary": "SB_SURVIVAL_V1_RUN_fixture_0001",
+        "response_canary": "SB_SURVIVAL_V1_RESPONSE_R1_cafe_🙂"
+      },
+      "metric_ids": [
+        "work.submitted_turns",
+        "revision.r1",
+        "revision.r1_r2_order"
+      ]
+    },
+    {
+      "id": "action-inspect",
+      "sequence": 2,
+      "boundary": "harness_received",
+      "population_role": "primary_scored",
+      "kind": "action",
+      "session_id": "survival-v1-fixture-session",
+      "source": "harness_trace",
+      "fields": {
+        "action_kind": "inspect",
+        "name": "shell",
+        "argv": [
+          "python3",
+          "bench_check.py",
+          "inspect"
+        ],
+        "cwd": "fixture_project",
+        "target": "fixture_project/checkout.py",
+        "turn_id": "turn-r1",
+        "helper_nonce": "inspect-fixture-0001"
+      },
+      "metric_ids": [
+        "work.actions",
+        "causal.action_result"
+      ]
+    },
+    {
+      "id": "helper-invoke-inspect",
+      "sequence": 3,
+      "boundary": "helper_invoked",
+      "population_role": "supporting",
+      "kind": "helper",
+      "session_id": "survival-v1-fixture-session",
+      "source": "helper_ledger",
+      "fields": {
+        "helper_id": "helper-inspect-inspect-fixture-0001",
+        "phase": "inspect",
+        "helper_nonce": "inspect-fixture-0001",
+        "action_id": "action-inspect",
+        "argv": [
+          "python3",
+          "bench_check.py",
+          "inspect"
+        ]
+      },
+      "metric_ids": []
+    },
+    {
+      "id": "helper-emit-inspect",
+      "sequence": 4,
+      "boundary": "helper_emitted",
+      "population_role": "supporting",
+      "kind": "helper",
+      "session_id": "survival-v1-fixture-session",
+      "source": "helper_ledger",
+      "fields": {
+        "helper_id": "helper-inspect-inspect-fixture-0001",
+        "phase": "inspect",
+        "helper_nonce": "inspect-fixture-0001",
+        "action_id": "action-inspect",
+        "exit_code": 0,
+        "output_prefix": "SB_SURVIVAL_V1_HELPER_INSPECT_inspect-fixture-0001"
+      },
+      "metric_ids": []
+    },
+    {
+      "id": "result-inspect",
+      "sequence": 5,
+      "boundary": "harness_received",
+      "population_role": "primary_scored",
+      "kind": "result",
+      "session_id": "survival-v1-fixture-session",
+      "source": "harness_trace",
+      "fields": {
+        "action_id": "action-inspect",
+        "status": "success",
+        "exit_code": 0,
+        "helper_nonce": "inspect-fixture-0001",
+        "output_prefix": "SB_SURVIVAL_V1_HELPER_INSPECT_inspect-fixture-0001"
+      },
+      "metric_ids": [
+        "work.results",
+        "causal.action_result"
+      ]
+    },
+    {
+      "id": "action-baseline",
+      "sequence": 6,
+      "boundary": "harness_received",
+      "population_role": "primary_scored",
+      "kind": "action",
+      "session_id": "survival-v1-fixture-session",
+      "source": "harness_trace",
+      "fields": {
+        "action_kind": "test",
+        "name": "shell",
+        "argv": [
+          "python3",
+          "bench_check.py",
+          "baseline"
+        ],
+        "cwd": "fixture_project",
+        "target": "fixture_project/checkout.py",
+        "turn_id": "turn-r1",
+        "helper_nonce": "baseline-fixture-0001"
+      },
+      "metric_ids": [
+        "work.actions",
+        "causal.action_result"
+      ]
+    },
+    {
+      "id": "helper-invoke-baseline",
+      "sequence": 7,
+      "boundary": "helper_invoked",
+      "population_role": "supporting",
+      "kind": "helper",
+      "session_id": "survival-v1-fixture-session",
+      "source": "helper_ledger",
+      "fields": {
+        "helper_id": "helper-baseline-baseline-fixture-0001",
+        "phase": "baseline",
+        "helper_nonce": "baseline-fixture-0001",
+        "action_id": "action-baseline",
+        "argv": [
+          "python3",
+          "bench_check.py",
+          "baseline"
+        ]
+      },
+      "metric_ids": []
+    },
+    {
+      "id": "helper-emit-baseline",
+      "sequence": 8,
+      "boundary": "helper_emitted",
+      "population_role": "supporting",
+      "kind": "helper",
+      "session_id": "survival-v1-fixture-session",
+      "source": "helper_ledger",
+      "fields": {
+        "helper_id": "helper-baseline-baseline-fixture-0001",
+        "phase": "baseline",
+        "helper_nonce": "baseline-fixture-0001",
+        "action_id": "action-baseline",
+        "exit_code": 1,
+        "output_prefix": "SB_SURVIVAL_V1_HELPER_BASELINE_baseline-fixture-0001"
+      },
+      "metric_ids": []
+    },
+    {
+      "id": "result-baseline",
+      "sequence": 9,
+      "boundary": "harness_received",
+      "population_role": "primary_scored",
+      "kind": "result",
+      "session_id": "survival-v1-fixture-session",
+      "source": "harness_trace",
+      "fields": {
+        "action_id": "action-baseline",
+        "status": "failure",
+        "exit_code": 1,
+        "helper_nonce": "baseline-fixture-0001",
+        "output_prefix": "SB_SURVIVAL_V1_HELPER_BASELINE_baseline-fixture-0001",
+        "failure_marker": "expected 30"
+      },
+      "metric_ids": [
+        "work.results",
+        "causal.action_result"
+      ]
+    },
+    {
+      "id": "response-r1",
+      "sequence": 10,
+      "boundary": "displayed",
+      "population_role": "primary_scored",
+      "kind": "assistant_response",
+      "session_id": "survival-v1-fixture-session",
+      "source": "visible_stream",
+      "fields": {
+        "turn_id": "turn-r1",
+        "role": "assistant",
+        "status": "completed",
+        "text": "I inspected checkout.py and ran the baseline. The known defect ignores quantity, so the baseline fails.\nSB_SURVIVAL_V1_RESPONSE_R1_cafe_🙂",
+        "canary": "SB_SURVIVAL_V1_RESPONSE_R1_cafe_🙂",
+        "model_id": "fixture-model-v1",
+        "configuration": "fixture-default-v1",
+        "usage_id": "usage-r1",
+        "usage": {
+          "input_tokens": 28,
+          "output_tokens": 14,
+          "cache_read_tokens": 0,
+          "cache_write_tokens": 0,
+          "source": "constructed_usage_trace",
+          "cache_semantics": "cache reads and writes are separately named; zero is observed"
+        }
+      },
+      "metric_ids": [
+        "work.visible_responses",
+        "causal.turn_response",
+        "attribution.model_config",
+        "attribution.usage",
+        "attribution.token_semantics"
+      ]
+    },
+    {
+      "id": "turn-r2",
+      "sequence": 11,
+      "boundary": "accepted",
+      "population_role": "primary_scored",
+      "kind": "user_turn",
+      "session_id": "survival-v1-fixture-session",
+      "source": "submitted_input",
+      "fields": {
+        "turn_id": "turn-r2",
+        "revision": "r2",
+        "role": "user",
+        "text": "Correction R2 supersedes only the delivery condition: delivery is free when subtotal is at least 50 and remains 5 below 50. Keep quantity handling from R1. Edit only fixture_project/checkout.py. Do not modify bench_check.py or .survival-observer.jsonl. Run python3 bench_check.py final. Explain the actual change and test outcome. End your visible response with exactly SB_SURVIVAL_V1_RESPONSE_R2_correction_Δ. Context marker: SB_SURVIVAL_V1_CONTEXT_cafe_🙂. Run canary: SB_SURVIVAL_V1_RUN_fixture_0001.",
+        "context_marker": "SB_SURVIVAL_V1_CONTEXT_cafe_🙂",
+        "run_canary": "SB_SURVIVAL_V1_RUN_fixture_0001",
+        "response_canary": "SB_SURVIVAL_V1_RESPONSE_R2_correction_Δ"
+      },
+      "metric_ids": [
+        "work.submitted_turns",
+        "revision.r2",
+        "revision.r1_r2_order"
+      ]
+    },
+    {
+      "id": "action-edit",
+      "sequence": 12,
+      "boundary": "harness_received",
+      "population_role": "primary_scored",
+      "kind": "action",
+      "session_id": "survival-v1-fixture-session",
+      "source": "harness_trace",
+      "fields": {
+        "action_kind": "edit",
+        "name": "file_edit",
+        "argv": [
+          "replace_function",
+          "fixture_project/checkout.py"
+        ],
+        "cwd": "fixture_project",
+        "target": "fixture_project/checkout.py",
+        "turn_id": "turn-r2"
+      },
+      "metric_ids": [
+        "work.actions",
+        "causal.action_result"
+      ]
+    },
+    {
+      "id": "result-edit",
+      "sequence": 13,
+      "boundary": "harness_received",
+      "population_role": "primary_scored",
+      "kind": "result",
+      "session_id": "survival-v1-fixture-session",
+      "source": "harness_trace",
+      "fields": {
+        "action_id": "action-edit",
+        "status": "success",
+        "exit_code": 0,
+        "changed_path": "fixture_project/checkout.py"
+      },
+      "metric_ids": [
+        "work.results",
+        "causal.action_result"
+      ]
+    },
+    {
+      "id": "file-change-checkout",
+      "sequence": 14,
+      "boundary": "file_observed",
+      "population_role": "primary_scored",
+      "kind": "file_change",
+      "session_id": "survival-v1-fixture-session",
+      "source": "filesystem_snapshot",
+      "fields": {
+        "path": "fixture_project/checkout.py",
+        "before_sha256": "f4482bd25089ad5c521d2d8c75d17607d5dec0582b9bb687b5716c9673546401",
+        "after_sha256": "1cb54df9eebcbb2a3ce580c4ef24afde8b89f2fc6bd1636431931642d013376d",
+        "action_id": "action-edit",
+        "before_snapshot": "fixture_project/snapshots/checkout.before.py",
+        "after_snapshot": "fixture_project/snapshots/checkout.after.py",
+        "after_sha256_role": "reference_only",
+        "semantic_acceptance": "result-final exit_code is 0 and all declared cases pass"
+      },
+      "metric_ids": [
+        "work.changed_files"
+      ]
+    },
+    {
+      "id": "action-final",
+      "sequence": 15,
+      "boundary": "harness_received",
+      "population_role": "primary_scored",
+      "kind": "action",
+      "session_id": "survival-v1-fixture-session",
+      "source": "harness_trace",
+      "fields": {
+        "action_kind": "test",
+        "name": "shell",
+        "argv": [
+          "python3",
+          "bench_check.py",
+          "final"
+        ],
+        "cwd": "fixture_project",
+        "target": "fixture_project/checkout.py",
+        "turn_id": "turn-r2",
+        "helper_nonce": "final-fixture-0001"
+      },
+      "metric_ids": [
+        "work.actions",
+        "causal.action_result",
+        "revision.final_after_r2"
+      ]
+    },
+    {
+      "id": "helper-invoke-final",
+      "sequence": 16,
+      "boundary": "helper_invoked",
+      "population_role": "supporting",
+      "kind": "helper",
+      "session_id": "survival-v1-fixture-session",
+      "source": "helper_ledger",
+      "fields": {
+        "helper_id": "helper-final-final-fixture-0001",
+        "phase": "final",
+        "helper_nonce": "final-fixture-0001",
+        "action_id": "action-final",
+        "argv": [
+          "python3",
+          "bench_check.py",
+          "final"
+        ]
+      },
+      "metric_ids": []
+    },
+    {
+      "id": "helper-emit-final",
+      "sequence": 17,
+      "boundary": "helper_emitted",
+      "population_role": "supporting",
+      "kind": "helper",
+      "session_id": "survival-v1-fixture-session",
+      "source": "helper_ledger",
+      "fields": {
+        "helper_id": "helper-final-final-fixture-0001",
+        "phase": "final",
+        "helper_nonce": "final-fixture-0001",
+        "action_id": "action-final",
+        "exit_code": 0,
+        "output_prefix": "SB_SURVIVAL_V1_HELPER_FINAL_final-fixture-0001"
+      },
+      "metric_ids": []
+    },
+    {
+      "id": "result-final",
+      "sequence": 18,
+      "boundary": "harness_received",
+      "population_role": "primary_scored",
+      "kind": "result",
+      "session_id": "survival-v1-fixture-session",
+      "source": "harness_trace",
+      "fields": {
+        "action_id": "action-final",
+        "status": "success",
+        "exit_code": 0,
+        "helper_nonce": "final-fixture-0001",
+        "output_prefix": "SB_SURVIVAL_V1_HELPER_FINAL_final-fixture-0001"
+      },
+      "metric_ids": [
+        "work.results",
+        "causal.action_result",
+        "revision.final_after_r2"
+      ]
+    },
+    {
+      "id": "response-r2",
+      "sequence": 19,
+      "boundary": "displayed",
+      "population_role": "primary_scored",
+      "kind": "assistant_response",
+      "session_id": "survival-v1-fixture-session",
+      "source": "visible_stream",
+      "fields": {
+        "turn_id": "turn-r2",
+        "role": "assistant",
+        "status": "completed",
+        "text": "I applied the delivery threshold and quantity handling, then ran the final helper. All three cases pass.\nSB_SURVIVAL_V1_RESPONSE_R2_correction_Δ",
+        "canary": "SB_SURVIVAL_V1_RESPONSE_R2_correction_Δ",
+        "model_id": "fixture-model-v1",
+        "configuration": "fixture-default-v1",
+        "usage_id": "usage-r2",
+        "usage": {
+          "input_tokens": 34,
+          "output_tokens": 17,
+          "cache_read_tokens": 2,
+          "cache_write_tokens": 0,
+          "source": "constructed_usage_trace",
+          "cache_semantics": "cache reads and writes are separately named; zero is observed"
+        }
+      },
+      "metric_ids": [
+        "work.visible_responses",
+        "causal.turn_response",
+        "attribution.model_config",
+        "attribution.usage",
+        "attribution.token_semantics",
+        "revision.final_after_r2"
+      ]
+    },
+    {
+      "id": "usage-total",
+      "sequence": 20,
+      "boundary": "harness_received",
+      "population_role": "supporting",
+      "kind": "usage_total",
+      "session_id": "survival-v1-fixture-session",
+      "source": "usage_trace",
+      "fields": {
+        "usage_ids": [
+          "usage-r1",
+          "usage-r2"
+        ],
+        "input_tokens": 62,
+        "output_tokens": 31,
+        "cache_read_tokens": 2,
+        "cache_write_tokens": 0,
+        "reconciliation": "usage-r1 + usage-r2 = session total"
+      },
+      "metric_ids": [
+        "attribution.reconciliation"
+      ]
+    },
+    {
+      "id": "portable-observation",
+      "sequence": 21,
+      "boundary": "harness_received",
+      "population_role": "supporting",
+      "kind": "portable",
+      "session_id": "survival-v1-fixture-session",
+      "source": "constructed_spec",
+      "fields": {
+        "capture_id": "survival-v1-fixture-capture-0001",
+        "declared_root": "native/",
+        "complete_root": true,
+        "required_companions": [
+          "native/session.sqlite-wal",
+          "native/session.sqlite-shm"
+        ],
+        "companions_present": true,
+        "isolated_decode": true,
+        "canonical_equality": true,
+        "network_available": false,
+        "original_roots_available": false,
+        "vendor_executable_available": false
+      },
+      "metric_ids": [
+        "portable.complete_root",
+        "portable.companions",
+        "portable.isolated_decode",
+        "portable.canonical_equality"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "id": "relation-inspect",
+      "kind": "action_result",
+      "from_id": "action-inspect",
+      "to_id": "result-inspect",
+      "sequence": 1
+    },
+    {
+      "id": "relation-baseline",
+      "kind": "action_result",
+      "from_id": "action-baseline",
+      "to_id": "result-baseline",
+      "sequence": 2
+    },
+    {
+      "id": "relation-edit",
+      "kind": "action_result",
+      "from_id": "action-edit",
+      "to_id": "result-edit",
+      "sequence": 3
+    },
+    {
+      "id": "relation-final",
+      "kind": "action_result",
+      "from_id": "action-final",
+      "to_id": "result-final",
+      "sequence": 4
+    },
+    {
+      "id": "relation-r1-response",
+      "kind": "turn_response",
+      "from_id": "turn-r1",
+      "to_id": "response-r1",
+      "sequence": 5
+    },
+    {
+      "id": "relation-r2-response",
+      "kind": "turn_response",
+      "from_id": "turn-r2",
+      "to_id": "response-r2",
+      "sequence": 6
+    },
+    {
+      "id": "relation-r1-r2",
+      "kind": "supersedes",
+      "from_id": "turn-r1",
+      "to_id": "turn-r2",
+      "sequence": 7
+    },
+    {
+      "id": "relation-final-after-r2",
+      "kind": "final_after",
+      "from_id": "turn-r2",
+      "to_id": "action-final",
+      "sequence": 8
+    },
+    {
+      "id": "relation-helper-inspect",
+      "kind": "helper_for",
+      "from_id": "helper-invoke-inspect",
+      "to_id": "action-inspect",
+      "sequence": 9
+    },
+    {
+      "id": "relation-helper-baseline",
+      "kind": "helper_for",
+      "from_id": "helper-invoke-baseline",
+      "to_id": "action-baseline",
+      "sequence": 10
+    },
+    {
+      "id": "relation-helper-final",
+      "kind": "helper_for",
+      "from_id": "helper-invoke-final",
+      "to_id": "action-final",
+      "sequence": 11
+    }
+  ]
+}

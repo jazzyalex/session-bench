@@ -1,0 +1,243 @@
+{
+  "schema_version": "1.0-survival-workload",
+  "protocol_version": "1.0-survival",
+  "scenario_id": "survival-v1-repair",
+  "fixture_id": "survival-v1-workload-fixture-0001",
+  "run_id": "survival-v1-fixture-0001",
+  "run_canary": "SB_SURVIVAL_V1_RUN_fixture_0001",
+  "context_marker": "SB_SURVIVAL_V1_CONTEXT_cafe_🙂",
+  "project": {
+    "name": "fixture-project",
+    "relative_root": "fixture_project",
+    "protected_paths": [
+      "fixture_project/bench_check.py",
+      "fixture_project/.survival-observer.jsonl"
+    ],
+    "changed_paths": [
+      "fixture_project/checkout.py"
+    ]
+  },
+  "turns": [
+    {
+      "id": "turn-r1",
+      "sequence": 1,
+      "revision": "r1",
+      "text": "This is a synthetic Session-Bench survival-v1 coding task. Work only inside fixture_project. Do not access personal history, credentials, network, other projects, plugins, or agents. Preserve bench_check.py and .survival-observer.jsonl. Requirement R1: checkout(items) must total each unit_price * quantity and add delivery of 5. First run python3 bench_check.py inspect --run-canary SB_SURVIVAL_V1_RUN_fixture_0001, then python3 bench_check.py baseline --run-canary SB_SURVIVAL_V1_RUN_fixture_0001. Do not edit checkout.py yet. Explain the observed baseline result and stop. End your visible response with exactly SB_SURVIVAL_V1_RESPONSE_R1_cafe_🙂. Context marker: SB_SURVIVAL_V1_CONTEXT_cafe_🙂. Run canary: SB_SURVIVAL_V1_RUN_fixture_0001.",
+      "response_canary": "SB_SURVIVAL_V1_RESPONSE_R1_cafe_🙂",
+      "context_marker": "SB_SURVIVAL_V1_CONTEXT_cafe_🙂",
+      "run_canary": "SB_SURVIVAL_V1_RUN_fixture_0001"
+    },
+    {
+      "id": "turn-r2",
+      "sequence": 2,
+      "revision": "r2",
+      "text": "Correction R2 supersedes only the delivery condition: delivery is free when subtotal is at least 50 and remains 5 below 50. Keep quantity handling from R1. Edit only fixture_project/checkout.py. Do not modify bench_check.py or .survival-observer.jsonl. Run python3 bench_check.py final --run-canary SB_SURVIVAL_V1_RUN_fixture_0001. Explain the actual change and test outcome. End your visible response with exactly SB_SURVIVAL_V1_RESPONSE_R2_correction_Δ. Context marker: SB_SURVIVAL_V1_CONTEXT_cafe_🙂. Run canary: SB_SURVIVAL_V1_RUN_fixture_0001.",
+      "response_canary": "SB_SURVIVAL_V1_RESPONSE_R2_correction_Δ",
+      "context_marker": "SB_SURVIVAL_V1_CONTEXT_cafe_🙂",
+      "run_canary": "SB_SURVIVAL_V1_RUN_fixture_0001"
+    }
+  ],
+  "response_canaries": [
+    {
+      "id": "response-r1",
+      "turn_id": "turn-r1",
+      "value": "SB_SURVIVAL_V1_RESPONSE_R1_cafe_🙂",
+      "suffix_exact": true,
+      "surface_scope": [
+        "codex-cli",
+        "codex-desktop",
+        "cursor-cli",
+        "cursor-desktop",
+        "opencode-cli"
+      ]
+    },
+    {
+      "id": "response-r2",
+      "turn_id": "turn-r2",
+      "value": "SB_SURVIVAL_V1_RESPONSE_R2_correction_Δ",
+      "suffix_exact": true,
+      "surface_scope": [
+        "codex-cli",
+        "codex-desktop",
+        "cursor-cli",
+        "cursor-desktop",
+        "opencode-cli"
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "id": "action-inspect",
+      "sequence": 1,
+      "turn_id": "turn-r1",
+      "kind": "inspect",
+      "name": "shell",
+      "cwd": "fixture_project",
+      "argv": [
+        "python3",
+        "bench_check.py",
+        "inspect"
+      ],
+      "target": "fixture_project/checkout.py",
+      "helper_nonce": "inspect-fixture-0001"
+    },
+    {
+      "id": "action-baseline",
+      "sequence": 2,
+      "turn_id": "turn-r1",
+      "kind": "test",
+      "name": "shell",
+      "cwd": "fixture_project",
+      "argv": [
+        "python3",
+        "bench_check.py",
+        "baseline"
+      ],
+      "target": "fixture_project/checkout.py",
+      "helper_nonce": "baseline-fixture-0001"
+    },
+    {
+      "id": "action-edit",
+      "sequence": 3,
+      "turn_id": "turn-r2",
+      "kind": "edit",
+      "name": "file_edit",
+      "cwd": "fixture_project",
+      "argv": [
+        "replace_function",
+        "fixture_project/checkout.py"
+      ],
+      "target": "fixture_project/checkout.py",
+      "helper_nonce": null
+    },
+    {
+      "id": "action-final",
+      "sequence": 4,
+      "turn_id": "turn-r2",
+      "kind": "test",
+      "name": "shell",
+      "cwd": "fixture_project",
+      "argv": [
+        "python3",
+        "bench_check.py",
+        "final"
+      ],
+      "target": "fixture_project/checkout.py",
+      "helper_nonce": "final-fixture-0001"
+    }
+  ],
+  "results": [
+    {
+      "id": "result-inspect",
+      "sequence": 1,
+      "action_id": "action-inspect",
+      "status": "success",
+      "exit_code": 0,
+      "helper_nonce": "inspect-fixture-0001"
+    },
+    {
+      "id": "result-baseline",
+      "sequence": 2,
+      "action_id": "action-baseline",
+      "status": "failure",
+      "exit_code": 1,
+      "helper_nonce": "baseline-fixture-0001"
+    },
+    {
+      "id": "result-edit",
+      "sequence": 3,
+      "action_id": "action-edit",
+      "status": "success",
+      "exit_code": 0,
+      "helper_nonce": null
+    },
+    {
+      "id": "result-final",
+      "sequence": 4,
+      "action_id": "action-final",
+      "status": "success",
+      "exit_code": 0,
+      "helper_nonce": "final-fixture-0001"
+    }
+  ],
+  "relations": [
+    {
+      "id": "relation-inspect",
+      "kind": "action_result",
+      "from_id": "action-inspect",
+      "to_id": "result-inspect",
+      "sequence": 1
+    },
+    {
+      "id": "relation-baseline",
+      "kind": "action_result",
+      "from_id": "action-baseline",
+      "to_id": "result-baseline",
+      "sequence": 2
+    },
+    {
+      "id": "relation-edit",
+      "kind": "action_result",
+      "from_id": "action-edit",
+      "to_id": "result-edit",
+      "sequence": 3
+    },
+    {
+      "id": "relation-final",
+      "kind": "action_result",
+      "from_id": "action-final",
+      "to_id": "result-final",
+      "sequence": 4
+    },
+    {
+      "id": "relation-r1-response",
+      "kind": "turn_response",
+      "from_id": "turn-r1",
+      "to_id": "response-r1",
+      "sequence": 5
+    },
+    {
+      "id": "relation-r2-response",
+      "kind": "turn_response",
+      "from_id": "turn-r2",
+      "to_id": "response-r2",
+      "sequence": 6
+    },
+    {
+      "id": "relation-r1-r2",
+      "kind": "supersedes",
+      "from_id": "turn-r1",
+      "to_id": "turn-r2",
+      "sequence": 7
+    },
+    {
+      "id": "relation-final-after-r2",
+      "kind": "final_after",
+      "from_id": "turn-r2",
+      "to_id": "action-final",
+      "sequence": 8
+    }
+  ],
+  "helper": {
+    "path": "fixture_project/bench_check.py",
+    "ledger_path": "fixture_project/.survival-observer.jsonl",
+    "sha256": "6f5c6ea8eec716b04c0ed5ea3040fd5f985048ba02cb98b9835166ef5ec97f66",
+    "phases": [
+      "inspect",
+      "baseline",
+      "final"
+    ],
+    "nonces": {
+      "inspect": "inspect-fixture-0001",
+      "baseline": "baseline-fixture-0001",
+      "final": "final-fixture-0001"
+    }
+  },
+  "filesystem": {
+    "truth_path": "filesystem.json",
+    "before_sha256": "f4482bd25089ad5c521d2d8c75d17607d5dec0582b9bb687b5716c9673546401",
+    "changed_path": "fixture_project/checkout.py",
+    "reference_after_sha256": "1cb54df9eebcbb2a3ce580c4ef24afde8b89f2fc6bd1636431931642d013376d",
+    "success_rule": "bench_check.py final exits 0 and every declared case passes; reference bytes are not required"
+  }
+}

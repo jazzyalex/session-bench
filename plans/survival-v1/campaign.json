@@ -1,0 +1,412 @@
+{
+  "schema_version": "1.0-survival-campaign",
+  "campaign_id": "survival-v1-five-surface-prototype",
+  "protocol_version": "1.0-survival",
+  "state": "authorized_bounded_calibration",
+  "authorized_at": "2026-09-12T03:12:30Z",
+  "authorization_basis": "owner instruction: go; use cheaper subagents and Oracle review with Sol Extra High",
+  "os": {
+    "family": "macOS",
+    "version": "15.7.9",
+    "build": "24G830",
+    "architecture": "arm64"
+  },
+  "frozen_inputs": {
+    "protocol_sha256": "2ec75735e0cea98cf20875c24deb909afefb52fca6255f933f275bba534dafe8",
+    "rubric_sha256": "facdcc51286061943d47300357491b020a4bf4117cac5b042bc0509b205cede7",
+    "workload_sha256": "a7bc23d4a3c71cd781a85d533cbc3889530584d8c2e7188d8b0bdd766d91eb12",
+    "observer_truth_sha256": "0d532173210cdd6bce94227e0d546ea678cac9b6ceb21564c1742ce7a6ed6426",
+    "response_canaries_sha256": "d4c041d4e073ce713fd9a4b8255503a682b42e3dd3593fd4a493baa0c3eead18"
+  },
+  "quota": {
+    "source": "codex_app_account_usage",
+    "observed_at": "2026-09-12T03:12:30Z",
+    "baseline_used_percent": 72,
+    "absolute_stop_used_percent": 95,
+    "reset_at": "2026-09-17T23:41:45Z",
+    "check": "before_every_model_submission",
+    "on_stop": "no_new_submission_finish_in_flight_capture_only",
+    "reset_credits": "never_consume_without_explicit_confirmation"
+  },
+  "configuration_order": [
+    "codex-cli",
+    "codex-desktop",
+    "cursor-cli",
+    "cursor-desktop",
+    "opencode-cli"
+  ],
+  "configurations": [
+    {
+      "configuration_id": "codex-cli",
+      "product": "Codex",
+      "surface": "cli",
+      "identity": {
+        "version": "0.154.0",
+        "build": null,
+        "executable": "/opt/homebrew/bin/codex"
+      },
+      "preflight_state": "conditional",
+      "authentication": "supported account path; never inspect or copy credential material",
+      "usage_budget": {
+        "billing_authority": "Codex account subscription",
+        "paid_submission_allowed": false,
+        "limit_source": "codex_app_account_usage"
+      }
+    },
+    {
+      "configuration_id": "codex-desktop",
+      "product": "Codex",
+      "surface": "desktop",
+      "identity": {
+        "version": "26.908.40834",
+        "build": "8881",
+        "bundle": "com.openai.codex",
+        "bundled_cli": "0.154.0-alpha.6.2"
+      },
+      "preflight_state": "blocked_gui_observer",
+      "usage_budget": {
+        "billing_authority": "Codex account subscription",
+        "paid_submission_allowed": false,
+        "limit_source": "codex_app_account_usage"
+      }
+    },
+    {
+      "configuration_id": "cursor-cli",
+      "product": "Cursor",
+      "surface": "cli",
+      "identity": {
+        "version": "2026.09.08-6caf4ff",
+        "build": "6caf4ff",
+        "executable": "/Users/alexm/.local/bin/agent"
+      },
+      "preflight_state": "conditional",
+      "authentication": "supported keychain/account path; isolated session data; never inspect credential material",
+      "usage_budget": {
+        "billing_authority": "Cursor Free subscription",
+        "paid_submission_allowed": false,
+        "limit_source": "cursor_account_plan"
+      }
+    },
+    {
+      "configuration_id": "cursor-desktop",
+      "product": "Cursor",
+      "surface": "desktop",
+      "identity": {
+        "version": "3.12.30",
+        "build": "63a2996a10d9e476b6c28e951dd7691d9c0cf480",
+        "bundle": "com.todesktop.230313mzl4w4u92"
+      },
+      "preflight_state": "paused_cursor_free_quota_unscored_split_root",
+      "usage_budget": {
+        "billing_authority": "Cursor Free subscription",
+        "paid_submission_allowed": false,
+        "limit_source": "cursor_account_plan"
+      }
+    },
+    {
+      "configuration_id": "opencode-cli",
+      "product": "OpenCode",
+      "surface": "cli",
+      "identity": {
+        "version": "1.18.30",
+        "build": null,
+        "executable": "/opt/homebrew/bin/opencode",
+        "model": "opencode/muse-spark-1.3-contributor-free"
+      },
+      "preflight_state": "ready_after_muse_calibration",
+      "authentication": "default auth path with explicit isolated OPENCODE_DB; never inspect credential material",
+      "usage_budget": {
+        "billing_authority": "OpenCode contributor free endpoint",
+        "paid_submission_allowed": false,
+        "limit_source": "opencode_event_cost"
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt_id": "codex-cli-cal-1",
+      "configuration_id": "codex-cli",
+      "kind": "calibration",
+      "repetition": null,
+      "state": "invalid"
+    },
+    {
+      "attempt_id": "codex-cli-eval-1",
+      "configuration_id": "codex-cli",
+      "kind": "evaluated",
+      "repetition": 1,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-cli-eval-2",
+      "configuration_id": "codex-cli",
+      "kind": "evaluated",
+      "repetition": 2,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-cli-eval-3",
+      "configuration_id": "codex-cli",
+      "kind": "evaluated",
+      "repetition": 3,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-cli-crash-1",
+      "configuration_id": "codex-cli",
+      "kind": "crash_qualification",
+      "repetition": null,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-desktop-cal-1",
+      "configuration_id": "codex-desktop",
+      "kind": "calibration",
+      "repetition": null,
+      "state": "blocked"
+    },
+    {
+      "attempt_id": "codex-desktop-eval-1",
+      "configuration_id": "codex-desktop",
+      "kind": "evaluated",
+      "repetition": 1,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-desktop-eval-2",
+      "configuration_id": "codex-desktop",
+      "kind": "evaluated",
+      "repetition": 2,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-desktop-eval-3",
+      "configuration_id": "codex-desktop",
+      "kind": "evaluated",
+      "repetition": 3,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-desktop-crash-1",
+      "configuration_id": "codex-desktop",
+      "kind": "crash_qualification",
+      "repetition": null,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "cursor-cli-cal-1",
+      "configuration_id": "cursor-cli",
+      "kind": "calibration",
+      "repetition": null,
+      "state": "invalid"
+    },
+    {
+      "attempt_id": "cursor-cli-eval-1",
+      "configuration_id": "cursor-cli",
+      "kind": "evaluated",
+      "repetition": 1,
+      "state": "captured"
+    },
+    {
+      "attempt_id": "cursor-cli-eval-2",
+      "configuration_id": "cursor-cli",
+      "kind": "evaluated",
+      "repetition": 2,
+      "state": "invalid"
+    },
+    {
+      "attempt_id": "cursor-cli-eval-3",
+      "configuration_id": "cursor-cli",
+      "kind": "evaluated",
+      "repetition": 3,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "cursor-cli-crash-1",
+      "configuration_id": "cursor-cli",
+      "kind": "crash_qualification",
+      "repetition": null,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "cursor-desktop-cal-1",
+      "configuration_id": "cursor-desktop",
+      "kind": "calibration",
+      "repetition": null,
+      "state": "invalid"
+    },
+    {
+      "attempt_id": "cursor-desktop-eval-1",
+      "configuration_id": "cursor-desktop",
+      "kind": "evaluated",
+      "repetition": 1,
+      "state": "captured"
+    },
+    {
+      "attempt_id": "cursor-desktop-eval-2",
+      "configuration_id": "cursor-desktop",
+      "kind": "evaluated",
+      "repetition": 2,
+      "state": "invalid"
+    },
+    {
+      "attempt_id": "cursor-desktop-eval-3",
+      "configuration_id": "cursor-desktop",
+      "kind": "evaluated",
+      "repetition": 3,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "cursor-desktop-crash-1",
+      "configuration_id": "cursor-desktop",
+      "kind": "crash_qualification",
+      "repetition": null,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "opencode-cli-cal-1",
+      "configuration_id": "opencode-cli",
+      "kind": "calibration",
+      "repetition": null,
+      "state": "invalid"
+    },
+    {
+      "attempt_id": "opencode-cli-eval-1",
+      "configuration_id": "opencode-cli",
+      "kind": "evaluated",
+      "repetition": 1,
+      "state": "complete"
+    },
+    {
+      "attempt_id": "opencode-cli-eval-2",
+      "configuration_id": "opencode-cli",
+      "kind": "evaluated",
+      "repetition": 2,
+      "state": "complete"
+    },
+    {
+      "attempt_id": "opencode-cli-eval-3",
+      "configuration_id": "opencode-cli",
+      "kind": "evaluated",
+      "repetition": 3,
+      "state": "complete"
+    },
+    {
+      "attempt_id": "opencode-cli-crash-1",
+      "configuration_id": "opencode-cli",
+      "kind": "crash_qualification",
+      "repetition": null,
+      "state": "scheduled"
+    }
+  ],
+  "privacy": {
+    "personal_history": "forbidden",
+    "credential_copy_or_inspection": "forbidden",
+    "session_data_isolation": "required_where_supported",
+    "existing_account_path": "metadata-only discovery plus capture of exactly proven-new session artifacts"
+  },
+  "publication": {
+    "live_vendor_claims_allowed": false,
+    "reason": "OpenCode has one local three-repetition survival result; cross-product cohort gates, the full 31-metric score, and independent reproduction remain incomplete"
+  },
+  "setup_corrections": [
+    {
+      "attempt_id": "codex-cli-setup-2",
+      "configuration_id": "codex-cli",
+      "corrects": "codex-cli-cal-1",
+      "state": "invalid",
+      "reason_ids": [
+        "controller.operator_postcheck_modified_protected_ledger",
+        "workload.fixed_after_hash_not_semantics_neutral",
+        "decoder.codex_0_154_drift"
+      ]
+    },
+    {
+      "attempt_id": "codex-desktop-setup-2",
+      "configuration_id": "codex-desktop",
+      "corrects": "codex-desktop-cal-1",
+      "state": "complete",
+      "reason_ids": [
+        "observer.supported_task_api_calibration",
+        "capture.complete_root_open"
+      ]
+    },
+    {
+      "attempt_id": "cursor-cli-setup-2",
+      "configuration_id": "cursor-cli",
+      "corrects": "cursor-cli-cal-1",
+      "state": "captured",
+      "reason_ids": [
+        "decoder.cursor_native_transcript_only; complete_root_open"
+      ]
+    },
+    {
+      "attempt_id": "cursor-desktop-setup-2",
+      "configuration_id": "cursor-desktop",
+      "corrects": "cursor-desktop-cal-1",
+      "state": "blocked",
+      "reason_ids": [
+        "observer.cannot_target_isolated_desktop_process"
+      ]
+    },
+    {
+      "attempt_id": "opencode-cli-setup-2",
+      "configuration_id": "opencode-cli",
+      "corrects": "opencode-cli-cal-1",
+      "state": "complete",
+      "reason_ids": [
+        "decoder.opencode_native_implemented_and_calibrated"
+      ]
+    }
+  ],
+  "cursor_desktop_followups": [
+    {
+      "attempt_id": "cursor-desktop-cal-5",
+      "state": "invalid_operator_postcheck",
+      "model_sessions": 1,
+      "score_eligible": false,
+      "evidence": "artifacts/survival-v1-runs/cursor-desktop-cal-5/attempt.json"
+    },
+    {
+      "attempt_id": "cursor-desktop-cal-6",
+      "state": "captured_unscored",
+      "model_sessions": 1,
+      "score_eligible": false,
+      "evidence": "artifacts/survival-v1-runs/cursor-desktop-cal-6/attempt.json",
+      "next_gate": "complete split-root companion capture and independent reproduction"
+    }
+  ],
+  "vendor_session_cap": 30,
+  "vendor_session_accounting": "Count submitted model sessions, including invalid attempts. Cursor Desktop cal-1/setup-2/cal-2/cal-3/cal-4 submitted none; cal-5, cal-6, eval-1, and quota-invalid eval-2 submitted one each. Eval-3 remains scheduled; Cursor work is paused at the owner's request.",
+  "verified_model_session_counts": [
+    {
+      "attempt_id": "cursor-cli-eval-1",
+      "model_sessions": 1,
+      "evidence": "artifacts/survival-v1-runs/cursor-cli-eval-1/controller-state.json"
+    },
+    {
+      "attempt_id": "cursor-cli-eval-2",
+      "model_sessions": 1,
+      "evidence": "artifacts/survival-v1-runs/cursor-cli-eval-2/controller-state.json"
+    },
+    {
+      "attempt_id": "codex-desktop-setup-2",
+      "model_sessions": 1,
+      "evidence": "artifacts/survival-v1-runs/codex-desktop-cal-2/attempt.json"
+    },
+    {
+      "attempt_id": "cursor-cli-setup-2",
+      "model_sessions": 1
+    },
+    {
+      "attempt_id": "cursor-desktop-eval-1",
+      "model_sessions": 1,
+      "evidence": "artifacts/survival-v1-runs/cursor-desktop-eval-1/decoded.json"
+    },
+    {
+      "attempt_id": "cursor-desktop-eval-2",
+      "model_sessions": 1,
+      "evidence": "artifacts/survival-v1-runs/cursor-desktop-eval-2/attempt.json"
+    }
+  ]
+}

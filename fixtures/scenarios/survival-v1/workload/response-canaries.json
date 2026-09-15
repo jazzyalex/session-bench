@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0-survival-response-canaries",
+  "protocol_version": "1.0-survival",
+  "surfaces": [
+    "codex-cli",
+    "codex-desktop",
+    "cursor-cli",
+    "cursor-desktop",
+    "opencode-cli"
+  ],
+  "canaries": [
+    {
+      "id": "response-r1",
+      "turn_id": "turn-r1",
+      "value": "SB_SURVIVAL_V1_RESPONSE_R1_cafe_🙂",
+      "suffix_exact": true
+    },
+    {
+      "id": "response-r2",
+      "turn_id": "turn-r2",
+      "value": "SB_SURVIVAL_V1_RESPONSE_R2_correction_Δ",
+      "suffix_exact": true
+    }
+  ],
+  "context_marker": "SB_SURVIVAL_V1_CONTEXT_cafe_🙂",
+  "run_canary_prefix": "SB_SURVIVAL_V1_RUN_",
+  "rules": {
+    "same_for_all_surfaces": true,
+    "response_must_end_with_canary": true,
+    "generated_response_text_is_not_answer_key": true,
+    "intermediate_deltas_scored": false
+  }
+}

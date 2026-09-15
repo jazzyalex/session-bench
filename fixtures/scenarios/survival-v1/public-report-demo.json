@@ -1,0 +1,259 @@
+{
+  "schema_version": "session-bench-v1-public-report",
+  "report_id": "constructed-survival-v1-demo",
+  "edition": "v1.0 report prototype",
+  "title": "Session-Bench v1 · constructed report-card prototype",
+  "generated_at": "2026-09-11T12:00:00Z",
+  "constructed": true,
+  "data_status": "CONSTRUCTED · OFFLINE CONTROL",
+  "headline": "What did the session keep?",
+  "deck": "A deeper report card for the durable, inspectable record left after a coding-agent session. This page is a local renderer control, not a vendor result.",
+  "scope": "The v1 report compares session-record evidence across five broad angles. It speaks to what a captured record retains and exposes; it does not measure coding quality, model quality, latency, or product preference.",
+  "method": "Each constructed row represents three scripted repetitions of one two-turn coding task. An independent observer records turns, responses, actions, results, a changed-file boundary, and native locators. The renderer displays measured categories, unresolved gates, and copied-root evidence without contacting a live service.",
+  "categories": [
+    {"id": "record_fidelity", "name": "Record fidelity", "weight": 30},
+    {"id": "causality_context", "name": "Causality & context", "weight": 20},
+    {"id": "usage_attribution", "name": "Usage & attribution", "weight": 15},
+    {"id": "portability_openness", "name": "Portability & openness", "weight": 20},
+    {"id": "durability_signal", "name": "Durability & signal", "weight": 15}
+  ],
+  "configurations": [
+    {
+      "id": "fixture-alpha-cli",
+      "name": "Fixture Alpha",
+      "surface": "CLI",
+      "version": "fixture build A",
+      "model": "constructed-model-a",
+      "status": "ranked",
+      "verification": "Constructed / fully exercised",
+      "ranking_eligible": true,
+      "evidence_complete": true,
+      "score": 86,
+      "runs": 3,
+      "scheduled_runs": 3,
+      "run_range": {"min": 84, "max": 88},
+      "run_scores": [84, 86, 88],
+      "categories": [
+        {"id": "record_fidelity", "score": 92, "summary": "All observed turns, responses, actions, results, and file hashes were recovered."},
+        {"id": "causality_context", "score": 84, "summary": "Native keys join actions to results and turns to responses."},
+        {"id": "usage_attribution", "score": 78, "summary": "Response usage is named and mostly reconciled."},
+        {"id": "portability_openness", "score": 88, "summary": "Copied native root decodes without the original path."},
+        {"id": "durability_signal", "score": 82, "summary": "Three repetitions retain the same required event population."}
+      ],
+      "gate_matrix": [
+        {"id": "work.submitted_turns", "name": "Submitted turns", "state": "measured", "detail": "2 / 2 exact turns", "evidence_id": "alpha-turns"},
+        {"id": "work.visible_responses", "name": "Visible responses", "state": "measured", "detail": "2 / 2 response boundaries", "evidence_id": "alpha-responses"},
+        {"id": "work.actions", "name": "Actions and arguments", "state": "measured", "detail": "4 / 4 primary actions", "evidence_id": "alpha-actions"},
+        {"id": "work.results", "name": "Results and exit states", "state": "measured", "detail": "4 / 4 result joins", "evidence_id": "alpha-actions"},
+        {"id": "work.changed_files", "name": "Changed file boundary", "state": "measured", "detail": "1 path with before/after hashes", "evidence_id": "alpha-file"},
+        {"id": "causal.action_result", "name": "Action → result", "state": "measured", "detail": "4 / 4 stable-key joins", "evidence_id": "alpha-actions"},
+        {"id": "causal.turn_response", "name": "Turn → response", "state": "measured", "detail": "2 / 2 ordered joins", "evidence_id": "alpha-responses"},
+        {"id": "revision.r1", "name": "R1 retained", "state": "measured", "detail": "Exact initial requirement retained", "evidence_id": "alpha-turns"},
+        {"id": "revision.r2", "name": "R2 retained", "state": "measured", "detail": "Exact correction retained", "evidence_id": "alpha-turns"},
+        {"id": "revision.r1_r2_order", "name": "R1 → R2 order", "state": "measured", "detail": "Correction explicitly supersedes R1", "evidence_id": "alpha-turns"},
+        {"id": "revision.final_after_r2", "name": "Final work after R2", "state": "measured", "detail": "Edit and passing result follow R2", "evidence_id": "alpha-file"},
+        {"id": "attribution.model_config", "name": "Model/config join", "state": "measured", "detail": "2 / 2 responses attributed", "evidence_id": "alpha-usage"},
+        {"id": "attribution.usage", "name": "Usage join", "state": "measured", "detail": "2 / 2 usage records joined", "evidence_id": "alpha-usage"},
+        {"id": "attribution.token_semantics", "name": "Token semantics", "state": "measured", "detail": "Input/output/cache named separately", "evidence_id": "alpha-usage"},
+        {"id": "attribution.reconciliation", "name": "Usage reconciliation", "state": "measured", "detail": "Per-response sum matches total", "evidence_id": "alpha-usage"},
+        {"id": "portable.complete_root", "name": "Complete root", "state": "measured", "detail": "Declared root hash verified", "evidence_id": "alpha-root"},
+        {"id": "portable.companions", "name": "Required companions", "state": "measured", "detail": "Companion manifest present", "evidence_id": "alpha-root"},
+        {"id": "portable.isolated_decode", "name": "Isolated decode", "state": "measured", "detail": "Native-only decoder succeeds", "evidence_id": "alpha-root"},
+        {"id": "portable.canonical_equality", "name": "Canonical equality", "state": "measured", "detail": "Copied and original decode equal", "evidence_id": "alpha-root"}
+      ],
+      "timeline": [
+        {"step": "01", "label": "Initial requirement", "observed": "Observer received R1 with project marker", "recorded": "Native turn t-001 preserves exact text", "state": "measured", "locator_id": "alpha-turns"},
+        {"step": "02", "label": "Inspection", "observed": "inspect target.py", "recorded": "tool call a-001 with ordered argv", "state": "measured", "locator_id": "alpha-actions"},
+        {"step": "03", "label": "Known failure", "observed": "test_target.py exits 1", "recorded": "result r-002 keeps exit code 1", "state": "measured", "locator_id": "alpha-actions"},
+        {"step": "04", "label": "Correction", "observed": "Observer received R2 superseding R1", "recorded": "Native turn t-002 links response r-002", "state": "measured", "locator_id": "alpha-turns"},
+        {"step": "05", "label": "Edit boundary", "observed": "target.py hash changes", "recorded": "file event f-001 retains before/after hashes", "state": "measured", "locator_id": "alpha-file"},
+        {"step": "06", "label": "Passing result", "observed": "test_target.py exits 0", "recorded": "result r-004 joins to action a-004", "state": "measured", "locator_id": "alpha-actions"}
+      ],
+      "evidence": [
+        {"id": "alpha-turns", "kind": "OBSERVER + NATIVE", "title": "Two-turn correction history", "locator": "observer/events.json · turn-001 / turn-002", "snippet": "turn-001 R1 preserved\nturn-002 R2 supersedes=turn-001", "provenance": "Independent observer ID obs-alpha-01; copied native root hash root-alpha-01"},
+        {"id": "alpha-actions", "kind": "NATIVE LOCATOR", "title": "Action and result join", "locator": "native/session.jsonl:14-21 · action_id=a-004", "snippet": "action a-004 argv=[\"pytest\",\"test_target.py\"]\nresult r-004 action_id=a-004 exit_code=0", "provenance": "Native-only decode in an isolated copied root"},
+        {"id": "alpha-file", "kind": "OBSERVER + NATIVE", "title": "Changed-file boundary", "locator": "observer/events.json · file-001", "snippet": "path=fixture_project/target.py\nbefore=sha256:1111…\nafter=sha256:2222…", "provenance": "Independent file watcher joined by stable path and run ID"},
+        {"id": "alpha-usage", "kind": "NATIVE LOCATOR", "title": "Per-response usage", "locator": "native/usage.json · response=r-002", "snippet": "input=412 output=188 cache_read=96\nsession_total=1,204", "provenance": "Constructed usage fields; billing accuracy is out of scope"},
+        {"id": "alpha-root", "kind": "PORTABLE COPY", "title": "Complete copied root", "locator": "manifest.json · root_sha256=root-alpha-01", "snippet": "required=[session.jsonl, usage.json, companions.idx]\nisolated_decode=ok canonical_equal=true", "provenance": "Network and original paths unavailable during decode"}
+      ],
+      "fixes": [
+        {"title": "Keep the native join key", "detail": "Preserve action_id and response_id beside human-readable labels."},
+        {"title": "Name cache semantics", "detail": "Report input, output, and cache fields separately, including unknown values."}
+      ]
+    },
+    {
+      "id": "fixture-gamma-desktop",
+      "name": "Fixture Gamma",
+      "surface": "Desktop",
+      "version": "fixture build G",
+      "model": "constructed-model-g",
+      "status": "ranked",
+      "verification": "Constructed / fully exercised",
+      "ranking_eligible": true,
+      "evidence_complete": true,
+      "score": 81,
+      "runs": 3,
+      "scheduled_runs": 3,
+      "run_range": {"min": 79, "max": 83},
+      "run_scores": [79, 81, 83],
+      "categories": [
+        {"id": "record_fidelity", "score": 86, "summary": "Required work events are visible in all repetitions."},
+        {"id": "causality_context", "score": 79, "summary": "Desktop observer joins rendered responses to native IDs."},
+        {"id": "usage_attribution", "score": 74, "summary": "Usage records are present with one named unknown field."},
+        {"id": "portability_openness", "score": 82, "summary": "Native root and companion are copied and decoded."},
+        {"id": "durability_signal", "score": 79, "summary": "Repeated desktop captures retain the required ordering."}
+      ],
+      "gate_matrix": [
+        {"id": "work.submitted_turns", "name": "Submitted turns", "state": "measured", "detail": "2 / 2 exact turns", "evidence_id": "gamma-turns"},
+        {"id": "work.visible_responses", "name": "Visible responses", "state": "measured", "detail": "2 / 2 GUI response boundaries", "evidence_id": "gamma-responses"},
+        {"id": "work.actions", "name": "Actions and arguments", "state": "measured", "detail": "4 / 4 primary actions", "evidence_id": "gamma-actions"},
+        {"id": "work.results", "name": "Results and exit states", "state": "measured", "detail": "4 / 4 result joins", "evidence_id": "gamma-actions"},
+        {"id": "work.changed_files", "name": "Changed file boundary", "state": "measured", "detail": "1 path with before/after hashes", "evidence_id": "gamma-file"},
+        {"id": "causal.action_result", "name": "Action → result", "state": "measured", "detail": "4 / 4 stable-key joins", "evidence_id": "gamma-actions"},
+        {"id": "causal.turn_response", "name": "Turn → response", "state": "measured", "detail": "2 / 2 ordered joins", "evidence_id": "gamma-responses"},
+        {"id": "revision.r1", "name": "R1 retained", "state": "measured", "detail": "Initial requirement retained", "evidence_id": "gamma-turns"},
+        {"id": "revision.r2", "name": "R2 retained", "state": "measured", "detail": "Correction retained", "evidence_id": "gamma-turns"},
+        {"id": "revision.r1_r2_order", "name": "R1 → R2 order", "state": "measured", "detail": "Correction order recoverable", "evidence_id": "gamma-turns"},
+        {"id": "revision.final_after_r2", "name": "Final work after R2", "state": "measured", "detail": "Final edit follows correction", "evidence_id": "gamma-file"},
+        {"id": "attribution.model_config", "name": "Model/config join", "state": "measured", "detail": "2 / 2 responses attributed", "evidence_id": "gamma-usage"},
+        {"id": "attribution.usage", "name": "Usage join", "state": "measured", "detail": "2 / 2 usage records joined", "evidence_id": "gamma-usage"},
+        {"id": "attribution.token_semantics", "name": "Token semantics", "state": "measured", "detail": "Cache unknown is named", "evidence_id": "gamma-usage"},
+        {"id": "attribution.reconciliation", "name": "Usage reconciliation", "state": "measured", "detail": "Per-response sum reconciles", "evidence_id": "gamma-usage"},
+        {"id": "portable.complete_root", "name": "Complete root", "state": "measured", "detail": "Declared root hash verified", "evidence_id": "gamma-root"},
+        {"id": "portable.companions", "name": "Required companions", "state": "measured", "detail": "Desktop companion present", "evidence_id": "gamma-root"},
+        {"id": "portable.isolated_decode", "name": "Isolated decode", "state": "measured", "detail": "Native-only decoder succeeds", "evidence_id": "gamma-root"},
+        {"id": "portable.canonical_equality", "name": "Canonical equality", "state": "measured", "detail": "Copied and original decode equal", "evidence_id": "gamma-root"}
+      ],
+      "timeline": [
+        {"step": "01", "label": "Initial requirement", "observed": "GUI observer records R1 submission", "recorded": "Native turn t-g-001", "state": "measured", "locator_id": "gamma-turns"},
+        {"step": "02", "label": "Inspection", "observed": "Desktop tool card shows inspect", "recorded": "action a-g-001 with target path", "state": "measured", "locator_id": "gamma-actions"},
+        {"step": "03", "label": "Known failure", "observed": "Failure card shows exit 1", "recorded": "result r-g-002 exit_code=1", "state": "measured", "locator_id": "gamma-actions"},
+        {"step": "04", "label": "Correction", "observed": "GUI observer records R2", "recorded": "Native turn t-g-002", "state": "measured", "locator_id": "gamma-turns"},
+        {"step": "05", "label": "Edit boundary", "observed": "target.py changes", "recorded": "file event f-g-001", "state": "measured", "locator_id": "gamma-file"},
+        {"step": "06", "label": "Passing result", "observed": "Pass card shows exit 0", "recorded": "result r-g-004 exit_code=0", "state": "measured", "locator_id": "gamma-actions"}
+      ],
+      "evidence": [
+        {"id": "gamma-turns", "kind": "OBSERVER + NATIVE", "title": "Desktop turn boundaries", "locator": "observer/gui-events.json · submission-001 / submission-002", "snippet": "submission-001 R1\nsubmission-002 R2 supersedes submission-001", "provenance": "Independent GUI observer ID obs-gamma-01"},
+        {"id": "gamma-responses", "kind": "OBSERVER + NATIVE", "title": "Visible response boundaries", "locator": "observer/gui-events.json · response-card-002", "snippet": "response-card-002 visible=true\nresponse_id=r-g-002", "provenance": "Rendered response boundary joined to native response ID"},
+        {"id": "gamma-actions", "kind": "NATIVE LOCATOR", "title": "Desktop action cards", "locator": "native/events.sqlite · action_id=a-g-004", "snippet": "action=a-g-004 target=fixture_project/test_target.py\nresult=r-g-004 exit_code=0", "provenance": "Native-only decode in copied SQLite root"},
+        {"id": "gamma-file", "kind": "OBSERVER + NATIVE", "title": "Desktop edit boundary", "locator": "observer/fs-events.json · file-g-001", "snippet": "path=fixture_project/target.py\nbefore=sha256:3333…\nafter=sha256:4444…", "provenance": "Observer and native file record agree on path"},
+        {"id": "gamma-usage", "kind": "NATIVE LOCATOR", "title": "Response attribution", "locator": "native/usage.sqlite · response_id=r-g-002", "snippet": "input=388 output=201 cache_read=unknown\nsession_total=1,174", "provenance": "Constructed usage control; unknown cache is retained as unknown"},
+        {"id": "gamma-root", "kind": "PORTABLE COPY", "title": "Desktop copied root", "locator": "manifest.json · root_sha256=root-gamma-01", "snippet": "required=[events.sqlite, usage.sqlite, companions.idx]\nisolated_decode=ok canonical_equal=true", "provenance": "Original paths unavailable during isolated decode"}
+      ],
+      "fixes": [
+        {"title": "Keep the GUI observer bound", "detail": "Persist the observer run ID beside the native manifest."},
+        {"title": "Expose unknown usage fields", "detail": "Leave cache_read visibly unknown until the native source defines it."}
+      ]
+    },
+    {
+      "id": "fixture-beta-cli",
+      "name": "Fixture Beta",
+      "surface": "CLI",
+      "version": "fixture build B",
+      "model": "constructed-model-b",
+      "status": "unranked",
+      "verification": "Partially verified",
+      "ranking_eligible": false,
+      "evidence_complete": false,
+      "score": null,
+      "runs": 2,
+      "scheduled_runs": 3,
+      "run_range": {"min": 51, "max": 58},
+      "run_scores": [51, 58],
+      "categories": [
+        {"id": "record_fidelity", "score": 63, "summary": "Known events are present, but one response boundary is unresolved."},
+        {"id": "causality_context", "score": null, "summary": "No stable action-result join for the missing companion."},
+        {"id": "usage_attribution", "score": 42, "summary": "A total exists; per-response semantics are unresolved."},
+        {"id": "portability_openness", "score": null, "summary": "The declared native companion is missing."},
+        {"id": "durability_signal", "score": 49, "summary": "Only two of three scheduled repetitions were captured."}
+      ],
+      "gate_matrix": [
+        {"id": "work.submitted_turns", "name": "Submitted turns", "state": "measured", "detail": "2 / 2 turns observed", "evidence_id": "beta-turns"},
+        {"id": "work.visible_responses", "name": "Visible responses", "state": "unresolved", "detail": "Second response boundary not bound", "evidence_id": "beta-missing"},
+        {"id": "work.actions", "name": "Actions and arguments", "state": "measured", "detail": "3 / 4 actions observed", "evidence_id": "beta-actions"},
+        {"id": "work.results", "name": "Results and exit states", "state": "unresolved", "detail": "One result has no native join", "evidence_id": "beta-missing"},
+        {"id": "work.changed_files", "name": "Changed file boundary", "state": "measured", "detail": "Path observed, hashes partial", "evidence_id": "beta-file"},
+        {"id": "causal.action_result", "name": "Action → result", "state": "unresolved", "detail": "Companion needed for stable keys", "evidence_id": "beta-missing"},
+        {"id": "causal.turn_response", "name": "Turn → response", "state": "unresolved", "detail": "Response boundary ambiguous", "evidence_id": "beta-missing"},
+        {"id": "revision.r1", "name": "R1 retained", "state": "measured", "detail": "Initial requirement retained", "evidence_id": "beta-turns"},
+        {"id": "revision.r2", "name": "R2 retained", "state": "unresolved", "detail": "Correction record is partial", "evidence_id": "beta-turns"},
+        {"id": "revision.r1_r2_order", "name": "R1 → R2 order", "state": "unresolved", "detail": "Order cannot be proved", "evidence_id": "beta-missing"},
+        {"id": "revision.final_after_r2", "name": "Final work after R2", "state": "unresolved", "detail": "Final response is not bound", "evidence_id": "beta-missing"},
+        {"id": "attribution.model_config", "name": "Model/config join", "state": "measured", "detail": "1 / 2 responses attributed", "evidence_id": "beta-usage"},
+        {"id": "attribution.usage", "name": "Usage join", "state": "unresolved", "detail": "Only a session total is present", "evidence_id": "beta-usage"},
+        {"id": "attribution.token_semantics", "name": "Token semantics", "state": "unresolved", "detail": "Input/output/cache names absent", "evidence_id": "beta-usage"},
+        {"id": "attribution.reconciliation", "name": "Usage reconciliation", "state": "unresolved", "detail": "No per-response inputs", "evidence_id": "beta-usage"},
+        {"id": "portable.complete_root", "name": "Complete root", "state": "native_absent", "detail": "Declared root not complete", "evidence_id": "beta-missing"},
+        {"id": "portable.companions", "name": "Required companions", "state": "native_absent", "detail": "companions.idx missing", "evidence_id": "beta-missing"},
+        {"id": "portable.isolated_decode", "name": "Isolated decode", "state": "unresolved", "detail": "Cannot run on incomplete root", "evidence_id": "beta-missing"},
+        {"id": "portable.canonical_equality", "name": "Canonical equality", "state": "unresolved", "detail": "No isolated result", "evidence_id": "beta-missing"}
+      ],
+      "timeline": [
+        {"step": "01", "label": "Initial requirement", "observed": "Observer received R1", "recorded": "Native turn t-b-001", "state": "measured", "locator_id": "beta-turns"},
+        {"step": "02", "label": "Inspection", "observed": "inspect target.py", "recorded": "tool call present", "state": "measured", "locator_id": "beta-actions"},
+        {"step": "03", "label": "Known failure", "observed": "test exits 1", "recorded": "result has no stable companion join", "state": "unresolved", "locator_id": "beta-missing"},
+        {"step": "04", "label": "Correction", "observed": "Observer received R2", "recorded": "turn record is partial", "state": "unresolved", "locator_id": "beta-missing"},
+        {"step": "05", "label": "Edit boundary", "observed": "target.py changes", "recorded": "path present; after hash absent", "state": "unresolved", "locator_id": "beta-file"},
+        {"step": "06", "label": "Passing result", "observed": "test exits 0", "recorded": "no complete native result", "state": "unresolved", "locator_id": "beta-missing"}
+      ],
+      "evidence": [
+        {"id": "beta-turns", "kind": "OBSERVER", "title": "Observed turn boundaries", "locator": "observer/events.json · turn-b-001 / turn-b-002", "snippet": "turn-b-001 R1\nturn-b-002 R2 observed; native join pending", "provenance": "Independent observer present; capture is incomplete"},
+        {"id": "beta-actions", "kind": "NATIVE LOCATOR", "title": "Partial action stream", "locator": "native/session.jsonl:8-12 · action_id=a-b-001", "snippet": "action a-b-001 argv=[\"inspect\",\"target.py\"]\ncompanion lookup: missing", "provenance": "Locator retained, companion not delivered"},
+        {"id": "beta-file", "kind": "OBSERVER", "title": "Observed file change", "locator": "observer/events.json · file-b-001", "snippet": "path=fixture_project/target.py\nafter_hash=<unresolved>", "provenance": "Observed event cannot satisfy a native hash assertion"},
+        {"id": "beta-usage", "kind": "NATIVE LOCATOR", "title": "Session total only", "locator": "native/usage.json · session-total", "snippet": "session_total=1,091\nper_response=<missing>", "provenance": "A total is not a response-level usage join"},
+        {"id": "beta-missing", "kind": "MISSING EVIDENCE", "title": "Required companion absent", "locator": "manifest.json · companions.idx", "snippet": "declared=companions.idx\npresent=false\nrank=blocked", "provenance": "Complete-root gate cannot be evaluated"}
+      ],
+      "fixes": [
+        {"title": "Restore the declared companion", "detail": "Capture companions.idx and bind it to the native manifest before repeating the run."},
+        {"title": "Complete all three repetitions", "detail": "A two-run range cannot replace the scheduled three-run evidence set."}
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "portable-archive-control",
+      "use_case": "Portable archive reconstruction",
+      "target_id": "fixture-alpha-cli",
+      "claim": "Fixture Alpha is the qualifying constructed control for a copied-root reconstruction claim.",
+      "qualification": "Illustrative control only; this row is not a vendor recommendation.",
+      "citation_ids": ["alpha-root", "alpha-actions"],
+      "qualifies": true
+    },
+    {
+      "id": "blocked-beta-recommendation",
+      "use_case": "Missing-evidence negative control",
+      "target_id": "fixture-beta-cli",
+      "claim": "This candidate must not be recommended while its native root is incomplete.",
+      "qualification": "Blocked by unresolved and native-absent gates.",
+      "citation_ids": ["beta-missing"],
+      "qualifies": false
+    }
+  ],
+  "use_cases": [
+    {
+      "id": "audit-correction",
+      "label": "Audit a correction",
+      "requirement": "Retain R1, R2, order, and final work",
+      "results": {"fixture-alpha-cli": "Qualified", "fixture-gamma-desktop": "Qualified", "fixture-beta-cli": "Blocked"}
+    },
+    {
+      "id": "portable-reconstruction",
+      "label": "Reconstruct from a copied root",
+      "requirement": "Decode without original paths or network",
+      "results": {"fixture-alpha-cli": "Qualified", "fixture-gamma-desktop": "Qualified", "fixture-beta-cli": "Missing evidence"}
+    },
+    {
+      "id": "usage-attribution",
+      "label": "Attribute usage to responses",
+      "requirement": "Join model and input/output/cache fields",
+      "results": {"fixture-alpha-cli": "Qualified", "fixture-gamma-desktop": "Qualified", "fixture-beta-cli": "Unresolved"}
+    }
+  ],
+  "limitations": [
+    "CONSTRUCTED control data only: Fixture Alpha, Fixture Beta, and Fixture Gamma are fictional labels.",
+    "No vendor product, live session, private session, network request, or general coding-quality claim is represented.",
+    "Scores describe this renderer fixture and demonstrate ranking rules; they are not a benchmark result.",
+    "Storage bytes and crash qualification are outside this compact public prototype.",
+    "A citable recommendation requires a complete ranked row and evidence locator IDs that resolve inside that row."
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0-calibration-snapshot",
+  "title": "Session-Bench v1",
+  "edition_label": "PRELIMINARY FIVE-SURFACE REPORT",
+  "generated_from": "retained bounded calibration and correction evidence through 2026-09-14, including the corrected Codex Desktop task-API calibration; this is a status display, not a leaderboard",
+  "published_scores": 0,
+  "qualified_local_survival_results": 1,
+  "footer_notice": "LOCAL · UNRELEASED · NO VENDOR RANKING · HISTORICAL CURSOR ATTEMPTS ARE PAUSED",
+  "categories": [
+    {
+      "name": "Record fidelity",
+      "points": 30,
+      "color": "#ff5e45"
+    },
+    {
+      "name": "Causality & context",
+      "points": 20,
+      "color": "#f5b942"
+    },
+    {
+      "name": "Usage & attribution",
+      "points": 15,
+      "color": "#4f65a8"
+    },
+    {
+      "name": "Portability & openness",
+      "points": 20,
+      "color": "#44a6a6"
+    },
+    {
+      "name": "Durability & signal",
+      "points": 15,
+      "color": "#82b879"
+    }
+  ],
+  "surfaces": [
+    {
+      "configuration_id": "codex-cli",
+      "name": "Codex CLI",
+      "build": "0.154.0",
+      "state": "invalid",
+      "state_label": "RETAINED · INVALID",
+      "proof": [
+        "2 response canaries",
+        "1 new native rollout",
+        "correct final behavior"
+      ],
+      "blocker": "A controller post-check altered the protected ledger; the current decoder also needs a clean 0.154 qualification.",
+      "next": "Run one clean isolated calibration when the Codex quota gate permits."
+    },
+    {
+      "configuration_id": "codex-desktop",
+      "name": "Codex Desktop",
+      "build": "26.908.40834 · 8881",
+      "state": "calibrated",
+      "state_label": "CALIBRATED · UNSCORED",
+      "proof": [
+        "2 exact response canaries",
+        "per-attempt helper canary",
+        "2 Desktop rollouts",
+        "thread-keyed shell snapshots",
+        "copied decode + R2 damage control"
+      ],
+      "blocker": "The corrected task capture is complete, but the complete persistence-root boundary and canonical copied representation are not yet proven.",
+      "next": "Close the full-root portability boundary before evaluated repetition 1."
+    },
+    {
+      "configuration_id": "claude-cli",
+      "name": "Claude Code CLI",
+      "build": "2.1.270",
+      "state": "invalid",
+      "state_label": "2 REFUSALS · INVALID/N/A",
+      "proof": [
+        "2 fresh isolated R1 attempts",
+        "project-keyed JSONL observed",
+        "closed one-turn copy decoded"
+      ],
+      "blocker": "Both attempts refused before tool use, so they do not exercise the workload or establish a format score.",
+      "next": "Wait for changed conditions, then run one successful isolated two-turn calibration."
+    },
+    {
+      "configuration_id": "claude-desktop",
+      "name": "Claude Desktop Code (Local)",
+      "build": "1.52386.3",
+      "state": "calibrated",
+      "state_label": "CALIBRATED · UNSCORED",
+      "proof": [
+        "2 exact response canaries",
+        "external non-Git project",
+        "closed JSONL copy decoded",
+        "selected R2 loss detected"
+      ],
+      "blocker": "The complete cross-root companion family and the 31-cell evidence wrapper remain unproven.",
+      "next": "Close the root inventory and GUI-evidence contract before evaluated repetition 1."
+    },
+    {
+      "configuration_id": "opencode-cli",
+      "name": "OpenCode CLI",
+      "build": "1.18.30 · opencode/muse-spark-1.3-contributor-free",
+      "state": "captured",
+      "state_label": "3/3 · LOCAL REPLAY · UNRANKED",
+      "proof": [
+        "3 correction packages",
+        "copied SQLite + WAL + SHM",
+        "embedded runtime recheck",
+        "selected-loss controls",
+        "12 broad evidence rows"
+      ],
+      "blocker": "Five broad facts remain unresolved and no independent operator has reproduced a package, so there is no v1 /100.",
+      "next": "Independently replay a sanitized copied package and qualify the unresolved broad evidence."
+    }
+  ]
+}

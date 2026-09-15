@@ -1,0 +1,308 @@
+{
+  "schema_version": "1.0-survival-campaign",
+  "campaign_id": "survival-v1-prospective-codex-claude-opencode",
+  "protocol_version": "1.0-survival",
+  "state": "proposed_prospective",
+  "score_eligible": false,
+  "os": {
+    "family": "macOS",
+    "version": "15.7.9",
+    "build": "24G830",
+    "architecture": "arm64"
+  },
+  "frozen_inputs": {
+    "protocol_sha256": "2ec75735e0cea98cf20875c24deb909afefb52fca6255f933f275bba534dafe8",
+    "rubric_sha256": "facdcc51286061943d47300357491b020a4bf4117cac5b042bc0509b205cede7",
+    "workload_sha256": "a7bc23d4a3c71cd781a85d533cbc3889530584d8c2e7188d8b0bdd766d91eb12",
+    "observer_truth_sha256": "0d532173210cdd6bce94227e0d546ea678cac9b6ceb21564c1742ce7a6ed6426",
+    "response_canaries_sha256": "d4c041d4e073ce713fd9a4b8255503a682b42e3dd3593fd4a493baa0c3eead18"
+  },
+  "quota": {
+    "source": "codex_app_account_usage",
+    "observed_at": "2026-09-12T03:12:30Z",
+    "baseline_used_percent": 72,
+    "absolute_stop_used_percent": 95,
+    "reset_at": "2026-09-17T23:41:45Z",
+    "check": "before_every_model_submission",
+    "on_stop": "no_new_submission_finish_in_flight_capture_only",
+    "reset_credits": "never_consume_without_explicit_confirmation"
+  },
+  "publication": {
+    "live_vendor_claims_allowed": false,
+    "reason": "Prospective preflight-only plan: no evaluated repetitions collected, no score, no vendor claims"
+  },
+  "notes": "Prospective five-configuration cohort (codex-cli, codex-desktop, claude-cli, claude-desktop, opencode-cli). Preflight only; score eligibility false. Claude build identities from docs/survival-v1/shared-format-assessment.md (CLI 2.1.270, Desktop 1.52386.3); Claude model IDs unbound until isolated calibration. Auth/runtime/capture failures are invalid/N/A, never evidence of format quality.",
+  "configuration_order": [
+    "codex-cli",
+    "codex-desktop",
+    "claude-cli",
+    "claude-desktop",
+    "opencode-cli"
+  ],
+  "configurations": [
+    {
+      "configuration_id": "codex-cli",
+      "product": "Codex",
+      "surface": "cli",
+      "identity": {
+        "version": "0.154.0",
+        "build": null,
+        "executable": "/opt/homebrew/bin/codex"
+      },
+      "preflight_state": "conditional",
+      "authentication": "supported account path; never inspect or copy credential material",
+      "usage_budget": {
+        "billing_authority": "Codex account subscription",
+        "paid_submission_allowed": false,
+        "limit_source": "codex_app_account_usage"
+      }
+    },
+    {
+      "configuration_id": "codex-desktop",
+      "product": "Codex",
+      "surface": "desktop",
+      "identity": {
+        "version": "26.908.40834",
+        "build": "8881",
+        "bundle": "com.openai.codex",
+        "bundled_cli": "0.154.0-alpha.6.2"
+      },
+      "preflight_state": "blocked_gui_observer",
+      "usage_budget": {
+        "billing_authority": "Codex account subscription",
+        "paid_submission_allowed": false,
+        "limit_source": "codex_app_account_usage"
+      }
+    },
+    {
+      "configuration_id": "claude-cli",
+      "product": "Claude",
+      "surface": "cli",
+      "identity": {
+        "version": "2.1.270",
+        "build": null,
+        "model": null
+      },
+      "preflight_state": "unconfirmed_isolated_calibration_required",
+      "authentication": "supported account path; never inspect or copy credential material",
+      "usage_budget": {
+        "billing_authority": "Anthropic account subscription",
+        "paid_submission_allowed": false,
+        "limit_source": "claude_account_usage_unconfirmed"
+      }
+    },
+    {
+      "configuration_id": "claude-desktop",
+      "product": "Claude",
+      "surface": "desktop",
+      "identity": {
+        "version": "1.52386.3",
+        "build": null,
+        "model": null
+      },
+      "preflight_state": "unconfirmed_isolated_calibration_required",
+      "authentication": "supported account path; never inspect or copy credential material",
+      "usage_budget": {
+        "billing_authority": "Anthropic account subscription",
+        "paid_submission_allowed": false,
+        "limit_source": "claude_account_usage_unconfirmed"
+      }
+    },
+    {
+      "configuration_id": "opencode-cli",
+      "product": "OpenCode",
+      "surface": "cli",
+      "identity": {
+        "version": "1.18.30",
+        "build": null,
+        "executable": "/opt/homebrew/bin/opencode",
+        "model": "opencode/muse-spark-1.3-contributor-free"
+      },
+      "preflight_state": "ready_after_muse_calibration",
+      "authentication": "default auth path with explicit isolated OPENCODE_DB; never inspect credential material",
+      "usage_budget": {
+        "billing_authority": "OpenCode contributor free endpoint",
+        "paid_submission_allowed": false,
+        "limit_source": "opencode_event_cost"
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt_id": "codex-cli-cal-1",
+      "configuration_id": "codex-cli",
+      "kind": "calibration",
+      "repetition": null,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-cli-eval-1",
+      "configuration_id": "codex-cli",
+      "kind": "evaluated",
+      "repetition": 1,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-cli-eval-2",
+      "configuration_id": "codex-cli",
+      "kind": "evaluated",
+      "repetition": 2,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-cli-eval-3",
+      "configuration_id": "codex-cli",
+      "kind": "evaluated",
+      "repetition": 3,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-cli-crash-1",
+      "configuration_id": "codex-cli",
+      "kind": "crash_qualification",
+      "repetition": null,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-desktop-cal-1",
+      "configuration_id": "codex-desktop",
+      "kind": "calibration",
+      "repetition": null,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-desktop-eval-1",
+      "configuration_id": "codex-desktop",
+      "kind": "evaluated",
+      "repetition": 1,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-desktop-eval-2",
+      "configuration_id": "codex-desktop",
+      "kind": "evaluated",
+      "repetition": 2,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-desktop-eval-3",
+      "configuration_id": "codex-desktop",
+      "kind": "evaluated",
+      "repetition": 3,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "codex-desktop-crash-1",
+      "configuration_id": "codex-desktop",
+      "kind": "crash_qualification",
+      "repetition": null,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "claude-cli-cal-1",
+      "configuration_id": "claude-cli",
+      "kind": "calibration",
+      "repetition": null,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "claude-cli-eval-1",
+      "configuration_id": "claude-cli",
+      "kind": "evaluated",
+      "repetition": 1,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "claude-cli-eval-2",
+      "configuration_id": "claude-cli",
+      "kind": "evaluated",
+      "repetition": 2,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "claude-cli-eval-3",
+      "configuration_id": "claude-cli",
+      "kind": "evaluated",
+      "repetition": 3,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "claude-cli-crash-1",
+      "configuration_id": "claude-cli",
+      "kind": "crash_qualification",
+      "repetition": null,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "claude-desktop-cal-1",
+      "configuration_id": "claude-desktop",
+      "kind": "calibration",
+      "repetition": null,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "claude-desktop-eval-1",
+      "configuration_id": "claude-desktop",
+      "kind": "evaluated",
+      "repetition": 1,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "claude-desktop-eval-2",
+      "configuration_id": "claude-desktop",
+      "kind": "evaluated",
+      "repetition": 2,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "claude-desktop-eval-3",
+      "configuration_id": "claude-desktop",
+      "kind": "evaluated",
+      "repetition": 3,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "claude-desktop-crash-1",
+      "configuration_id": "claude-desktop",
+      "kind": "crash_qualification",
+      "repetition": null,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "opencode-cli-cal-1",
+      "configuration_id": "opencode-cli",
+      "kind": "calibration",
+      "repetition": null,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "opencode-cli-eval-1",
+      "configuration_id": "opencode-cli",
+      "kind": "evaluated",
+      "repetition": 1,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "opencode-cli-eval-2",
+      "configuration_id": "opencode-cli",
+      "kind": "evaluated",
+      "repetition": 2,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "opencode-cli-eval-3",
+      "configuration_id": "opencode-cli",
+      "kind": "evaluated",
+      "repetition": 3,
+      "state": "scheduled"
+    },
+    {
+      "attempt_id": "opencode-cli-crash-1",
+      "configuration_id": "opencode-cli",
+      "kind": "crash_qualification",
+      "repetition": null,
+      "state": "scheduled"
+    }
+  ],
+  "setup_corrections": []
+}
