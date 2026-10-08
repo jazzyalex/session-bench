@@ -1,0 +1,103 @@
+{
+  "attempt_id": "dsh-eval-20260929-1",
+  "files": [
+    {
+      "path": "bench_check.py",
+      "sha256": "6f5c6ea8eec716b04c0ed5ea3040fd5f985048ba02cb98b9835166ef5ec97f66",
+      "size_bytes": 3008
+    },
+    {
+      "path": "capture-result.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 1393
+    },
+    {
+      "path": "capture-start.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 595
+    },
+    {
+      "path": "decoded.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 491993
+    },
+    {
+      "path": "format-evidence.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 43717
+    },
+    {
+      "path": "helper-ledger.jsonl",
+      "sha256": "7864771c15e71e83d3775f723495d1c400929bb3e60597fb51dc09e2317698f3",
+      "size_bytes": 2207
+    },
+    {
+      "path": "measurement.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 3107
+    },
+    {
+      "path": "native/session.v4.jsonl.zstd",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 57876
+    },
+    {
+      "path": "native-manifest.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 461
+    },
+    {
+      "path": "observer.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 43333
+    },
+    {
+      "path": "portability.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 294
+    },
+    {
+      "path": "r1.stdout.jsonl",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 18393
+    },
+    {
+      "path": "r2.stdout.jsonl",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 10967
+    },
+    {
+      "path": "score-diagnostics.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 33363
+    },
+    {
+      "path": "survival-evidence.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 13131
+    },
+    {
+      "path": "workload.json",
+      "sha256": "3b7eead9c968383407a0007f79257b9ddb2ea6eecc74dd0e6ef32ca4b9266ded",
+      "size_bytes": 7460
+    }
+  ],
+  "independently_reproduced": false,
+  "native_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "parent_manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "public_safe": false,
+  "repetition": 2,
+  "schema_version": "session-bench-dsh-diagnostic-package-v1",
+  "score_eligible": false,
+  "source_files": {
+    "fixtures/scenarios/survival-v1/workload/fixture_project/bench_check.py": "6f5c6ea8eec716b04c0ed5ea3040fd5f985048ba02cb98b9835166ef5ec97f66",
+    "scripts/qualify_deepseek_capture.py": "6df26e3b577c817c259aa1af004e8f3d0332a94563494c66012f72cbf13838d4",
+    "session_bench/adapters/deepseek_harness.py": "d52864c5c4fc40ceb0dfed0d31b6c346654a5844ba9d9691e5461d3dbc307021",
+    "session_bench/dsh_format_evidence.py": "b52ba5e6bec6c52eceb80ec360c5c4d30aa41f4930ee87f39d29d4b9787dea96",
+    "session_bench/dsh_live.py": "7791b5dde53f687b8cd47e33e1ef37a270b380ea4eb213f62938b18929dff411",
+    "session_bench/dsh_native.py": "a0cf49c760a11b05d0c6933c86dd8cc8e7fded0b4987d575cfa7c4871e05eeb8",
+    "session_bench/format_timestamp_population.py": "44f3b75ea9c12e7a6caab58e0fa9bbf768256c6c7b81efc9de66ec12b45d2997",
+    "session_bench/live_metric_comparator.py": "a84c36ac292b5977560b0d676e8c96cbe7b94f88fa8afe0e15300a49e28ff6f0",
+    "session_bench/live_observer.py": "1bb9340b6353e5fc0ddbbeb174bb79a1082bcc38ad9258075ab377a746ae9332"
+  }
+}

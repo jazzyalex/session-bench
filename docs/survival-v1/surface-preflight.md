@@ -102,7 +102,7 @@ run plan.
 
 ### Cursor CLI
 
-The PATH `cursor` command is a shim. Its `--version` reports that it cannot find another Cursor IDE executable on PATH, but `cursor agent` delegates to the installed direct CLI at `/Users/alexm/.local/bin/agent`. That CLI reports version `2026.09.08-6caf4ff`; its help exposes `--print` and `--output-format stream-json`, plus `--workspace` and `--worktree`.
+The PATH `cursor` command is a shim. Its `--version` reports that it cannot find another Cursor IDE executable on PATH, but `cursor agent` delegates to the installed direct CLI at `/Users/operator/.local/bin/agent`. That CLI reports version `2026.09.08-6caf4ff`; its help exposes `--print` and `--output-format stream-json`, plus `--workspace` and `--worktree`.
 
 Static code in that installed CLI defines `CURSOR_DATA_DIR`, defaulting to `~/.cursor`, and a `projects` child root. It also defines `CURSOR_CONFIG_DIR`, defaulting to `XDG_CONFIG_HOME/cursor` or `~/.cursor`. The exact per-project directory key, the transcript files within it, and whether every response is persisted are unverified.
 
@@ -194,7 +194,7 @@ Local static sources inspected on 2026-09-11:
   `/Applications/ChatGPT.app/Contents/Resources/codex`. No GUI or transcript content was
   inspected.
 - OpenCode help, `run` help, and `db` help from `/opt/homebrew/bin/opencode`; static executable `/opt/homebrew/lib/node_modules/opencode-ai/bin/opencode.exe`.
-- Cursor Agent help and static package under `/Users/alexm/.local/share/cursor-agent/versions/2026.09.08-6caf4ff/`.
+- Cursor Agent help and static package under `/Users/operator/.local/share/cursor-agent/versions/2026.09.08-6caf4ff/`.
 - Cursor Desktop `Info.plist`, `product.json`, `out/main.js`, and `out/cli.js` under `/Applications/Cursor.app/Contents/`.
 - Repository scope and v1 protocol: `README.md`, `docs/design/2026-09-11-wow-benchmark-plan.md`, and `docs/launch/prototype-execution.md`.
 

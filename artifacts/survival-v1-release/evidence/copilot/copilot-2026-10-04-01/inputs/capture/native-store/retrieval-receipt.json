@@ -1,0 +1,20 @@
+{
+  "bound_to": "root-end.json copilot_home_inventory_after sha256 of each file",
+  "files": {
+    "session-store.db": {
+      "sha256": "da63a52bdf62b3fc863995d79f497584be3ba97c1de4c55d1d301afbafab6cfc",
+      "size_bytes": 4096
+    },
+    "session-store.db-wal": {
+      "sha256": "72827efebeea2127adb7565408392769b3beafb2f9ad39bb15806ff15e162d71",
+      "size_bytes": 428512
+    }
+  },
+  "not_copied": {
+    "session-store.db-shm": "transient SQLite shared-memory index; a read-only open on 2026-10-04 before the copy rewrote it, so it no longer equals the receipt; it holds no row content"
+  },
+  "retrieved_on": "2026-10-04",
+  "run_id": "copilot-2026-10-04-01",
+  "schema_version": "session-bench-copilot-session-store-retrieval-v1",
+  "source": "retained temporary COPILOT_HOME of this capture"
+}

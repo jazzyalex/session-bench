@@ -1,0 +1,56 @@
+{
+  "copilot_home_inventory_after": {
+    "config.json": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "logs/.copilot-log.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/process-1791144916772-37410.log": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "logs/process-1791144930022-37466.log": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "session-state/.session-operation-locks/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "session-state/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee/.workspace-fork.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "session-state/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee/checkpoints/index.md": {
+      "sha256": "a6508da52c083afcfd134779a5b6a71a31235f9f154f2aa865ea920d68189734"
+    },
+    "session-state/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee/events.jsonl": {
+      "sha256": "da2ccaf2467fdb60affdc36f8b1ec8559a2f2ca0cf0a17868a05d9a8eee6e17e"
+    },
+    "session-state/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee/rewind-file-snapshots/backups/f4482bd25089ad5c521d2d8c75d17607d5dec0582b9bb687b5716c9673546401": {
+      "sha256": "f4482bd25089ad5c521d2d8c75d17607d5dec0582b9bb687b5716c9673546401"
+    },
+    "session-state/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee/rewind-file-snapshots/index.json": {
+      "sha256": "a9f88353347a96f656cb96f93cfe611ee674ba4e9de7bb670b38d23f3063ddbe"
+    },
+    "session-state/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee/rewind-file-snapshots/tracking.json": {
+      "sha256": "0916b582e1bc5439b7454e8dee676b3d7f24d524cac8715e1d0afd44a8e66e3b"
+    },
+    "session-state/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee/workspace.yaml": {
+      "sha256": "3825a5558201dd2bd5af44b386fcaa18d60f1483364b984d81f771b6f663285d"
+    },
+    "session-store.db": {
+      "sha256": "da63a52bdf62b3fc863995d79f497584be3ba97c1de4c55d1d301afbafab6cfc"
+    },
+    "session-store.db-shm": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "session-store.db-wal": {
+      "sha256": "72827efebeea2127adb7565408392769b3beafb2f9ad39bb15806ff15e162d71"
+    },
+    "settings.json": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "ended_ns": 1791144940122740000,
+  "returncode": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_sha256": "62e6443c07b82213aac40f43fa83ea977188d1feace5aebe7b217304b00bc285"
+}

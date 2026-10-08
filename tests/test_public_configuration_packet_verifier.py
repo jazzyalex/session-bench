@@ -28,6 +28,39 @@ def _load_verifier():
     return module
 
 
+def test_standalone_root_metric_accepts_one_run_and_rejects_repeatability_mismatch() -> None:
+    verifier = _load_verifier()
+    row = {"repetition": 3, "root_locator": "CLAUDE_HOME/projects/<session-id>",
+           "discovery_mode": "metadata_safe_normal_root", "personal_history_scanned": False}
+    detail = {"evidence_complete": True, "repetitions": [row]}
+    assert verifier._broad_metric("broad.stable_root_location", detail)["correct"] == 1
+
+    detail["repetitions"] = [
+        {"repetition": 2, "root_locator": "root/session-2", "isolated_discovery": True, "personal_history_scanned": False},
+        row,
+    ]
+    assert verifier._broad_metric("broad.stable_root_location", detail)["correct"] == 0
+
+    detail["repetitions"] = [
+        {"repetition": 2, "root_locator": "root/<session-id>", "isolated_discovery": True, "personal_history_scanned": False},
+        {"repetition": 3, "root_locator": "other/<session-id>", "isolated_discovery": True, "personal_history_scanned": False},
+    ]
+    assert verifier._broad_metric("broad.stable_root_location", detail)["correct"] == 1
+
+
+@pytest.mark.parametrize("repetitions", [[], [
+    {"repetition": number, "root_locator": "root", "isolated_discovery": True, "personal_history_scanned": False}
+    for number in (1, 3)
+], [
+    {"repetition": number, "root_locator": "root", "isolated_discovery": True, "personal_history_scanned": False}
+    for number in (2, 1)
+]])
+def test_standalone_root_metric_rejects_empty_or_nonsequential_population(repetitions) -> None:
+    verifier = _load_verifier()
+    with pytest.raises(verifier.VerificationError, match="repetition population|repetitions must"):
+        verifier._broad_metric("broad.stable_root_location", {"evidence_complete": True, "repetitions": repetitions})
+
+
 def test_public_packet_accepts_source_denial_counts_for_each_native_layout() -> None:
     """The producer emits 3 paths for one root and 9 for three roots."""
     verifier = _load_verifier()

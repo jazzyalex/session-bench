@@ -1,0 +1,119 @@
+{
+  "schema_version": "session-bench-release-scope-v1",
+  "release_id": "session-bench-v1-expanded",
+  "historical_source": "data/measurements.json",
+  "rows": [
+    {
+      "configuration_id": "pi",
+      "display_name": "Pi",
+      "harness": "pi",
+      "surface": "cli",
+      "historical_id": "pi",
+      "identity_state": "scoped"
+    },
+    {
+      "configuration_id": "openclaw",
+      "display_name": "OpenClaw",
+      "harness": "openclaw",
+      "surface": "cli",
+      "historical_id": "openclaw",
+      "identity_state": "scoped"
+    },
+    {
+      "configuration_id": "claude-cli",
+      "display_name": "Claude Code CLI",
+      "harness": "claude",
+      "surface": "cli",
+      "historical_id": "claude",
+      "identity_state": "scoped"
+    },
+    {
+      "configuration_id": "codex-cli",
+      "display_name": "Codex CLI",
+      "harness": "codex",
+      "surface": "cli",
+      "historical_id": "codex",
+      "identity_state": "scoped"
+    },
+    {
+      "configuration_id": "kimi",
+      "display_name": "Kimi Code",
+      "harness": "kimi",
+      "surface": "cli",
+      "historical_id": "kimi",
+      "identity_state": "scoped"
+    },
+    {
+      "configuration_id": "opencode-cli",
+      "display_name": "OpenCode CLI",
+      "harness": "opencode",
+      "surface": "cli",
+      "historical_id": "opencode",
+      "identity_state": "scoped"
+    },
+    {
+      "configuration_id": "hermes",
+      "display_name": "Hermes",
+      "harness": "hermes",
+      "surface": "cli",
+      "historical_id": "hermes",
+      "identity_state": "scoped"
+    },
+    {
+      "configuration_id": "copilot",
+      "display_name": "Copilot CLI",
+      "harness": "copilot",
+      "surface": "cli",
+      "historical_id": "copilot",
+      "identity_state": "scoped"
+    },
+    {
+      "configuration_id": "antigravity",
+      "display_name": "Antigravity",
+      "harness": "antigravity",
+      "surface": "cli",
+      "historical_id": "antigravity",
+      "identity_state": "scoped"
+    },
+    {
+      "configuration_id": "cursor-cli",
+      "display_name": "Cursor CLI",
+      "harness": "cursor",
+      "surface": "cli",
+      "historical_id": "cursor",
+      "identity_state": "scoped"
+    },
+    {
+      "configuration_id": "codex-desktop",
+      "display_name": "Codex Desktop",
+      "harness": "codex",
+      "surface": "desktop",
+      "historical_id": null,
+      "identity_state": "scoped"
+    },
+    {
+      "configuration_id": "claude-desktop",
+      "display_name": "Claude Desktop Code (Local)",
+      "harness": "claude",
+      "surface": "desktop",
+      "historical_id": null,
+      "identity_state": "scoped"
+    },
+    {
+      "configuration_id": "cursor-desktop",
+      "display_name": "Cursor Desktop",
+      "harness": "cursor",
+      "surface": "desktop",
+      "historical_id": null,
+      "identity_state": "scoped"
+    },
+    {
+      "configuration_id": "deepseek-harness-cli",
+      "display_name": "DeepSeek Harness CLI",
+      "harness": "dsh",
+      "surface": "cli",
+      "historical_id": null,
+      "identity_state": "scoped"
+    }
+  ]
+}

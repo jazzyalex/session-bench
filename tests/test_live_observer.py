@@ -516,9 +516,9 @@ def test_missing_usage_is_allowed_and_omitted() -> None:
     response = next(e for e in observer["events"] if e["id"] == "response-r1")
     assert "usage" not in response["fields"]
     assert "usage_id" not in response["fields"]
-    total = next(e for e in observer["events"] if e["id"] == "usage-total")
-    assert total["fields"]["usage_ids"] == ["usage-r2"]
-    assert total["fields"]["input_tokens"] == 34
+    assert not _events_by_kind(observer, "usage_total")
+    response_r2 = next(e for e in observer["events"] if e["id"] == "response-r2")
+    assert response_r2["fields"]["usage"]["input_tokens"] == 34
 
 
 def test_real_nested_event_shape_normalizes_workspace_and_run_canary_flag() -> None:
@@ -583,3 +583,39 @@ def test_legacy_controller_turn_shape_is_rejected() -> None:
                             2: {"session_id": SESSION}}}
     with pytest.raises(LiveObserverError):
         _build(controller_state=controller)
+
+
+def test_no_usage_or_unknown_bucket_never_invents_zero_total():
+    for unknown in (False, True):
+        stdout = _stdout()
+        for turn, stream in stdout.items():
+            records = [json.loads(line) for line in stream.splitlines()]
+            if unknown:
+                for row in records:
+                    if row.get("type") == "step_finish":
+                        row["tokens"]["reasoning"] = None
+                        row["tokens"]["reasoning_tokens"] = None
+            else:
+                records = [row for row in records if row.get("type") != "step_finish"]
+            stdout[turn] = "\n".join(json.dumps(row) for row in records)
+        observer = _build(stdout_by_turn=stdout)
+        assert not _events_by_kind(observer, "usage_total")
+
+
+def test_failed_pre_helper_attempt_is_retained_and_not_confused_with_completed_helper():
+    stdout = _stdout()
+    records = [json.loads(line) for line in stdout[1].splitlines()]
+    original = next(row for row in records if row.get('type')=='tool_use' and 'inspect' in str(row))
+    failed = copy.deepcopy(original)
+    failed['callID'] = 'failed-before-helper'
+    failed['state']['output'] = 'PermissionError: helper did not run'
+    failed['state']['metadata']['exit'] = 1
+    records.insert(records.index(original),failed)
+    stdout[1] = '\n'.join(json.dumps(row) for row in records)
+    observer = _build(stdout_by_turn=stdout)
+    failures = [event for event in observer['events'] if event['kind']=='result'
+                and event['fields'].get('call_id')=='failed-before-helper']
+    assert len(failures)==1 and failures[0]['population_role']=='unscored'
+    primary = [event for event in observer['events'] if event['kind']=='action'
+               and event['population_role']=='primary_scored']
+    assert len(primary)==4

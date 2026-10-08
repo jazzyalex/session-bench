@@ -1,0 +1,161 @@
+{
+  "schema_version": "session-bench-pi-survival-capture-v1",
+  "attempt_id": "pi-openai-codex-2026-10-02-11",
+  "status": "attempted",
+  "provider": "openai-codex",
+  "model": "gpt-5.5",
+  "model_submissions": 2,
+  "session_id": "af940a24-1c23-4f8e-9085-d3aaa28cf6d7",
+  "capture_environment": {
+    "os_name": "macOS",
+    "python_platform": "darwin",
+    "schema_version": "session-bench-pi-capture-host-v1",
+    "system": "Darwin"
+  },
+  "turns": [
+    {
+      "turn": 1,
+      "status": "completed",
+      "launch": {
+        "argv": [
+          "pi",
+          "--provider",
+          "openai-codex",
+          "--model",
+          "gpt-5.5",
+          "--session-dir",
+          "/private/tmp/session-bench-pi-mislb4pe/pi-native-source",
+          "--session-id",
+          "af940a24-1c23-4f8e-9085-d3aaa28cf6d7",
+          "--mode",
+          "json",
+          "--system-prompt",
+          "You are completing a synthetic Session-Bench task. Work only in the current fixture_project directory. Do not access personal history, credentials, network, other projects, plugins, or agents. Preserve bench_check.py and .survival-observer.jsonl. Follow the supplied two-turn task exactly.",
+          "--no-extensions",
+          "--no-skills",
+          "--no-context-files",
+          "--no-prompt-templates",
+          "--no-themes",
+          "--tools",
+          "read,bash,edit,write",
+          "--approve",
+          "--print",
+          "--",
+          "This is a synthetic Session-Bench survival-v1 coding task. Work only inside fixture_project. Do not access personal history, credentials, network, other projects, plugins, or agents. Preserve bench_check.py and .survival-observer.jsonl. Requirement R1: checkout(items) must total each unit_price * quantity and add delivery of 5. First run python3 bench_check.py inspect --run-canary SB_SURVIVAL_V1_RUN_pi-openai-codex-2026-10-02-11, then python3 bench_check.py baseline --run-canary SB_SURVIVAL_V1_RUN_pi-openai-codex-2026-10-02-11. Do not edit checkout.py yet. Explain the observed baseline result and stop. End your visible response with exactly SB_SURVIVAL_V1_RESPONSE_R1_cafe_\ud83d\ude42. Context marker: SB_SURVIVAL_V1_CONTEXT_cafe_\ud83d\ude42. Run canary: SB_SURVIVAL_V1_RUN_pi-openai-codex-2026-10-02-11."
+        ],
+        "cwd": "/private/tmp/session-bench-pi-mislb4pe/workspace",
+        "environment_keys": [
+          "HOME",
+          "LANG",
+          "PATH",
+          "PI_TELEMETRY",
+          "SB_SURVIVAL_V1_RUN_CANARY",
+          "TMPDIR"
+        ],
+        "environment_overrides": {
+          "PI_TELEMETRY": "0",
+          "run_canary": "SB_SURVIVAL_V1_RUN_pi-openai-codex-2026-10-02-11"
+        },
+        "started_ns": 1790910380079409000,
+        "provider": "openai-codex",
+        "model": "gpt-5.5",
+        "stdout_protocol": "pi-json-session-events-v1",
+        "prompt_sha256": "ab688fc8aca20f799ca6616de6010ce640690a60ea0e7cdacde163eab979070d",
+        "session_id": "af940a24-1c23-4f8e-9085-d3aaa28cf6d7",
+        "auth_not_copied": true
+      },
+      "returncode": 0,
+      "stdout_sha256": "5e3acf29d62f4440cea39461a4377fcbbe6ea7943b8739a907a7b6681288df5c",
+      "stderr_sha256": "01c3211e97e38900126a9dc4a6460d3159e78f04fe8ba048f2dee9e2fb970973",
+      "native_sha256": "2b1196d747b261bae7e40c8c47182842443b429cd5bece78b5021f8416b5f2f2",
+      "native_status": "complete",
+      "workspace_files": [
+        ".survival-observer.jsonl",
+        "bench_check.py",
+        "checkout.py",
+        "snapshots/checkout.after.py",
+        "snapshots/checkout.before.py"
+      ]
+    },
+    {
+      "turn": 2,
+      "status": "completed",
+      "launch": {
+        "argv": [
+          "pi",
+          "--provider",
+          "openai-codex",
+          "--model",
+          "gpt-5.5",
+          "--session-dir",
+          "/private/tmp/session-bench-pi-mislb4pe/pi-native-source",
+          "--session-id",
+          "af940a24-1c23-4f8e-9085-d3aaa28cf6d7",
+          "--mode",
+          "json",
+          "--system-prompt",
+          "You are completing a synthetic Session-Bench task. Work only in the current fixture_project directory. Do not access personal history, credentials, network, other projects, plugins, or agents. Preserve bench_check.py and .survival-observer.jsonl. Follow the supplied two-turn task exactly.",
+          "--no-extensions",
+          "--no-skills",
+          "--no-context-files",
+          "--no-prompt-templates",
+          "--no-themes",
+          "--tools",
+          "read,bash,edit,write",
+          "--approve",
+          "--print",
+          "--",
+          "Correction R2 supersedes only the delivery condition: delivery is free when subtotal is at least 50 and remains 5 below 50. Keep quantity handling from R1. Edit only fixture_project/checkout.py. Do not modify bench_check.py or .survival-observer.jsonl. Run python3 bench_check.py final --run-canary SB_SURVIVAL_V1_RUN_pi-openai-codex-2026-10-02-11. Explain the actual change and test outcome. End your visible response with exactly SB_SURVIVAL_V1_RESPONSE_R2_correction_\u0394. Context marker: SB_SURVIVAL_V1_CONTEXT_cafe_\ud83d\ude42. Run canary: SB_SURVIVAL_V1_RUN_pi-openai-codex-2026-10-02-11."
+        ],
+        "cwd": "/private/tmp/session-bench-pi-mislb4pe/workspace",
+        "environment_keys": [
+          "HOME",
+          "LANG",
+          "PATH",
+          "PI_TELEMETRY",
+          "SB_SURVIVAL_V1_RUN_CANARY",
+          "TMPDIR"
+        ],
+        "environment_overrides": {
+          "PI_TELEMETRY": "0",
+          "run_canary": "SB_SURVIVAL_V1_RUN_pi-openai-codex-2026-10-02-11"
+        },
+        "started_ns": 1790910395263571000,
+        "provider": "openai-codex",
+        "model": "gpt-5.5",
+        "stdout_protocol": "pi-json-session-events-v1",
+        "prompt_sha256": "1ec308d6d27e7627417dbaa47708bdb3491e9f6f448b7ed65c9e4a7de4d43e03",
+        "session_id": "af940a24-1c23-4f8e-9085-d3aaa28cf6d7",
+        "auth_not_copied": true
+      },
+      "returncode": 0,
+      "stdout_sha256": "7da0ca21be3ed6e4c1cb546be1a96f411c65e63025639fa634483d16f7c02df1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "native_sha256": "c9397476611fd90b05ee6965e33a10ee54911b2c19b19ae084eef66fe1201130",
+      "native_status": "complete",
+      "workspace_files": [
+        ".survival-observer.jsonl",
+        "bench_check.py",
+        "checkout.py",
+        "snapshots/checkout.after.py",
+        "snapshots/checkout.before.py"
+      ]
+    }
+  ],
+  "score_eligible": false,
+  "preflight": {
+    "ready": true,
+    "version": "1.0.0",
+    "version_exit_code": 0,
+    "auth": {
+      "status": "ready",
+      "provider": "openai-codex",
+      "authType": "oauth"
+    },
+    "auth_exit_code": 0,
+    "model_catalog_sha256": "e9a67cc07c30d71c2cb44c9d3e6a3b1401a9f3df9a39cb1eeba108945b7b8f05",
+    "model_catalog_exit_code": 0,
+    "model_catalog_match": "gpt-5.5",
+    "preflight_failure": null
+  }
+}

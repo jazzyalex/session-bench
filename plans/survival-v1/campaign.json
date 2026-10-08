@@ -77,7 +77,7 @@
       "identity": {
         "version": "2026.09.08-6caf4ff",
         "build": "6caf4ff",
-        "executable": "/Users/alexm/.local/bin/agent"
+        "executable": "/Users/operator/.local/bin/agent"
       },
       "preflight_state": "conditional",
       "authentication": "supported keychain/account path; isolated session data; never inspect credential material",

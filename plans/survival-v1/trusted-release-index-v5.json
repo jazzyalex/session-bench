@@ -1,0 +1,130 @@
+{
+ "schema_version": "session-bench-trusted-release-index-v1",
+ "configurations": [
+  {
+   "configuration_id": "claude-cli",
+   "packets": [
+    {
+     "manifest_sha256": "fb0a78c5e0ad85b5d5b13a535a7066835696dc363d54da3e4cc52d2ddcf2c7d7",
+     "path": "artifacts/v1-expanded-preparation/claude-cli-public-candidates-v5/claude-cli-eval-1",
+     "run_id": "claude-cli-eval-1-r1"
+    },
+    {
+     "manifest_sha256": "27eee0f8ee90616ad35568f4c93b3b7215af6764f078ced27dc68d3e2c1c1c8b",
+     "path": "artifacts/v1-expanded-preparation/claude-cli-public-candidates-v5/claude-cli-eval-2",
+     "run_id": "claude-cli-eval-2-r2"
+    },
+    {
+     "manifest_sha256": "1137eb52c8ee378a254e3b84781c268e0043d56cbae85461163eb0ef9e036d64",
+     "path": "artifacts/v1-expanded-preparation/claude-cli-public-candidates-v5/claude-cli-eval-3",
+     "run_id": "claude-cli-eval-3-r3"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/claude-cli-public-candidates-v5/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/claude-cli-independent-public-review-v3/review.json",
+   "reviewer_id": "opus-independent-reviewer-claude-cli",
+   "trusted_review_sha256": "92be2712a870b3e6275222197f8aeb7eaff2c103978bc64f59420044519139d6"
+  },
+  {
+   "configuration_id": "opencode-cli",
+   "packets": [
+    {
+     "manifest_sha256": "e6ad079b01e81870efae49f3627a17ba924b2f34f9e92a48acde6ceb3ac088cf",
+     "path": "artifacts/v1-expanded-preparation/opencode-1.18.31-public-candidates-v3/opencode-1-18-31-eval-1",
+     "run_id": "opencode-1-18-31-eval-1"
+    },
+    {
+     "manifest_sha256": "ec68e3ec137d125c519ae2f6f9c50c90a60215e080ca9da88dbf5616a37d8b6e",
+     "path": "artifacts/v1-expanded-preparation/opencode-1.18.31-public-candidates-v3/opencode-1-18-31-eval-2",
+     "run_id": "opencode-1-18-31-eval-2"
+    },
+    {
+     "manifest_sha256": "46e3578571a9279b7706f676a1789e031341ec6b4e41a1acdcc6cf86ae07a89c",
+     "path": "artifacts/v1-expanded-preparation/opencode-1.18.31-public-candidates-v3/opencode-1-18-31-eval-3",
+     "run_id": "opencode-1-18-31-eval-3"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/opencode-1.18.31-public-candidates-v3/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/opencode-independent-public-review-v3/review.json",
+   "reviewer_id": "opus-independent-reviewer-opencode-cli",
+   "trusted_review_sha256": "747f445645632768e8d6f39a03c64827abc67b9b3fd7c83028d84a8f956de37b"
+  },
+  {
+   "configuration_id": "deepseek-harness-cli",
+   "packets": [
+    {
+     "manifest_sha256": "524544542e4fad5674ad41abc19da9fc6e67d04a6aefc2926135afc698d1bf4c",
+     "path": "artifacts/v1-expanded-preparation/dsh-public-score-preparation-v8/public-candidates/dsh-cal-20260929-2",
+     "run_id": "dsh-cal-20260929-2"
+    },
+    {
+     "manifest_sha256": "0f8058d6b3c2e8d05851d2c87315b1d7bab75443366e64db8b41b5b4ee450259",
+     "path": "artifacts/v1-expanded-preparation/dsh-public-score-preparation-v8/public-candidates/dsh-eval-20260929-1",
+     "run_id": "dsh-eval-20260929-1"
+    },
+    {
+     "manifest_sha256": "6dfbdcd2fad5717a182bc045a6f0bfc7bc594a55150f4947908a7be56402d2fd",
+     "path": "artifacts/v1-expanded-preparation/dsh-public-score-preparation-v8/public-candidates/dsh-eval-20260929-2",
+     "run_id": "dsh-eval-20260929-2"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/dsh-public-score-preparation-v8/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/dsh-independent-public-review-v8/review.json",
+   "reviewer_id": "opus-independent-reviewer-deepseek-harness-cli",
+   "trusted_review_sha256": "e71687133d0cca17b4918523c5d75abdeac4e9af103c68fb300e160b9fc5a953"
+  },
+  {
+   "configuration_id": "pi",
+   "packets": [
+    {
+     "manifest_sha256": "30e0c128fd5fec2f3993576966135d6cbf2d8788cac4ddf2a4201b2eb1a6e0f0",
+     "path": "artifacts/v1-expanded-preparation/pi-public-score-preparation-v7/public-candidates/pi-openai-codex-2026-10-02-10",
+     "run_id": "pi-openai-codex-2026-10-02-10"
+    },
+    {
+     "manifest_sha256": "3607b3a9cf06b105cffda3b648a99f8a627609abc3516843a109c47ebfb09e4a",
+     "path": "artifacts/v1-expanded-preparation/pi-public-score-preparation-v7/public-candidates/pi-openai-codex-2026-10-02-11",
+     "run_id": "pi-openai-codex-2026-10-02-11"
+    },
+    {
+     "manifest_sha256": "43051ddd974230349690434e431281c3be96a04d8272404fc4fa353618133ac7",
+     "path": "artifacts/v1-expanded-preparation/pi-public-score-preparation-v7/public-candidates/pi-openai-codex-2026-10-02-12",
+     "run_id": "pi-openai-codex-2026-10-02-12"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/pi-public-score-preparation-v7/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/pi-independent-public-review-v7/review.json",
+   "reviewer_id": "opus-independent-reviewer-pi",
+   "trusted_review_sha256": "10c36fe169c728cd9fd2f0d7ed97e488874e3737d4c373bf9f9b7f9705f37d1a"
+  },
+  {
+   "configuration_id": "codex-cli",
+   "packets": [
+    {
+     "manifest_sha256": "23abd098826497311fe0c027d0f63415006b3f46453cf7c1db700ab115e39df2",
+     "path": "artifacts/v1-expanded-preparation/codex-cli-public-candidates-v3/codex-cli-eval-1",
+     "run_id": "codex-cli-eval-1"
+    },
+    {
+     "manifest_sha256": "15f6504947f202729d8bd2113f2bc9bd2f51a3ed55b41fca8ef248f5c2146193",
+     "path": "artifacts/v1-expanded-preparation/codex-cli-public-candidates-v3/codex-cli-eval-2",
+     "run_id": "codex-cli-eval-2"
+    },
+    {
+     "manifest_sha256": "f145dbafeef69e1b36fe3edff62f6c975a19640850affe4feefd2c9b2cc5e752",
+     "path": "artifacts/v1-expanded-preparation/codex-cli-public-candidates-v3/codex-cli-eval-3",
+     "run_id": "codex-cli-eval-3"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/codex-cli-public-candidates-v3/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/codex-cli-independent-public-review-v3/review.json",
+   "reviewer_id": "opus-independent-reviewer-codex-cli",
+   "trusted_review_sha256": "f755b10ab67198d1a4f6f73df3891561ff1d9c352113d27b22d9e1ab89478f3a"
+  }
+ ]
+}

@@ -1,0 +1,264 @@
+{
+ "observed_on": "2026-10-03",
+ "rows": [
+  {
+   "attempt_ids": [
+    "pi-openai-codex-2026-10-02-10",
+    "pi-openai-codex-2026-10-02-11",
+    "pi-openai-codex-2026-10-02-12"
+   ],
+   "configuration_id": "pi",
+   "evidence_refs": [
+    "artifacts/v1-expanded-preparation/live-captures/pi-openai-codex-2026-10-02-10/capture-result.json",
+    "artifacts/v1-expanded-preparation/live-captures/pi-openai-codex-2026-10-02-11/capture-result.json",
+    "artifacts/v1-expanded-preparation/live-captures/pi-openai-codex-2026-10-02-12/capture-result.json",
+    "artifacts/v1-expanded-preparation/pi-public-score-preparation-v7/summary.json",
+    "artifacts/v1-expanded-preparation/pi-public-score-preparation-v7/public-inputs-candidate.json"
+   ],
+   "reason_ids": [
+    "ranking_requires_release_builder_verification"
+   ],
+   "state": "incomplete"
+  },
+  {
+   "attempt_ids": [
+    "openclaw-2026-09-29-01",
+    "openclaw-2026-09-29-03"
+   ],
+   "configuration_id": "openclaw",
+   "evidence_refs": [
+    "artifacts/v1-expanded-preparation/live-captures/openclaw-2026-09-29-01/attempt.json",
+    "artifacts/v1-expanded-preparation/live-captures/openclaw-2026-09-29-03/plan.json",
+    "session_bench/openclaw_shared_owner_plan.py",
+    "tests/test_openclaw_shared_owner_plan.py"
+   ],
+   "reason_ids": [
+    "isolated_openai_oauth_unavailable",
+    "documented_shared_oauth_readthrough_path_needs_fresh_named_agent",
+    "owner_state_scope_and_exclusive_lock_unverified",
+    "installed_readonly_snapshot_bridge_not_verified",
+    "no_completed_two_turn_run"
+   ],
+   "state": "blocked"
+  },
+  {
+   "attempt_ids": [
+    "claude-cli-eval-1-r1",
+    "claude-cli-eval-2-r2",
+    "claude-cli-eval-3-r3"
+   ],
+   "configuration_id": "claude-cli",
+   "evidence_refs": [
+    "artifacts/v1-expanded-preparation/claude-cli-public-candidates-v9/public-inputs-candidate.json"
+   ],
+   "reason_ids": [
+    "ranking_requires_release_builder_verification"
+   ],
+   "state": "incomplete"
+  },
+  {
+   "attempt_ids": [
+    "codex-cli-eval-1",
+    "codex-cli-eval-2",
+    "codex-cli-eval-3"
+   ],
+   "configuration_id": "codex-cli",
+   "evidence_refs": [
+    "artifacts/v1-expanded-preparation/codex-cli-public-candidates-v6/public-inputs-candidate.json"
+   ],
+   "reason_ids": [
+    "ranking_requires_release_builder_verification"
+   ],
+   "state": "incomplete"
+  },
+  {
+   "attempt_ids": [
+    "kimi-2026-09-29-01",
+    "kimi-2026-09-29-04",
+    "kimi-2026-09-29-05"
+   ],
+   "configuration_id": "kimi",
+   "evidence_refs": [
+    "artifacts/v1-expanded-preparation/live-captures/kimi-2026-09-29-01/attempt.json",
+    "artifacts/v1-expanded-preparation/live-captures/kimi-2026-09-29-04/pre-model-cli-argument-failure.json",
+    "artifacts/v1-expanded-preparation/live-captures/kimi-2026-09-29-05/post-capture-audit.json"
+   ],
+   "reason_ids": [
+    "organization_rpm3_stopped_r2_final_response",
+    "no_completed_two_turn_run"
+   ],
+   "state": "blocked"
+  },
+  {
+   "attempt_ids": [
+    "opencode-1-18-31-eval-1",
+    "opencode-1-18-31-eval-2",
+    "opencode-1-18-31-eval-3"
+   ],
+   "configuration_id": "opencode-cli",
+   "evidence_refs": [
+    "artifacts/v1-expanded-preparation/opencode-1.18.31-public-candidates-v4/public-inputs-candidate.json"
+   ],
+   "reason_ids": [
+    "ranking_requires_release_builder_verification"
+   ],
+   "state": "incomplete"
+  },
+  {
+   "attempt_ids": [
+    "hermes-runtime-preflight-2026-09-29",
+    "hermes-codex-2026-09-29-01"
+   ],
+   "configuration_id": "hermes",
+   "evidence_refs": [
+    "artifacts/v1-expanded-preparation/hermes-runtime-preflight-repair.json",
+    "artifacts/v1-expanded-preparation/live-captures/hermes-codex-2026-09-29-01/continuation-result.json",
+    "artifacts/v1-expanded-preparation/live-captures/hermes-codex-2026-09-29-01/qualification-v2.json"
+   ],
+   "reason_ids": [
+    "three_valid_repetitions_incomplete",
+    "native_to_score_replay_incomplete"
+   ],
+   "state": "incomplete"
+  },
+  {
+   "attempt_ids": [
+    "copilot-2026-10-04-01",
+    "copilot-2026-10-04-02",
+    "copilot-2026-10-04-03"
+   ],
+   "configuration_id": "copilot",
+   "evidence_refs": [
+    "artifacts/v1-expanded-preparation/copilot-public-candidates-v7/public-inputs-candidate.json"
+   ],
+   "reason_ids": [
+    "ranking_requires_release_builder_verification"
+   ],
+   "state": "incomplete"
+  },
+  {
+   "attempt_ids": [
+    "antigravity-2026-10-05-02",
+    "antigravity-2026-10-05-03",
+    "antigravity-2026-10-05-04"
+   ],
+   "configuration_id": "antigravity",
+   "evidence_refs": [
+    "artifacts/v1-expanded-preparation/antigravity-public-candidates-v4/public-inputs-candidate.json"
+   ],
+   "reason_ids": [
+    "ranking_requires_release_builder_verification"
+   ],
+   "state": "incomplete"
+  },
+  {
+   "attempt_ids": [
+    "cursor-cli-eval-1",
+    "cursor-cli-eval-2-correction-1",
+    "cursor-cli-eval-2-correction-2",
+    "cursor-cli-eval-2-correction-3",
+    "cursor-cli-2026-09-30-r1",
+    "cursor-cli-2026-09-30-r2",
+    "cursor-cli-2026-09-30-r3",
+    "cursor-cli-2026-10-02-r1"
+   ],
+   "configuration_id": "cursor-cli",
+   "evidence_refs": [
+    "docs/survival-v1/adapters/cursor.md",
+    "artifacts/survival-v1-runs/cursor-cli-2026-09-30-r1/controller-state.json",
+    "artifacts/survival-v1-runs/cursor-cli-2026-09-30-r1/capture/native-manifest.private.json",
+    "artifacts/survival-v1-runs/cursor-cli-2026-09-30-r2/controller-state.json",
+    "artifacts/survival-v1-runs/cursor-cli-2026-09-30-r2/capture/native-manifest.private.json",
+    "artifacts/survival-v1-runs/cursor-cli-2026-09-30-r3/controller-state.json",
+    "artifacts/survival-v1-runs/cursor-cli-2026-09-30-r3/capture/native-manifest.private.json",
+    "artifacts/survival-v1-runs/cursor-cli-2026-10-02-r1/controller-state.json",
+    "artifacts/survival-v1-runs/cursor-cli-2026-10-02-r1/capture/native-manifest.private.json",
+    "artifacts/survival-v1-runs/cursor-cli-2026-10-02-r1/capture/normal-root-receipts.private.json"
+   ],
+   "reason_ids": [
+    "three_prior_isolated_two_turn_repetitions_retained",
+    "one_new_signed_in_normal_root_two_turn_capture_completed",
+    "acp_tool_and_thinking_payload_semantics_unresolved",
+    "complete_semantic_family_and_comparable_native_density_unqualified",
+    "cursor_score_replay_and_public_review_missing"
+   ],
+   "state": "incomplete"
+  },
+  {
+   "attempt_ids": [
+    "codex-desktop-eval-1",
+    "codex-desktop-eval-2",
+    "codex-desktop-eval-3"
+   ],
+   "configuration_id": "codex-desktop",
+   "evidence_refs": [
+    "docs/survival-v1/shared-format-assessment.md"
+   ],
+   "reason_ids": [
+    "same_session_format_as_codex_cli",
+    "scored_on_the_codex_cli_row"
+   ],
+   "state": "incomplete"
+  },
+  {
+   "attempt_ids": [
+    "claude-desktop-eval-1-correction-1",
+    "claude-desktop-eval-2-correction-1",
+    "claude-desktop-eval-3"
+   ],
+   "configuration_id": "claude-desktop",
+   "evidence_refs": [
+    "artifacts/v1-expanded-preparation/claude-desktop-public-candidates-v3/public-inputs-candidate.json"
+   ],
+   "reason_ids": [
+    "ranking_requires_release_builder_verification"
+   ],
+   "state": "incomplete"
+  },
+  {
+   "attempt_ids": [
+    "cursor-desktop-eval-1",
+    "cursor-desktop-eval-2",
+    "cursor-desktop-eval-3",
+    "cursor-desktop-eval-4"
+   ],
+   "configuration_id": "cursor-desktop",
+   "evidence_refs": [
+    "docs/survival-v1/adapters/cursor.md",
+    "artifacts/survival-v1-runs/cursor-desktop-eval-2/attempt.json",
+    "artifacts/survival-v1-runs/cursor-desktop-eval-3/attempt.json",
+    "artifacts/survival-v1-runs/cursor-desktop-eval-4/attempt.json",
+    "artifacts/survival-v1-runs/cursor-desktop-eval-4/capture/r1-transcript-checkpoint-receipt.private.json",
+    "artifacts/survival-v1-runs/cursor-desktop-eval-4/capture/r2-transcript-checkpoint-receipt.private.json",
+    "artifacts/survival-v1-runs/cursor-desktop-eval-4/capture/r2-global-selected-session-rows-receipt.private.json",
+    "artifacts/v1-expanded-preparation/cursor-desktop-eval4-private-replay-v1/replay-report.private.json"
+   ],
+   "reason_ids": [
+    "eval_2_cursor_free_quota_stopped_before_r1_completion",
+    "eval_3_two_turn_capture_private_and_native_root_unqualified",
+    "eval_4_r1_r2_two_turn_run_completed_private",
+    "eval_4_exact_global_rows_captured_but_other_native_families_unqualified",
+    "native_family_qualification_incomplete",
+    "three_score_qualified_repetitions_incomplete",
+    "eval4_private_decoder_replay_completed_but_unscored"
+   ],
+   "state": "incomplete"
+  },
+  {
+   "attempt_ids": [
+    "dsh-cal-20260929-2",
+    "dsh-eval-20260929-1",
+    "dsh-eval-20260929-2"
+   ],
+   "configuration_id": "deepseek-harness-cli",
+   "evidence_refs": [
+    "artifacts/v1-expanded-preparation/dsh-public-score-preparation-v13/public-inputs-candidate.json"
+   ],
+   "reason_ids": [
+    "ranking_requires_release_builder_verification"
+   ],
+   "state": "incomplete"
+  }
+ ],
+ "scope_id": "session-bench-v1-expanded"
+}

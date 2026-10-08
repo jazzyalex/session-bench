@@ -60,8 +60,8 @@ observation ledger.
 | Durability & signal | `broad.event_timestamps` | 2 | Required native events carry timezone-aware RFC3339 or numeric Unix seconds/milliseconds timestamps with declared units/time zone and recoverable order; denominator is required recovered events |
 | Durability & signal | `broad.honest_version_signal` | 2 | The declared version distinguishes incompatible schemas/semantics and matches the observed decoder contract; assertion 1 |
 | Durability & signal | `broad.observed_schema_stability` | 3 | All captured records in the current declared build/date observation window decode under the advertised contract; each observed build/date and exception is included. This stable ID measures captured-window decoder-contract compatibility, not longitudinal stability; assertion 1 |
-| Durability & signal | `broad.stable_root_location` | 2 | The complete root is documented or deterministically discoverable from the isolated run across all three repetitions, without personal-history scanning; assertion 1 |
-| Durability & signal | `broad.naive_reader_duplicate_safety` | 3 | One documented forward read yields each required semantic event once, or supersession/tombstone fields make exact deduplication possible without vendor-specific heuristics; denominator is required events |
+| Durability & signal | `broad.stable_root_location` | 2 | The complete root for the synthetic session is documented or deterministically discoverable from one run by isolated or metadata-safe discovery, without personal-history scanning; assertion 1. Each additional supplied run must satisfy the same discovery and privacy assertions and have a sequential repetition number. Run-specific root paths may differ; the retained source evidence establishes the discovery pattern. A second run tests repeatability; it is not required to score the first run. |
+| Durability & signal | `broad.naive_reader_duplicate_safety` | 3 | One documented forward read yields each required semantic event once, or supersession/tombstone fields make exact deduplication possible without vendor-specific heuristics; denominator is required events. The read and the counting rule are in *Duplicate-safety read* below |
 | Durability & signal | `broad.classified_content_density` | 3 | `useful logical bytes / all in-scope logical record bytes` under the frozen `logical-record-role-v1` classifier; unknown and unclassified bytes remain in the denominator; score is the uncapped fraction from 0 to 1 |
 
 The points sum exactly to `30 + 20 + 15 + 20 + 15 = 100`.
@@ -78,6 +78,59 @@ is invalid. Classification follows decoded record function, never filename, phys
 size, or a hand-authored content-key guess. Unknown and unclassified logical bytes stay in
 the denominator.
 
+### Duplicate-safety read (amended 2026-10-05)
+
+One rule applies to every row.
+
+- **Containers.** A container is a file, or a table of a database. A record type inside
+  one file or one table is not a container.
+- **Membership.** The read is every container from which the decoder takes a scored fact:
+  an event, an order, a relation, an identity or a usage count. If the decoder opens a
+  container for one metric, its records count for duplicate safety too. The read is fixed
+  before scoring. It is the same for all metrics.
+- **Keeping a container outside.** The decoder must then never open it. The row earns
+  only what the other containers prove.
+- **Events.** The events are the user prompts, assistant messages, tool calls and tool
+  results that the read states. They include every required event of the workload.
+  Context that the harness injects is not a prompt when a native field marks it.
+- **Occurrences.** Every record of the read that states an event is one occurrence:
+  message text, call name and arguments, or result output. The record type does not
+  matter. The count is made on the raw records, not on decoded facts. A copy in another
+  container of the read is proved by its join key and by content comparison, not by a
+  file name. A shared id does not remove a copy. Only a native supersession or tombstone
+  field does.
+- **Restating a call or a result.** A record restates a call when it holds all of the
+  call's arguments, with or without the tool name. A record that holds only some of the
+  arguments (for example a result that names the file path of a read) does not restate the
+  call. A record restates a result when it holds the full result output. The check is made
+  on the text of the arguments: a number or a flag (a time limit, a switch) is not compared.
+  A call whose only arguments name its target (a file path) is restated only by a record
+  that also holds the tool name. When a record names a call id, it restates only that call.
+- **Density.** Density uses the same statements. The first record of the read that states
+  an event keeps its role. A record that restates a stated event is a `snapshot`. A
+  record that states no event is unclassified (`metadata`, or the `session`, `system`
+  or `index` role of the frozen classifier). `unknown` is not used for a container the
+  decoder knows; it stays for a record shape with no supported role. So a record that
+  counts as a duplicate occurrence is never also counted as useful content.
+- **Rows outside the read.** Density still counts every record of the complete root by
+  its bytes. A container outside the read gets a fixed unclassified role and its payload
+  is not parsed.
+
+| Row | The read (containers the decoder takes a scored fact from) |
+|---|---|
+| Codex CLI | The rollout JSONL of the session (`rollout-*.jsonl`) |
+| Claude Code CLI | The transcript JSONL of the session |
+| Claude Desktop | The transcript JSONL and the Desktop metadata JSON (session identity). The metadata restates no event |
+| Copilot CLI | `events.jsonl`, the session store database (usage), the rewind snapshot index and its backups (changed file), `workspace.yaml` (identity) |
+| DeepSeek Harness CLI | The session file `session.v4.jsonl` and the projection cache (reconciliation) |
+| OpenCode CLI | The `session`, `message`, `part` and `event` tables and the `migration` ledger of `opencode.db`. The `event` table is an update log that states every part again, so every statement in it counts (duplicate safety 0 of 79, 0 of 62, 0 of 72). A leaner read without `event` was tried on 2026-10-05 after first scoring and withdrawn on 2026-10-08 by owner decision; see the adapter document |
+| Pi | The session JSONL |
+| Antigravity CLI | The conversation database (`steps`, `gen_metadata`). The transcript files are outside |
+| Cursor CLI | The chat store `store.db` (tables `meta` and `blobs`), its sidecar `meta.json` (declared version) and the agent transcript JSONL (opened by the absence scan). The sidecar restates no event. The shared store `ai-code-tracking.db` is outside: the decoder takes no fact from it, and its bound rows are read only to prove an absence |
+| OpenClaw | The rows of the session in three tables of the shared agent store `openclaw-agent.sqlite`: `transcript_events` (all events, order, times, model, usage), `trajectory_runtime_events` (the exit code of a shell call, the token totals of a run, the product name) and `session_windows` (the session row), bound as a JSON row export. Every row of the three tables counts. Outside, never opened by the decoder: the other exported tables (search and position indexes, session index and snapshot rows, the ACP replay buffer `acp_replay_events` that exists only on the capture route `acp`, audit and placement rows) and the files and rows of the Codex backend (rollout JSONL, shell snapshot, lock, `state_5.sqlite`, `thread_history_1.sqlite`). Their bytes count for density. The read was chosen on 2026-10-07, after the containers of the captures had been seen and before any score was computed; see the adapter document for the point effect of each choice |
+| Hermes | The rows of the session in the tables `sessions`, `messages` and `session_model_usage` of the shared store `state.db`, bound as a JSON row export, and the one `system_prompts` row that the session row names by hash (the name of the harness). The prompt row restates no event. The search index tables (`messages_fts*`) are outside: the decoder takes no fact from them and their rows are not in the export. The file of `hermes sessions export` is a derived projection and is outside |
+| Kimi | The wire log `agents/main/wire.jsonl` of the session directory (all events, order, relations, model, usage, the changed file) and `state.json` (the session id). The state file restates no event. The wire log states every event again when the turn ends (`agent.message.appended`) and each prompt once more (`context.append_message`); every statement counts (duplicate safety 0 of 14 in each run). Outside, never opened by the decoder: the session log, the notify state and the file copies of the session directory. Their bytes count for density. The read was chosen on 2026-10-08, after the files of the captures had been seen and before any score was computed; see the adapter document |
+
 ## Matching and scoring
 
 Population metrics score `points × correct / max(observed eligible, decoded eligible)`.
@@ -88,13 +141,16 @@ or fail only after their evidence boundary is complete.
 | Field | Match rule |
 |---|---|
 | User turn | Exact UTF-8 after the declared line-ending transform; internal whitespace and Unicode remain significant |
-| Visible response | Exact canary, boundary status, turn relation, and readable ordered text; eloquence is not graded |
+| Visible response | Exact canary, boundary status, turn relation, and readable ordered text; eloquence is not graded. The rationale and timestamp evidence use one text rule: the native text equals the observed text, or the observer saw only the canary and the native text ends with it |
 | Action | Exact ordered arguments, target, action identity, and turn |
+| Unscored native action | A native action that pairs with an observed unscored action (a retry, a read, an exploration command) is outside the population of `work.actions` and `broad.event_timestamps`. The pair is made by native id when one exists. Without ids: in one turn, for one group of calls with equal name, arguments and target, the observer saw n scored and m unscored actions and the native record holds k. Then min(k, n+m) are paired. Only the k − (n+m) native calls above that are duplicates and enlarge the denominator |
 | Result | Exact result identity, status, exit code, helper nonce, and declared text transform |
-| File change | Exact relative path and SHA-256 before/after pair |
+| File change | Exact relative path and SHA-256 before/after pair. The native record supplies the pair either as explicit hashes or as a native pre-image plus the native edit, from which a reader recomputes both hashes. For a shell write, the pre-image is the file source in an earlier native inspect result, the post-image is the body of a quoted heredoc that replaces the file, and the native diff of the same call must turn the first into the second. A workspace snapshot or observer value never enters the native fact |
+| Compound shell call | One native shell call can hold several command segments (separated by `;`, `&&`, `||` or a newline). When it holds two or more scored segments, it is the native record of each one. A frozen helper invocation (`python3 bench_check.py <phase> --run-canary <canary>`) is one action. Its result is its own helper output line in the native tool result. Its exit code is the `exit=N` line directly after that line, when the command echoes `exit=$?` directly after the segment. Without that echo, the call's own status counts only for the last segment. A segment returned zero when an unbroken `&&` chain leads from it to a later scored segment whose own output is in the native result, because the shell runs that segment only after a zero exit. Otherwise the exit code stays absent. A segment that writes the workload file by shell redirection is one edit action and has no result of its own. Action-result relations exist only for helper segments. Each segment keeps the parent call id, the turn, and the line and timestamp of the native call. A call with one scored segment, and a command that cannot be split safely (subshell, command substitution, background job, shell keyword), stays one call. The decoder never creates an action, a result or a relation that the native bytes do not hold |
 | Relation | Native stable-key direction and partial order; no guessed title or timestamp link |
-| Model/config | Exact observed model and declared configuration identity per response |
-| Usage | Exact response join and named input/output/cache semantics; `0`, `null`, missing, estimated, and billed remain distinct |
+| Model/config | Exact observed model and declared configuration identity per response; a trailing selector variant such as the `[1m]` in `model[1m]` is ignored. When the observer channel reports no model, the identity on the joined native response is accepted |
+| Usage | `attribution.usage`: a native usage record sits on the response record, or joins to it by a stable key, and holds an input count and an output count as non-negative integers. `attribution.token_semantics`: the same record also holds a cache-read count and a cache-write count, each under its own key as a non-negative integer. An explicit `0` shows that no cache write happened. A missing key is not a zero and earns no credit. There is no partial credit per field. When the usage record exists and a complete root holds no such key, token semantics is `native_absent` and the record stays in the decoded population; without a complete root it is `unresolved`. Usage is never `native_absent` when a joined record with input and output counts exists. `0`, `null`, missing, estimated, and billed remain distinct. Token values are native-attested: observer token values are not compared, because observers report different scopes (a whole turn or one request) |
+| Reconciliation | Native-attested: the native record declares a session or turn total, and its own per-response usage records sum to that total. Observer totals are not compared. A total that exists only in a harness call or stream, and not in the native bytes, is `native_absent` |
 
 No LLM judge, fuzzy match, cohort-relative size curve, byte-volume bonus, or undocumented
 adapter heuristic is allowed. Native IDs are preserved. Decoder-derived occurrence IDs
@@ -108,7 +164,7 @@ declared documentation/version record for broad checks.
 | State | Meaning and score behavior |
 |---|---|
 | `measured` | Complete evidence establishes a fraction or assertion; contributes points |
-| `native_absent` | The event/property was independently expected and the complete native root proves absence; contributes zero |
+| `native_absent` | The event/property was independently expected and the complete native root proves absence; contributes zero. A row may also be `native_absent` without a complete root when the complete family of files named by the session id, and the bound rows of every shared store that names the session, hold no such field |
 | `contradiction` | Native content conflicts with independent truth; contributes zero |
 | `unresolved` | Acquisition, identity, evidence, or interpretation cannot distinguish retention from loss; null |
 | `decoder_unsupported` | Relevant native bytes exist but the decoder cannot classify them; null and not a writer failure |
@@ -120,6 +176,18 @@ Any null metric blocks the run's category total, `/100`, rank, **Fully reproduce
 and user recommendation. Incomplete cards show measured quality, metric coverage, possible
 range, and reason IDs.
 
+A configuration with a null metric is reported as **provisional**: its row shows the points
+its resolved metrics earn with each null metric counted as zero, and the best total it could
+reach. A provisional row is visible but never ranked.
+
+### Evidence tiers (amended 2026-10-03)
+
+The independent observer is required for the work, causal, and revision metrics: they
+compare native records with facts observed outside the session file. The usage, portable,
+and broad format metrics are native-attested: they are scored from the copied native bytes,
+the capture receipts, and the deterministic decoder. An observer limit alone does not make
+a native-attested metric unresolved.
+
 ## Repetitions, ranking, and badges
 
 Score each run independently. Aggregate three scheduled evaluated repetitions with equal
@@ -127,6 +195,12 @@ weight and show min–max. Do not replace a scheduled run with calibration or a 
 attempt. Exact ties use competition ranking. Publish no leaderboard unless at least three
 rows qualify; keep every attempted row visible. Require a complete CLI/Desktop pair only
 for the CLI/Desktop consistency recommendation.
+
+*Waiver, 2026-10-08.* For v1 the rule "Do not replace a scheduled run with calibration or a
+corrective attempt" is waived by owner decision for OpenClaw (two replaced attempts),
+Claude Desktop (two corrective runs) and Kimi (five attempts stopped by a controller setting,
+the provider rate limit, or a reply without the required marker). Each replaced attempt and its reason is listed in the
+adapter document. The waiver was made after the results were known.
 
 | Badge | Required result state |
 |---|---|

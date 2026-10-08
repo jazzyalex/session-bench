@@ -1,0 +1,9 @@
+id: 52d56ef1-3fd8-40ca-8724-4ee16455feb1
+cwd: /private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-7h71c7yo/fixture_project
+client_name: github/cli
+name: 'This is a synthetic Session-Bench survival-v1 coding task. Work only inside fixture_project. Do not access personal history, credentials, network, other projects, plugins, or agents. Preserve bench_check.py and .survival-observer.jsonl. Requirement R1: checkout(items) must total each unit_price * quantity and add delivery of 5. First run python3 bench_check.py inspect --run-canary SB_SURVIVAL_V1_RUN_copilot-2026-10-04-02, then python3 bench_check.py baseline --run-canary SB_SURVIVAL_V1_RUN_copil...'
+user_named: false
+summary_count: 0
+fork_count: 0
+created_at: 2026-10-04T20:15:49.825Z
+updated_at: 2026-10-04T20:15:51.891Z

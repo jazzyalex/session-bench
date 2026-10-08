@@ -2,6 +2,30 @@
 
 ## [Unreleased]
 
+## 2026-10-08 — v1: session survival benchmark
+
+First v1 release. Twelve configurations are ranked, each from three captured
+runs of one synthetic two-turn workload, with 31 metrics recomputed by a closed
+replay from published, sanitized packets. Release files:
+`artifacts/survival-v1-release/` (report, replay instructions, scorecard,
+packets, reviews).
+
+- Ranked: DeepSeek Harness CLI 96.9, Pi 96.4, Copilot CLI 96.0, OpenCode CLI
+  94.4, Kimi Code 91.2, Claude Code CLI 89.3, OpenClaw 88.1, Codex CLI 87.5
+  (Codex Desktop shares the row), Hermes 86.4, Claude Desktop 85.6, Antigravity
+  82.7, Cursor CLI 78.1. Cursor Desktop is not scored.
+- Rules waived or corrected for v1 after results were known: replaced attempts
+  are accepted for OpenClaw, Claude Desktop and Kimi; OpenCode is scored with
+  the native record of its first scoring (94.4, not 97.4); OpenClaw has no
+  reconciliation credit. The report lists these and the known limits.
+- Four outside model reviews were run on candidates v38 to v41. The first
+  three returned findings that were answered; the fourth found no defect that
+  makes a score, a rank or a stated claim wrong. Packet reviews were made by
+  separate agent sessions on the same host, not by a second operator.
+- The v0.4 gate leaderboard and `data/leaderboard.yml` are unchanged.
+- Tests that need the private capture artifacts are skipped in a clean
+  checkout (`tests/private-artifact-tests.txt`).
+
 - Added checked source links and dates for O3 evidence; evaluator preserves citation metadata without changing scores.
 - Established this repository as the sole source for benchmark inputs, evaluation, evidence, tests, generated leaderboard, and corrections. Agent Sessions temporarily hosts a byte-identical copy of the generated leaderboard and its Jekyll view.
 

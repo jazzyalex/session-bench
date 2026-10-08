@@ -14,3 +14,6 @@ artifacts/*
 !artifacts/survival-v1-review-candidate/
 !artifacts/survival-v1-review-candidate/**
 fixture_project/
+!fixtures/scenarios/survival-v1/workload/fixture_project/
+!artifacts/survival-v1-release/
+!artifacts/survival-v1-release/**

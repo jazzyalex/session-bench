@@ -1,0 +1,11 @@
+{
+  "attempt_id": "claude-desktop-eval-3",
+  "claim_limit": "evaluated evidence under collection; no score until closed",
+  "configuration_id": "claude-desktop",
+  "public_score_eligible": false,
+  "repetition": 3,
+  "run_canary": "SB_SURVIVAL_V1_RUN_claude-desktop-eval-3",
+  "schema_version": "session-bench-claude-desktop-attempt-v1",
+  "score_eligible": false,
+  "state": "running"
+}

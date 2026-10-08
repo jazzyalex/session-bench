@@ -1,0 +1,11 @@
+{
+  "attempt_id": "claude-desktop-eval-1-correction-1",
+  "configuration_id": "claude-desktop",
+  "corrects": "claude-desktop-eval-1",
+  "public_score_eligible": false,
+  "repetition": 1,
+  "run_canary": "SB_SURVIVAL_V1_RUN_claude-desktop-eval-1-correction-1",
+  "schema_version": "session-bench-claude-desktop-attempt-v1",
+  "score_eligible": false,
+  "state": "running"
+}

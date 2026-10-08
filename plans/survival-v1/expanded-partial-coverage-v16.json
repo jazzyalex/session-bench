@@ -1,0 +1,61 @@
+{
+ "schema_version": "session-bench-partial-coverage-index-v1",
+ "configurations": [],
+ "capture_progress": [
+  {
+   "configuration_id": "hermes",
+   "detail": "Two qualified same-session two-turn captures; native-to-score closure and one additional repetition remain.",
+   "evaluated_captures": 2,
+   "kind": "capture_only",
+   "qualified_two_turn_captures": 2,
+   "target_repetitions": 3,
+   "qualification_receipts": [
+    {
+     "capture_id": "hermes-codex-2026-09-29-01",
+     "sha256": "935a97bb1d6e34aed043a854ab6991370cdfd8e813a7476a166864e492a27da9"
+    },
+    {
+     "capture_id": "hermes-codex-2026-10-02-02",
+     "sha256": "8da7bd57088c84c3d77c18c3a65c2bca55b6c0a17d598253983dd24fc0de4b9a"
+    }
+   ]
+  },
+  {
+   "configuration_id": "cursor-desktop",
+   "detail": "Eval3 and eval4 completed both synthetic turns in the signed-in account but remain private and unqualified. Eval4 exact session-keyed rows and transcripts are now normalized in a private offline replay: 2 turns, 2 responses, 7 actions/results, 9 relations, and 1 file change. Six native result exit codes are missing; usage, native-root completeness, independent observation, three score-qualified repetitions, review, and public-safe evidence remain unresolved.",
+   "evaluated_captures": 2,
+   "kind": "unqualified_capture",
+   "qualified_two_turn_captures": 0,
+   "target_repetitions": 3
+  },
+  {
+   "configuration_id": "openclaw",
+   "detail": "Pinned OpenClaw 2026.9.5 docs support no-copy OAuth read-through for a fresh named agent. The new offline planner specifies an isolated workspace/agent directory and exact two-turn session selectors. No owner state or credentials were read; usable auth, exclusive state ownership, installed read-only session capture, and a completed two-turn run remain unverified.",
+   "evaluated_captures": 0,
+   "kind": "blocked",
+   "qualified_two_turn_captures": 0,
+   "target_repetitions": 3
+  },
+  {
+   "configuration_id": "kimi",
+   "detail": "Attempt 05 repaired the fixture, but its final response stopped at organization RPM3; no completed two-turn run exists and credit exhaustion was not established.",
+   "evaluated_captures": 1,
+   "kind": "blocked",
+   "qualified_two_turn_captures": 0,
+   "target_repetitions": 3
+  },
+  {
+   "configuration_id": "cursor-cli",
+   "detail": "Three earlier isolated two-turn repetitions remain private and unqualified. A fresh signed-in normal-root run completed both turns and retained only the exact newly created Cursor chat and project transcript families; the offline ACP projection still leaves tool/thinking payloads and the complete semantic family unresolved.",
+   "evaluated_captures": 4,
+   "kind": "unqualified_capture",
+   "qualified_two_turn_captures": 0,
+   "target_repetitions": 3
+  },
+  {
+   "configuration_id": "codex-desktop",
+   "kind": "shared_format",
+   "detail": "Same session format as Codex CLI: the retained Desktop and CLI rollouts share all record kinds and one decoder, and a CLI thread has rows in the same state and history stores. Scored on the Codex CLI row."
+  }
+ ]
+}

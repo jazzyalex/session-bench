@@ -1,0 +1,10 @@
+
+The command exited with code 0.
+Output:
+total 16
+drwxr-xr-x@ 5 xxxxx  staff   160 Sep 14 17:25 .
+drwxr-xr-x@ 3 xxxxx  staff    96 Oct  5 11:19 ..
+-rw-r--r--@ 1 xxxxx  staff  3008 Sep 11 21:09 bench_check.py
+-rw-r--r--@ 1 xxxxx  staff   265 Sep 11 09:52 checkout.py
+drwxr-xr-x@ 4 xxxxx  staff   128 Sep 11 09:52 snapshots
+

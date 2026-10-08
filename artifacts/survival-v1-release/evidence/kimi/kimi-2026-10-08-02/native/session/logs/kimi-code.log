@@ -1,0 +1,17 @@
+2026-10-08T02:24:27.091Z INFO  llm config  turnStep=0.1 provider=openai model=kimi-k2.7-code modelAlias=moonshot-ai/kimi-k2.7-code thinkingEffort=on systemPromptChars=8322 toolCount=26
+2026-10-08T02:24:27.091Z INFO  llm request  turnStep=0.1
+2026-10-08T02:24:32.279Z INFO  llm response  turnStep=0.1 ttftMs=1491 streamDurationMs=3695 outputTokens=254 requestBuildMs=2 serverFirstTokenMs=1489 serverDecodeMs=3693 clientConsumeMs=2 clientBlockedMs=36
+2026-10-08T02:24:32.373Z INFO  llm request  turnStep=0.2
+2026-10-08T02:24:34.331Z INFO  llm response  turnStep=0.2 ttftMs=1310 streamDurationMs=646 outputTokens=70 requestBuildMs=1 serverFirstTokenMs=1309 serverDecodeMs=646 clientConsumeMs=0 clientBlockedMs=8
+2026-10-08T02:24:34.403Z INFO  llm request  turnStep=0.3
+2026-10-08T02:24:42.530Z INFO  llm response  turnStep=0.3 ttftMs=1111 streamDurationMs=7016 outputTokens=581 requestBuildMs=1 serverFirstTokenMs=1110 serverDecodeMs=7014 clientConsumeMs=2 clientBlockedMs=60
+2026-10-08T02:25:50.626Z INFO  llm config  turnStep=1.1 provider=openai model=kimi-k2.7-code modelAlias=moonshot-ai/kimi-k2.7-code thinkingEffort=on systemPromptChars=8322 toolCount=25
+2026-10-08T02:25:50.627Z INFO  llm request  turnStep=1.1
+2026-10-08T02:25:55.260Z INFO  llm response  turnStep=1.1 ttftMs=2668 streamDurationMs=1964 outputTokens=184 requestBuildMs=3 serverFirstTokenMs=2665 serverDecodeMs=1962 clientConsumeMs=2 clientBlockedMs=31
+2026-10-08T02:25:55.295Z INFO  llm config  turnStep=1.2 provider=openai model=kimi-k2.7-code modelAlias=moonshot-ai/kimi-k2.7-code thinkingEffort=on systemPromptChars=8322 toolCount=26
+2026-10-08T02:25:55.296Z INFO  llm request  turnStep=1.2
+2026-10-08T02:26:00.059Z INFO  llm response  turnStep=1.2 ttftMs=1300 streamDurationMs=3459 outputTokens=304 requestBuildMs=1 serverFirstTokenMs=1299 serverDecodeMs=3458 clientConsumeMs=1 clientBlockedMs=42
+2026-10-08T02:26:00.106Z INFO  llm request  turnStep=1.3
+2026-10-08T02:26:02.019Z INFO  llm response  turnStep=1.3 ttftMs=1281 streamDurationMs=631 outputTokens=70 requestBuildMs=1 serverFirstTokenMs=1280 serverDecodeMs=631 clientConsumeMs=0 clientBlockedMs=12
+2026-10-08T02:26:02.094Z INFO  llm request  turnStep=1.4
+2026-10-08T02:26:07.162Z INFO  llm response  turnStep=1.4 ttftMs=1036 streamDurationMs=4031 outputTokens=339 requestBuildMs=1 serverFirstTokenMs=1035 serverDecodeMs=4030 clientConsumeMs=1 clientBlockedMs=82

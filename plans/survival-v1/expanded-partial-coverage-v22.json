@@ -1,0 +1,35 @@
+{
+ "schema_version": "session-bench-partial-coverage-index-v1",
+ "configurations": [],
+ "capture_progress": [
+  {
+   "configuration_id": "cursor-desktop",
+   "detail": "An isolated signed-in Desktop profile and a capture bracket exist. Two attempts on 2026-10-06 gave no valid run: one prompt went to the wrong window, and the Free-plan usage limit stopped the other. Earlier runs in the normal profile stay private and unqualified. The row resumes when the plan limit resets.",
+   "evaluated_captures": 2,
+   "kind": "unqualified_capture",
+   "qualified_two_turn_captures": 0,
+   "target_repetitions": 3
+  },
+  {
+   "configuration_id": "openclaw",
+   "detail": "Pinned OpenClaw 2026.9.5 docs support no-copy OAuth read-through for a fresh named agent. The new offline planner specifies an isolated workspace/agent directory and exact two-turn session selectors. No owner state or credentials were read; usable auth, exclusive state ownership, installed read-only session capture, and a completed two-turn run remain unverified.",
+   "evaluated_captures": 0,
+   "kind": "blocked",
+   "qualified_two_turn_captures": 0,
+   "target_repetitions": 3
+  },
+  {
+   "configuration_id": "kimi",
+   "detail": "An isolated attempt on 2026-10-07 completed inspect, baseline, the edit and a passing final check, then stopped on the final response at the organization limit of 3 requests per minute, as an earlier attempt did. No completed two-turn run exists. The row needs a higher account rate limit.",
+   "evaluated_captures": 1,
+   "kind": "blocked",
+   "qualified_two_turn_captures": 0,
+   "target_repetitions": 3
+  },
+  {
+   "configuration_id": "codex-desktop",
+   "kind": "shared_format",
+   "detail": "Same session format as Codex CLI: the retained Desktop and CLI rollouts share all record kinds and one decoder, and a CLI thread has rows in the same state and history stores. Scored on the Codex CLI row."
+  }
+ ]
+}

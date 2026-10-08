@@ -1,0 +1,36 @@
+{
+  "after_sha256": "a020043db82bec2df47204c03e11ab40c5275139e0b122723810304d81e7050f",
+  "attempt_id": "antigravity-2026-10-05-02",
+  "before_sha256": "f4482bd25089ad5c521d2d8c75d17607d5dec0582b9bb687b5716c9673546401",
+  "configuration_id": "antigravity",
+  "conversation_id": "be50cb49-00b8-4b13-84b4-a170f62417e3",
+  "finished_at": "2026-10-05T18:17:10.333307+00:00",
+  "model_selection_evidence": "explicit agy --model and --effort arguments; requested selection only",
+  "native_primary": "brain/be50cb49-00b8-4b13-84b4-a170f62417e3/.system_generated/logs/transcript.jsonl",
+  "requested_effort": null,
+  "requested_model": "claude-sonnet-4-6",
+  "score_eligible": false,
+  "started_at": "2026-10-05T18:16:20.688333+00:00",
+  "started_ns": 1791224180639236000,
+  "state_root_scope": "whole_cli_state_directory",
+  "status": "captured_pending_qualification",
+  "turns": [
+    {
+      "exit_code": 0,
+      "requested_effort": null,
+      "requested_model": "claude-sonnet-4-6",
+      "response_canary_observed": true,
+      "stdout_sha256": "a157646aaeb63b90f8884d031e9fcb18764e87fd06d48458b6130dfaa9348029",
+      "turn": 1
+    },
+    {
+      "exit_code": 0,
+      "requested_effort": null,
+      "requested_model": "claude-sonnet-4-6",
+      "response_canary_observed": true,
+      "stdout_sha256": "e4527167c8bf8aad7a13e7d6e5d961df12aac2459111494a5bbba614552a962a",
+      "turn": 2
+    }
+  ],
+  "version": "1.2.17"
+}

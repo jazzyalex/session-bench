@@ -1,0 +1,1 @@
+{"argv":["/opt/homebrew/bin/openclaw","acp","--session","agent:main:explicit:aac1d9ac-64c1-465d-8c73-90783f95b900","--no-prefix-cwd"],"cwd":"/Users/xxxxx/clawd","environment_keys":["HOME","PATH","SB_SURVIVAL_V1_RUN_CANARY","TMPDIR"],"model_override":null,"pid":73380,"session_key":"agent:main:explicit:aac1d9ac-64c1-465d-8c73-90783f95b900"}

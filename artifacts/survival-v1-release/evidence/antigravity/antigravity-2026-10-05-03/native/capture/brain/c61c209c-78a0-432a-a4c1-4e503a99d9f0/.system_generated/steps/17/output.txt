@@ -1,0 +1,5 @@
+
+The command exited with code 0.
+Output:
+SB_SURVIVAL_V1_HELPER_FINAL_final-fixture-0001 {"phase":"final","tests":[{"actual":30,"expected":30,"items":[[10,2],[5,1]],"passed":true},{"actual":50,"expected":50,"items":[[25,2]],"passed":true},{"actual":54,"expected":54,"items":[[49,1]],"passed":true}]}
+

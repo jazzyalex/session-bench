@@ -462,3 +462,113 @@ def test_missing_parent_and_call_links_are_not_invented(tmp_path: Path) -> None:
     assert decoded["results"] == []
     assert [item for item in decoded["relations"] if item["kind"] == "turn_response"] == []
     assert [item for item in decoded["relations"] if item["kind"] == "action_result"] == []
+
+
+LIVE_BUNDLE = ROOT / "artifacts/v1-expanded-preparation/opencode-1.18.31-live-v1/opencode-1-18-31-eval-1/native-bundle"
+LIVE_LAST_MIGRATION = "20260622202450_simplify_session_input"
+
+
+def _copy_live_bundle(tmp_path: Path) -> Path:
+    target = tmp_path / "live-bundle"
+    target.mkdir()
+    for name in OPENCODE_BUNDLE_FILES:
+        (target / name).write_bytes((LIVE_BUNDLE / name).read_bytes())
+    return target
+
+
+def test_schema_ledger_scan_reports_ordered_native_migration_ledger(tmp_path: Path) -> None:
+    bundle = _copy_live_bundle(tmp_path)
+    before = {name: _digest(bundle / name) for name in OPENCODE_BUNDLE_FILES}
+    ledger = decoder.read_opencode_schema_ledger(bundle)
+
+    assert before == {name: _digest(bundle / name) for name in OPENCODE_BUNDLE_FILES}
+    assert ledger["state"] == "present"
+    assert ledger["table"] == "migration"
+    assert ledger["count"] == 38
+    assert ledger["last_id"] == LIVE_LAST_MIGRATION
+    assert ledger["first_id"] == "20260127222353_familiar_lady_ursula"
+    assert ledger["user_version"] == 0
+    assert ledger["ids_sha256"] in decoder.OPENCODE_SUPPORTED_SCHEMA_LEDGERS
+    assert decoder.OPENCODE_SUPPORTED_SCHEMA_LEDGERS[ledger["ids_sha256"]] == {"count": 38, "last_id": LIVE_LAST_MIGRATION}
+    assert ledger["contract_supported"] is True
+
+
+@pytest.mark.parametrize("ledger_table", ["missing", "empty"])
+def test_schema_ledger_is_absent_when_table_is_missing_or_empty(tmp_path: Path, ledger_table: str) -> None:
+    bundle, connection = _create_sanitized_bundle(tmp_path / "bundle")
+    try:
+        if ledger_table == "empty":
+            connection.execute("CREATE TABLE migration (id TEXT PRIMARY KEY, time_completed INTEGER NOT NULL)")
+            connection.commit()
+        ledger = decoder.read_opencode_schema_ledger(bundle)
+        decoded = decode_opencode_bundle(bundle)
+    finally:
+        connection.close()
+
+    assert ledger["state"] == "absent"
+    assert ledger["count"] == 0 and ledger["last_id"] is None and ledger["ids_sha256"] is None
+    assert ledger["contract_supported"] is False
+    # A database that declares no ledger is not refused; it only earns no version credit.
+    assert decoded["supported"] is True
+
+
+def test_unknown_schema_ledger_is_refused_instead_of_decoded_silently(tmp_path: Path) -> None:
+    bundle, connection = _create_sanitized_bundle(tmp_path / "bundle")
+    try:
+        connection.execute("CREATE TABLE migration (id TEXT PRIMARY KEY, time_completed INTEGER NOT NULL)")
+        connection.execute("INSERT INTO migration VALUES (?, ?)", ("20260127222353_familiar_lady_ursula", 1))
+        connection.execute("INSERT INTO migration VALUES (?, ?)", ("29990101000000_unknown_future_schema", 2))
+        connection.commit()
+        ledger = decoder.read_opencode_schema_ledger(bundle)
+        decoded = decode_opencode_bundle(bundle)
+    finally:
+        connection.close()
+
+    assert ledger["state"] == "present" and ledger["count"] == 2
+    assert ledger["last_id"] == "29990101000000_unknown_future_schema"
+    assert ledger["contract_supported"] is False
+    assert decoded["supported"] is False
+    assert "unsupported_schema_ledger" in {item["code"] for item in decoded["diagnostics"]}
+    assert {row["state"] for row in decoded["survival_metrics"]} == {"decoder_unsupported"}
+
+
+def test_known_ledger_with_one_extra_migration_is_refused(tmp_path: Path) -> None:
+    bundle = _copy_live_bundle(tmp_path)
+    connection = sqlite3.connect(bundle / "opencode.db")
+    try:
+        # Keep the writer open so the WAL companion is not checkpointed away.
+        connection.execute("PRAGMA wal_autocheckpoint=0")
+        connection.execute("INSERT INTO migration VALUES (?, ?)", ("20270101000000_later_schema_change", 1))
+        connection.commit()
+        ledger = decoder.read_opencode_schema_ledger(bundle)
+        decoded = decode_opencode_bundle(bundle)
+    finally:
+        connection.close()
+
+    assert ledger["count"] == 39 and ledger["contract_supported"] is False
+    assert decoded["supported"] is False
+    assert "unsupported_schema_ledger" in {item["code"] for item in decoded["diagnostics"]}
+
+
+def test_native_event_order_uses_event_seq_first_appearance_and_completion(tmp_path: Path) -> None:
+    bundle = _copy_live_bundle(tmp_path)
+    order = decoder.read_opencode_event_order(bundle, session_id="ses_f0ff727fdffe6hqCDkujCX0id6")
+
+    assert order["state"] == "present"
+    assert order["messages"]["msg_0f009426a0014SY6jez0dweo8d"] == 81
+    assert order["messages"]["msg_0f009732f001NJUKFEHw2i2qZH"] == 138
+    assert order["parts"]["prt_0f0095fdd001faHjoBOu7MTpss"] == {"first": 105, "completed": 108}
+    assert order["parts"]["prt_0f0096916001SVCionoDFOaCFY"] == {"first": 117, "completed": 121}
+
+
+def test_native_event_order_is_absent_without_an_event_table(tmp_path: Path) -> None:
+    bundle, connection = _create_sanitized_bundle(tmp_path / "bundle")
+    try:
+        order = decoder.read_opencode_event_order(bundle, session_id="ses_fixture")
+    finally:
+        connection.close()
+    assert order == {"state": "absent", "messages": {}, "parts": {}}
+
+
+def test_event_table_is_part_of_the_declared_read():
+    assert "event" in decoder.OPENCODE_READ_TABLES and set(decoder.OPENCODE_READ_TABLES) >= {"session", "message", "part", "migration"}

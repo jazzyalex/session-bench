@@ -1,0 +1,205 @@
+{
+ "schema_version": "session-bench-trusted-release-index-v1",
+ "configurations": [
+  {
+   "configuration_id": "claude-cli",
+   "packets": [
+    {
+     "manifest_sha256": "73f281dd5bc5f9f96e987aa98d01e2e1ac748ba7fad56b11d75f7cd936ab9c46",
+     "path": "artifacts/v1-expanded-preparation/claude-cli-public-candidates-v8/claude-cli-eval-1",
+     "run_id": "claude-cli-eval-1-r1"
+    },
+    {
+     "manifest_sha256": "42d463254f58a5a2f7e418fb530185fa766069bf7c371b5e8a2a781d4e16577d",
+     "path": "artifacts/v1-expanded-preparation/claude-cli-public-candidates-v8/claude-cli-eval-2",
+     "run_id": "claude-cli-eval-2-r2"
+    },
+    {
+     "manifest_sha256": "6170747eded5ef6aa6a91cddb784b81d33d45d7adf97fe7acff35e876f70293c",
+     "path": "artifacts/v1-expanded-preparation/claude-cli-public-candidates-v8/claude-cli-eval-3",
+     "run_id": "claude-cli-eval-3-r3"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/claude-cli-public-candidates-v8/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/claude-cli-independent-public-review-v5/review.json",
+   "reviewer_id": "opus-independent-reviewer-claude-cli",
+   "trusted_review_sha256": "a3c87dd561664c60c3ae35f1c7a1e3b0cf192614a52c77cdb69e1d576ee6c10f"
+  },
+  {
+   "configuration_id": "opencode-cli",
+   "packets": [
+    {
+     "manifest_sha256": "7597b401e400c7e1b3d10e4ed538196fb492228bc9cc50f6881d27dfadfa6374",
+     "path": "artifacts/v1-expanded-preparation/opencode-1.18.31-public-candidates-v4/opencode-1-18-31-eval-1",
+     "run_id": "opencode-1-18-31-eval-1"
+    },
+    {
+     "manifest_sha256": "6b3245dc48e04782d5a894f214e17b8b2435773c6f9dbef3efbcf5d70f9661bb",
+     "path": "artifacts/v1-expanded-preparation/opencode-1.18.31-public-candidates-v4/opencode-1-18-31-eval-2",
+     "run_id": "opencode-1-18-31-eval-2"
+    },
+    {
+     "manifest_sha256": "6715399c8128b515b9d93609e87c3e3e16e0d1a0aba09ae9effbea78ec4da292",
+     "path": "artifacts/v1-expanded-preparation/opencode-1.18.31-public-candidates-v4/opencode-1-18-31-eval-3",
+     "run_id": "opencode-1-18-31-eval-3"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/opencode-1.18.31-public-candidates-v4/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/opencode-independent-public-review-v4/review.json",
+   "reviewer_id": "opus-independent-reviewer-opencode-cli",
+   "trusted_review_sha256": "fc01751177d9c553d673bc3f13366dfd8bfbd30cba169ed0cc54226389afc471"
+  },
+  {
+   "configuration_id": "deepseek-harness-cli",
+   "packets": [
+    {
+     "manifest_sha256": "2c937ffddf59dc8eff8859a2c5d0ca862ae23376ef0d46ad303bdc51a10ad786",
+     "path": "artifacts/v1-expanded-preparation/dsh-public-score-preparation-v12/public-candidates/dsh-cal-20260929-2",
+     "run_id": "dsh-cal-20260929-2"
+    },
+    {
+     "manifest_sha256": "7865f6b11dfff566ef8d58f5bc69f6deda211a5f4da5a965c46c7b6d17cb58d7",
+     "path": "artifacts/v1-expanded-preparation/dsh-public-score-preparation-v12/public-candidates/dsh-eval-20260929-1",
+     "run_id": "dsh-eval-20260929-1"
+    },
+    {
+     "manifest_sha256": "4426191f2dc97d488e60e0e8daf10734a7885d9e0685eddd178e32eeb27b79f8",
+     "path": "artifacts/v1-expanded-preparation/dsh-public-score-preparation-v12/public-candidates/dsh-eval-20260929-2",
+     "run_id": "dsh-eval-20260929-2"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/dsh-public-score-preparation-v12/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/dsh-independent-public-review-v12/review.json",
+   "reviewer_id": "opus-independent-reviewer-deepseek-harness-cli",
+   "trusted_review_sha256": "810224d1e1795236bdde31b3ceef51345ef5f212ac2576f8f6b761867b36c53f"
+  },
+  {
+   "configuration_id": "pi",
+   "packets": [
+    {
+     "manifest_sha256": "30e0c128fd5fec2f3993576966135d6cbf2d8788cac4ddf2a4201b2eb1a6e0f0",
+     "path": "artifacts/v1-expanded-preparation/pi-public-score-preparation-v7/public-candidates/pi-openai-codex-2026-10-02-10",
+     "run_id": "pi-openai-codex-2026-10-02-10"
+    },
+    {
+     "manifest_sha256": "3607b3a9cf06b105cffda3b648a99f8a627609abc3516843a109c47ebfb09e4a",
+     "path": "artifacts/v1-expanded-preparation/pi-public-score-preparation-v7/public-candidates/pi-openai-codex-2026-10-02-11",
+     "run_id": "pi-openai-codex-2026-10-02-11"
+    },
+    {
+     "manifest_sha256": "43051ddd974230349690434e431281c3be96a04d8272404fc4fa353618133ac7",
+     "path": "artifacts/v1-expanded-preparation/pi-public-score-preparation-v7/public-candidates/pi-openai-codex-2026-10-02-12",
+     "run_id": "pi-openai-codex-2026-10-02-12"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/pi-public-score-preparation-v7/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/pi-independent-public-review-v7/review.json",
+   "reviewer_id": "opus-independent-reviewer-pi",
+   "trusted_review_sha256": "10c36fe169c728cd9fd2f0d7ed97e488874e3737d4c373bf9f9b7f9705f37d1a"
+  },
+  {
+   "configuration_id": "codex-cli",
+   "packets": [
+    {
+     "manifest_sha256": "73051323e62a6bdcd79aa9e8e9cf7cf8a84893efca155ca6696864df83103fbc",
+     "path": "artifacts/v1-expanded-preparation/codex-cli-public-candidates-v5/codex-cli-eval-1",
+     "run_id": "codex-cli-eval-1"
+    },
+    {
+     "manifest_sha256": "59e2f5d4593d098d9e77243bad4a62447992182de2e1bdef12a98583d32fb142",
+     "path": "artifacts/v1-expanded-preparation/codex-cli-public-candidates-v5/codex-cli-eval-2",
+     "run_id": "codex-cli-eval-2"
+    },
+    {
+     "manifest_sha256": "746de4f15317c671b9f9111aa102975583cd3c5d1e3ebbbc9fa879047ceceb1b",
+     "path": "artifacts/v1-expanded-preparation/codex-cli-public-candidates-v5/codex-cli-eval-3",
+     "run_id": "codex-cli-eval-3"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/codex-cli-public-candidates-v5/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/codex-cli-independent-public-review-v5/review.json",
+   "reviewer_id": "opus-independent-reviewer-codex-cli",
+   "trusted_review_sha256": "924222d6290adbd386907c8a3cff4c0c0b2cedb4012130d5f2c7ef42a6ee9bbe"
+  },
+  {
+   "configuration_id": "claude-desktop",
+   "packets": [
+    {
+     "manifest_sha256": "d28d3ac257412e3f56ff36e241ca4cf63fe58663735f213c6d9a508fa79da2da",
+     "path": "artifacts/v1-expanded-preparation/claude-desktop-public-candidates-v3/claude-desktop-eval-1-correction-1",
+     "run_id": "claude-desktop-eval-1-correction-1"
+    },
+    {
+     "manifest_sha256": "f4f4b3ea2465675e900dd218e57e5d13e6d427215ec013c1094825c1773a3124",
+     "path": "artifacts/v1-expanded-preparation/claude-desktop-public-candidates-v3/claude-desktop-eval-2-correction-1",
+     "run_id": "claude-desktop-eval-2-correction-1"
+    },
+    {
+     "manifest_sha256": "ce3d329cba9a9052e0a2611c1a32299f975dc9df7ceb888d2b7a5141d560b95f",
+     "path": "artifacts/v1-expanded-preparation/claude-desktop-public-candidates-v3/claude-desktop-eval-3",
+     "run_id": "claude-desktop-eval-3"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/claude-desktop-public-candidates-v3/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/claude-desktop-independent-public-review-v3/review.json",
+   "reviewer_id": "opus-independent-reviewer-claude-desktop",
+   "trusted_review_sha256": "f95923125ac4c402c22dff5919f5f029c36810508031ba51296d6e1afe0be395"
+  },
+  {
+   "configuration_id": "copilot",
+   "packets": [
+    {
+     "manifest_sha256": "9f97884859e68babe9753753a8455447d6b0eca12e202edd30e5e98161b88dc8",
+     "path": "artifacts/v1-expanded-preparation/copilot-public-candidates-v5/copilot-2026-10-04-01",
+     "run_id": "copilot-2026-10-04-01"
+    },
+    {
+     "manifest_sha256": "ef1efa14d4d49323bb49bbf982294a19e89a0b236f7333379602970083bfa9f4",
+     "path": "artifacts/v1-expanded-preparation/copilot-public-candidates-v5/copilot-2026-10-04-02",
+     "run_id": "copilot-2026-10-04-02"
+    },
+    {
+     "manifest_sha256": "18213b7afe9a518318ff77c904670640192c5ff3bd15ce2200c874e52c9d20fd",
+     "path": "artifacts/v1-expanded-preparation/copilot-public-candidates-v5/copilot-2026-10-04-03",
+     "run_id": "copilot-2026-10-04-03"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/copilot-public-candidates-v5/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/copilot-independent-public-review-v5/review.json",
+   "reviewer_id": "opus-independent-reviewer-copilot",
+   "trusted_review_sha256": "bef077d362c8d3d82d09b19668b29f97d0c85f9ae342b0934ea30fb3f1e2c086"
+  },
+  {
+   "configuration_id": "antigravity",
+   "packets": [
+    {
+     "manifest_sha256": "bdf2c5626c33a2c2ab68112fea6d240081daa6f392fbf344fedfac824e213382",
+     "path": "artifacts/v1-expanded-preparation/antigravity-public-candidates-v4/antigravity-2026-10-05-02",
+     "run_id": "antigravity-2026-10-05-02"
+    },
+    {
+     "manifest_sha256": "d11a7325b87cf04f19e804a4487cdd0aadc73de2fce4c242574cb199e7e72ac5",
+     "path": "artifacts/v1-expanded-preparation/antigravity-public-candidates-v4/antigravity-2026-10-05-03",
+     "run_id": "antigravity-2026-10-05-03"
+    },
+    {
+     "manifest_sha256": "9eab21a081f1b4b569b65b931739b8187b2e73f20ebba553e3ed19db0b1ab4b3",
+     "path": "artifacts/v1-expanded-preparation/antigravity-public-candidates-v4/antigravity-2026-10-05-04",
+     "run_id": "antigravity-2026-10-05-04"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/antigravity-public-candidates-v4/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/antigravity-independent-public-review-v4/review.json",
+   "reviewer_id": "opus-independent-reviewer-antigravity",
+   "trusted_review_sha256": "39d91a6f72d6059a66488c36b70f69d850378b9b667a226affa26934d26cca74"
+  }
+ ]
+}
