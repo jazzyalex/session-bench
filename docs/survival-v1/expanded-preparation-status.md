@@ -42,6 +42,22 @@ two index and cache files of the isolated home were listed and not copied).
 Never publish `kimi-score-replay-v1`, and beside
 the public packets `summary.json` and `*-private-transformation.json`.
 
+## 2026-10-08: published
+
+Pull request jazzyalex/session-bench#1 was squash-merged to `main` (32744ba)
+after CI passed. Added on the way: `data/leaderboard-v1.yml` with
+`scripts/export_v1_leaderboard.py`; the README hash pin in
+`docs/prototype-history.json`; four macOS-only tests skipped on other systems;
+the Rollout article draft `docs/launch/09-the-rollout-v1-release.md`.
+
+On the owner's request the Agent Sessions site shows the release: bench page
+https://jazzyalex.github.io/agent-sessions/bench/v1/ and blog post
+https://jazzyalex.github.io/agent-sessions/blog/session-bench-v1/ (commit
+b025c1c0 in that repository). The page renders a byte-identical copy of
+`data/leaderboard-v1.yml`.
+
+Open: Cursor Desktop is not scored; Pi has no adapter document.
+
 ## 2026-10-08: v1 release
 
 Owner decision after the fourth outside review: "Publish as is. Agree with all

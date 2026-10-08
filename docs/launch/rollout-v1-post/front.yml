@@ -1,0 +1,14 @@
+layout: post
+title: "Same bug fix, 12 coding agents: 19 KB to 697 KB on disk, and what you can get back"
+description: "Session-Bench v1: we ran one two-prompt bug fix in twelve coding-agent harnesses and rebuilt each session from its files alone. Scores, charts, and what each one keeps."
+date: 2026-10-08
+image: /assets/session-bench-v1-social-card.png
+summary: >-
+  We ran the same two-prompt bug fix through twelve coding-agent harnesses,
+  three times each, and rebuilt every session from the files alone: 31 checks,
+  100 points, every score replayable. All twelve keep the conversation. The
+  record of the same fix takes 19 KB in Pi and 697 KB in OpenClaw, four
+  harnesses never write an event only once, and four of twelve record token
+  usage that adds up to a stated total. DeepSeek Harness is first at 96.9 and
+  Cursor CLI last at 78.1.
+seo_title: "Session-Bench v1: session files of 12 coding agents, scored"
