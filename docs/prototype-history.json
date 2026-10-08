@@ -31,7 +31,7 @@
   "v0_4_preservation": {
     "generated_output": "data/leaderboard.yml",
     "sha256": {
-      "README.md": "279cd0e0650256c2236362b3d6740ce537640352a4731f9c74e2c4adb4d98dd6",
+      "README.md": "f4986b3ef9bcf1a42f486bcae9f6f50f711bdd2e43f8c07cfb1eda7d5bc87608",
       "methodology.md": "507c5e20622a473042134953c01d46fdd47300773671e21e30e03188ac398e61",
       "scripts/evaluate.py": "d39856b70298e751c57b49f82c7e080fc88364962df8bee96fe3bc7df70381c5",
       "scripts/measure.py": "724b7684c050e110eb4a7d28b0ddbd366198fe1b1b97421198fe619a12372f67",

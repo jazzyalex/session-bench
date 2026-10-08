@@ -59,7 +59,9 @@ known, and the method has known limits. Read them before you quote a number:
   [artifacts/survival-v1-release/REPRODUCE.md](artifacts/survival-v1-release/REPRODUCE.md)
 - Rubric: [docs/survival-v1/rubric.md](docs/survival-v1/rubric.md)
 - How each row is decided, with its judgment calls:
-  [docs/survival-v1/adapters/](docs/survival-v1/adapters/)
+  [docs/survival-v1/adapters/](docs/survival-v1/adapters/) (Pi has no adapter
+  document yet; its review record is in the release)
+- The table as data: [data/leaderboard-v1.yml](data/leaderboard-v1.yml)
 
 The v0.4 gate leaderboard below is the earlier method. It stays as the source
 of the hosted report card until that page moves to v1.
