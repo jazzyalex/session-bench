@@ -23,6 +23,49 @@ hosting later will not change the benchmark data or evaluation workflow.
 Planned work, including cross-surface local-storage coverage, is tracked in
 [BACKLOG.md](BACKLOG.md).
 
+## Session-Bench v1 — session survival, 2026-10-08
+
+v1 asks one question of each harness: after a short two-turn coding session,
+how much of what happened can a reader recover from the session files alone?
+Each row has three captured runs. A closed replay recomputes 31 metrics from the
+published packet, and a separate reviewer session checked each packet set.
+
+| Rank | Configuration | Score | Runs |
+|---:|---|---:|---:|
+| 1 | DeepSeek Harness CLI | 96.9 | 3 |
+| 2 | Pi | 96.4 | 3 |
+| 3 | Copilot CLI | 96.0 | 3 |
+| 4 | OpenCode CLI | 94.4 | 3 |
+| 5 | Kimi Code | 91.2 | 3 |
+| 6 | Claude Code CLI | 89.3 | 3 |
+| 7 | OpenClaw | 88.1 | 3 |
+| 8 | Codex CLI | 87.5 | 3 |
+| 9 | Hermes | 86.4 | 3 |
+| 10 | Claude Desktop Code (Local) | 85.6 | 3 |
+| 11 | Antigravity | 82.7 | 3 |
+| 12 | Cursor CLI | 78.1 | 3 |
+
+Codex Desktop shares the Codex CLI row, because its session format is the same.
+Cursor Desktop is not scored yet.
+
+The scores measure recovery of one synthetic workload from retained session
+files. They are not scores of coding quality, price, speed or vendor
+reliability. Some rules were waived or corrected for v1 after results were
+known, and the method has known limits. Read them before you quote a number:
+
+- Report, notes on waived rules and known limits:
+  [artifacts/survival-v1-release/REPORT.md](artifacts/survival-v1-release/REPORT.md)
+- How to replay every packet:
+  [artifacts/survival-v1-release/REPRODUCE.md](artifacts/survival-v1-release/REPRODUCE.md)
+- Rubric: [docs/survival-v1/rubric.md](docs/survival-v1/rubric.md)
+- How each row is decided, with its judgment calls:
+  [docs/survival-v1/adapters/](docs/survival-v1/adapters/) (Pi has no adapter
+  document yet; its review record is in the release)
+- The table as data: [data/leaderboard-v1.yml](data/leaderboard-v1.yml)
+
+The v0.4 gate leaderboard below is the earlier method. It stays as the source
+of the hosted report card until that page moves to v1.
+
 ## Current leaderboard — v0.4, corrected 2026-08-23
 
 | # | Harness | Version | Gates cleared |

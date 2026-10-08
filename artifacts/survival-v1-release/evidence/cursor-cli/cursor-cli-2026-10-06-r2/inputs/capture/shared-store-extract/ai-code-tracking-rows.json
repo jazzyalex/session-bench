@@ -1,0 +1,103 @@
+{
+ "note": "read after the capture from the live store; rows of other sessions and projects were not exported",
+ "read_on": "2026-10-06",
+ "rows": {
+  "ai_code_hashes": [
+   {
+    "conversationId": "c1ea7e3b-6516-480a-a178-fda64f1dcd57",
+    "createdAt": 1791339709191,
+    "fileExtension": "py",
+    "fileName": "/Users/xxxxx/Repository/session-bench/artifacts/survival-v1-runs/cursor-cli-2026-10-06-r2/project/fixture_project/checkout.py",
+    "hash": "00000000",
+    "model": "default",
+    "requestId": "call-6059423b-3108-4a95-9072-12a692127807-4\nfc_p4DZEgH-3LYxF7-c975dc4d-aws_ue1_0",
+    "rowid": 0  ,
+    "source": "cli",
+    "timestamp": 1791339709190
+   },
+   {
+    "conversationId": "c1ea7e3b-6516-480a-a178-fda64f1dcd57",
+    "createdAt": 1791339709191,
+    "fileExtension": "py",
+    "fileName": "/Users/xxxxx/Repository/session-bench/artifacts/survival-v1-runs/cursor-cli-2026-10-06-r2/project/fixture_project/checkout.py",
+    "hash": "0000000",
+    "model": "default",
+    "requestId": "call-6059423b-3108-4a95-9072-12a692127807-4\nfc_p4DZEgH-3LYxF7-c975dc4d-aws_ue1_0",
+    "rowid": 0  ,
+    "source": "cli",
+    "timestamp": 1791339709190
+   },
+   {
+    "conversationId": "c1ea7e3b-6516-480a-a178-fda64f1dcd57",
+    "createdAt": 1791339709191,
+    "fileExtension": "py",
+    "fileName": "/Users/xxxxx/Repository/session-bench/artifacts/survival-v1-runs/cursor-cli-2026-10-06-r2/project/fixture_project/checkout.py",
+    "hash": "00000000",
+    "model": "default",
+    "requestId": "call-6059423b-3108-4a95-9072-12a692127807-4\nfc_p4DZEgH-3LYxF7-c975dc4d-aws_ue1_0",
+    "rowid": 0  ,
+    "source": "cli",
+    "timestamp": 1791339709190
+   },
+   {
+    "conversationId": "c1ea7e3b-6516-480a-a178-fda64f1dcd57",
+    "createdAt": 1791339709191,
+    "fileExtension": "py",
+    "fileName": "/Users/xxxxx/Repository/session-bench/artifacts/survival-v1-runs/cursor-cli-2026-10-06-r2/project/fixture_project/checkout.py",
+    "hash": "00000000",
+    "model": "default",
+    "requestId": "call-6059423b-3108-4a95-9072-12a692127807-4\nfc_p4DZEgH-3LYxF7-c975dc4d-aws_ue1_0",
+    "rowid": 0  ,
+    "source": "cli",
+    "timestamp": 1791339709190
+   },
+   {
+    "conversationId": "c1ea7e3b-6516-480a-a178-fda64f1dcd57",
+    "createdAt": 1791339709191,
+    "fileExtension": "py",
+    "fileName": "/Users/xxxxx/Repository/session-bench/artifacts/survival-v1-runs/cursor-cli-2026-10-06-r2/project/fixture_project/checkout.py",
+    "hash": "00000000",
+    "model": "default",
+    "requestId": "call-6059423b-3108-4a95-9072-12a692127807-4\nfc_p4DZEgH-3LYxF7-c975dc4d-aws_ue1_0",
+    "rowid": 0  ,
+    "source": "cli",
+    "timestamp": 1791339709190
+   },
+   {
+    "conversationId": "c1ea7e3b-6516-480a-a178-fda64f1dcd57",
+    "createdAt": 1791339709191,
+    "fileExtension": "py",
+    "fileName": "/Users/xxxxx/Repository/session-bench/artifacts/survival-v1-runs/cursor-cli-2026-10-06-r2/project/fixture_project/checkout.py",
+    "hash": "00000000",
+    "model": "default",
+    "requestId": "call-6059423b-3108-4a95-9072-12a692127807-4\nfc_p4DZEgH-3LYxF7-c975dc4d-aws_ue1_0",
+    "rowid": 0  ,
+    "source": "cli",
+    "timestamp": 1791339709190
+   }
+  ],
+  "tracked_file_content": [
+   {
+    "content": "def checkout(items):\n    \"\"\"Each item is (unit_price, quantity); delivery costs 5 below the threshold.\"\"\"\n    subtotal = sum(price * quantity for price, quantity in items)\n    delivery = 0 if subtotal >= 50 else 5\n    return subtotal + delivery\n",
+    "conversationId": "c1ea7e3b-6516-480a-a178-fda64f1dcd57",
+    "createdAt": 1791339709192,
+    "fileExtension": "py",
+    "gitPath": "artifacts/survival-v1-runs/cursor-cli-2026-10-06-r2/project/fixture_project/checkout.py",
+    "model": "default",
+    "rowid": 0
+   }
+  ]
+ },
+ "schema_version": "session-bench-cursor-shared-store-extract-v1",
+ "selection": "rows where any column holds the session id or this run's workspace path",
+ "session_id": "c1ea7e3b-6516-480a-a178-fda64f1dcd57",
+ "source": "~/.cursor/ai-tracking/ai-code-tracking.db (shared; outside the isolated roots)",
+ "tables_in_store": [
+  "ai_code_hashes",
+  "scored_commits",
+  "tracking_state",
+  "conversation_summaries",
+  "tracked_file_content",
+  "ai_deleted_files"
+ ]
+}

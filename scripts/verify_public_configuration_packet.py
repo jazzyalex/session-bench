@@ -559,9 +559,20 @@ def _broad_metric(metric_id: str, detail: Any) -> dict[str, Any]:
     if metric_id == "broad.stable_root_location":
         _exact_keys(detail, {"evidence_complete", "repetitions"}, metric_id)
         repetitions = detail["repetitions"]
-        valid = isinstance(repetitions, list) and {item.get("repetition") for item in repetitions if isinstance(item, Mapping)} == {1, 2, 3} and len(repetitions) == 3
-        if valid:
-            valid = all(isinstance(item["root_locator"], str) and item["root_locator"].strip() and item["personal_history_scanned"] is False and ((set(item) == {"repetition", "root_locator", "isolated_discovery", "personal_history_scanned"} and item["isolated_discovery"] is True) or (set(item) == {"repetition", "root_locator", "discovery_mode", "personal_history_scanned"} and item["discovery_mode"] in {"isolated", "metadata_safe_normal_root"})) for item in repetitions)
+        if not isinstance(repetitions, list) or (detail["evidence_complete"] and not repetitions):
+            _fail(f"{metric_id} requires a non-empty repetition population when complete")
+        if any(not isinstance(item, Mapping) or not _is_int(item.get("repetition")) or item["repetition"] < 1 or set(item) not in ({"repetition", "root_locator", "isolated_discovery", "personal_history_scanned"}, {"repetition", "root_locator", "discovery_mode", "personal_history_scanned"}) for item in repetitions):
+            _fail(f"{metric_id} has a malformed repetition")
+        numbers = [item["repetition"] for item in repetitions]
+        if len(set(numbers)) != len(numbers) or (len(numbers) > 1 and numbers != list(range(numbers[0], numbers[0] + len(numbers)))):
+            _fail(f"{metric_id} repetitions must be unique and sequential")
+        modes = ["isolated" if "isolated_discovery" in item else item["discovery_mode"] if isinstance(item["discovery_mode"], str) else None for item in repetitions]
+        valid = len(set(modes)) <= 1 and all(
+            isinstance(item["root_locator"], str) and bool(item["root_locator"].strip())
+            and item["personal_history_scanned"] is False
+            and (item["isolated_discovery"] is True if "isolated_discovery" in item else isinstance(item["discovery_mode"], str) and item["discovery_mode"] in {"isolated", "metadata_safe_normal_root"})
+            for item in repetitions
+        )
         return _complete_assertion(detail, valid)
     if metric_id == "broad.naive_reader_duplicate_safety":
         _exact_keys(detail, {"evidence_complete", "event_ids", "forward_records", "deduplication"}, metric_id)

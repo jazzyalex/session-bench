@@ -1,3 +1,16 @@
+# Session-Bench launch kit
+
+Status, 2026-10-08: **v1 is released** (`artifacts/survival-v1-release/`, twelve
+ranked configurations). The current article draft is
+[09-the-rollout-v1-release.md](09-the-rollout-v1-release.md); it is not posted.
+No outreach, scheduling or distribution has been done.
+
+Everything below this line is the kit for the five-configuration review
+candidate of September 2026. It is kept as history. Its scores, order and
+findings are superseded by the v1 release; do not quote them.
+
+---
+
 # Session-Bench v1.0 launch kit — review-candidate (unpublished)
 
 Status: **UNPUBLISHED v1 launch kit — review-candidate only.**

@@ -1,0 +1,15 @@
+{
+  "attempt_id": "antigravity-2026-10-05-04",
+  "before_sha256": "f4482bd25089ad5c521d2d8c75d17607d5dec0582b9bb687b5716c9673546401",
+  "configuration_id": "antigravity",
+  "model_selection_evidence": "explicit agy --model and --effort arguments; requested selection only",
+  "requested_effort": null,
+  "requested_model": "claude-sonnet-4-6",
+  "score_eligible": false,
+  "started_at": "2026-10-05T18:19:25.536197+00:00",
+  "started_ns": 1791224365509107000,
+  "state_root_scope": "whole_cli_state_directory",
+  "status": "in_progress",
+  "turns": [],
+  "version": "1.2.17"
+}

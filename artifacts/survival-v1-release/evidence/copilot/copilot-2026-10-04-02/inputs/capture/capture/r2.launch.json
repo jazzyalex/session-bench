@@ -1,0 +1,784 @@
+{
+  "argv": [
+    "/opt/homebrew/bin/copilot",
+    "-p",
+    "Correction R2 supersedes only the delivery condition: delivery is free when subtotal is at least 50 and remains 5 below 50. Keep quantity handling from R1. Edit only fixture_project/checkout.py. Do not modify bench_check.py or .survival-observer.jsonl. Run python3 bench_check.py final --run-canary SB_SURVIVAL_V1_RUN_copilot-2026-10-04-02. Explain the actual change and test outcome. End your visible response with exactly SB_SURVIVAL_V1_RESPONSE_R2_correction_\u0394. Context marker: SB_SURVIVAL_V1_CONTEXT_cafe_\ud83d\ude42. Run canary: SB_SURVIVAL_V1_RUN_copilot-2026-10-04-02.",
+    "--model",
+    "auto",
+    "--allow-all-tools",
+    "--output-format",
+    "json",
+    "--no-custom-instructions",
+    "--no-auto-update",
+    "--no-ask-user",
+    "--no-bash-env",
+    "--no-remote-export",
+    "--secret-env-vars=COPILOT_GITHUB_TOKEN",
+    "--resume",
+    "52d56ef1-3fd8-40ca-8724-4ee16455feb1"
+  ],
+  "copilot_home_inventory_before": {
+    "config.json": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "logs/.copilot-log.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/process-1791144948926-37541.log": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "session-state/.session-operation-locks/52d56ef1-3fd8-40ca-8724-4ee16455feb1.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "session-state/52d56ef1-3fd8-40ca-8724-4ee16455feb1/.workspace-fork.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "session-state/52d56ef1-3fd8-40ca-8724-4ee16455feb1/checkpoints/index.md": {
+      "sha256": "a6508da52c083afcfd134779a5b6a71a31235f9f154f2aa865ea920d68189734"
+    },
+    "session-state/52d56ef1-3fd8-40ca-8724-4ee16455feb1/events.jsonl": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "session-state/52d56ef1-3fd8-40ca-8724-4ee16455feb1/rewind-file-snapshots/tracking.json": {
+      "sha256": "0916b582e1bc5439b7454e8dee676b3d7f24d524cac8715e1d0afd44a8e66e3b"
+    },
+    "session-state/52d56ef1-3fd8-40ca-8724-4ee16455feb1/workspace.yaml": {
+      "sha256": "17a8afdbbb5f4ff951b33b376c0789d85227017b538585a40355b8e30d42c342"
+    },
+    "session-store.db": {
+      "sha256": "da63a52bdf62b3fc863995d79f497584be3ba97c1de4c55d1d301afbafab6cfc"
+    },
+    "session-store.db-shm": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "session-store.db-wal": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "settings.json": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "credential_values_retained": false,
+  "cwd": "/private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-7h71c7yo/fixture_project",
+  "isolated_home_inventory_before": {
+    "Library/Application Support/Microsoft/DeveloperTools/deviceid": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "Library/Caches/copilot/copilot-user-cache.json": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "Library/Caches/copilot/copilot-user-cache.json.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Library/Caches/copilot/managed-settings/0000000000000000000000000000000000000000000000000000000000000000.json": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/.extraction-complete": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/LICENSE.md": {
+      "sha256": "b9680937e10425bf19862908856c16ed274e6b81a1368bd62be7a757eab21628"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/animations/app-install-nudge.json.gz": {
+      "sha256": "8a4165e6e95f127fe3123e647580c31def2d52b7824f2c4e48b505339132543e"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/animations/banner.json.gz": {
+      "sha256": "cc6dcef840f5f63c9683e84bd55478e6fd2a22130bf1be6f53dece870e996446"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/app.js": {
+      "sha256": "6d0149041a57d909979096bb0ca3b92c14d05b1a2768d21cce7e8461dc18300d"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/assets/copilot.ico": {
+      "sha256": "0392eb0c8396cd670fc735d5a6da500194a246e4354fe6a984082e7b92468120"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/assets/copilot.png": {
+      "sha256": "601aea9338888b3e0065b6b6bcb5793bf1215f205b6e781a47b1893d96fd67d1"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/assets/copilot.svg": {
+      "sha256": "3ab15e2df5496501693efdb008af0f1fd76499ffc078b5990122af61038f0137"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/assets/copilot_win.png": {
+      "sha256": "a1916e140936d7f4a5e6022168c151e3b2925dbdf1039a1ee93120e42df17782"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/builtin-skills/customize-cloud-agent/SKILL.md": {
+      "sha256": "6acee791cd48a31eb881431c0f1394d3c79d33d62f0d58b2d9b699e4a275ea93"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/builtin-skills/discover-resources/SKILL.md": {
+      "sha256": "9afbbacc30095ee4b4a70da34471781be9ad1df46f6c2df1ddbdc0473b34c6e7"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/builtin-skills/github-pr-media/SKILL.md": {
+      "sha256": "eba36e66d053b3db19e8f51cfb7d28186ef2baf90159f51bf2333747b150070b"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/builtin/customize-cloud-agent/SKILL.md": {
+      "sha256": "6acee791cd48a31eb881431c0f1394d3c79d33d62f0d58b2d9b699e4a275ea93"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/builtin/discover-resources/SKILL.md": {
+      "sha256": "9afbbacc30095ee4b4a70da34471781be9ad1df46f6c2df1ddbdc0473b34c6e7"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/builtin/github-pr-media/SKILL.md": {
+      "sha256": "eba36e66d053b3db19e8f51cfb7d28186ef2baf90159f51bf2333747b150070b"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/changelog.json": {
+      "sha256": "5762bd42f05ea1175c50baf4dc65a55959cee58e7a60516242545eaf4387a49c"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/canvas.d.ts": {
+      "sha256": "2f5c82d47a8a1abd27466f9dc093106a59d83f685d4f6c29367e2ce25f44b700"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/cliVersion.d.ts": {
+      "sha256": "2b194e641c200f3bc825202b6b6ebf64277e25f7f24a050f4781125d3e988d00"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/client.d.ts": {
+      "sha256": "fa16f0a742d2df2b53fa44764a5540e581787be84d8b87618bb35eccde4c9f21"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/copilotRequestHandler.d.ts": {
+      "sha256": "730762ae75ad87be8cbef0080a2f5150919f0a9c53e52b6aaaa3f366f2c17d79"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/docs/agent-author.md": {
+      "sha256": "6280a2b6684a83ca7d17871be6666f5d979f5d3076ddbb9680edc83394abb810"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/docs/examples.md": {
+      "sha256": "7bc5fea049219a6d2ddd444dfcfee9b629ca99b22f4bad916086f6e7180ac3df"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/docs/extensions.md": {
+      "sha256": "c605832e99280c5186f48c303a77b37627cc8680033028b762894b4d7896ea91"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/docs/workflows.md": {
+      "sha256": "0c9a73a2eb1ebcbbedd31a58f583df6f75036c08a70cdaa6bb8a441c26c55524"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/extension.d.ts": {
+      "sha256": "51a62ee75e17070058d58c88790d1f1ccf977ca7d34112e52e5bb5939150b70c"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/extension.js": {
+      "sha256": "ad06a58f433c149b6785722500694028057e17b983bb2c8470c3dcade1bc052f"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/ffiRuntimeHost.d.ts": {
+      "sha256": "cdc4278138d1ef24107fac5841510caa3af0ae492b1917e5f8089014d7d38fc1"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/generated/rpc.d.ts": {
+      "sha256": "12fa222b28aa18a0a600c2f008bfd59c27c7ad6fc3105ecbab2d200cf309444d"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/generated/session-events.d.ts": {
+      "sha256": "44f2064418529aeee13dd967c08b351ef52c01d6b850052860ff8aea31808869"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/host.d.ts": {
+      "sha256": "eb8fb61a305fc32b792ee671d329e84f515f941329cb0daa853de2118a260f63"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/index.d.ts": {
+      "sha256": "daccc8d93fa4e13bed5444e350e8ab9338580c2dacd44f6dfeb64663701ca4e5"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/index.js": {
+      "sha256": "3b28fe16e2d27337cc5dafc99e95ecc0bde1218576475fc4e093d86623a7939a"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/installationConfirmation.d.ts": {
+      "sha256": "803e7d8c5bf2406a50009b987677af12a96515416f170862fc46150ec7591efe"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/runtimeArtifacts.d.ts": {
+      "sha256": "1d78a2fd37b65e793e553db9a8323a6727b77e7ffbd6b61c462e778794dd76e2"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/schema.d.ts": {
+      "sha256": "40223fad10dd2896a4e257dd761e06c62f3711d6bd40ef880e67386478982eba"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/sdkProtocolVersion.d.ts": {
+      "sha256": "344a1c9669d1617346e2bb71d24081797b69b6cfd37c17b04b2aebf8e7a87260"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/session.d.ts": {
+      "sha256": "4769f3c5116cad0dd0f78831e7dd4c9dcfc25819ccab47de3c6665e0f7845856"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/sessionFsProvider.d.ts": {
+      "sha256": "6aa732885a832f7117a5d85853eb05b26052bc446a278c17b9463b7bdb06094d"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/telemetry.d.ts": {
+      "sha256": "0721ce90ecd3a15eeb86d7787ca62236b1b545b0e93139ed5ef4419b16544722"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/toolSet.d.ts": {
+      "sha256": "41e53ae25809c90fd1a78f493cb912c6a9194c6e0a02e3e32545971c41a1cb56"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/types.d.ts": {
+      "sha256": "609ad0ce2cddd502b0000a66805772791de344fbf76ca078c190de6442c658f8"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/copilot-sdk/workflow.d.ts": {
+      "sha256": "5446526d6cc53b89e76af31fb5eac43f6aea28c0cd1c452e97dbd7bf8243382f"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/code-review.agent.yaml": {
+      "sha256": "1290258ee70b44faca1f0c74be26254f13e8401e825713ff3f5523b848b361f9"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/explore.agent.yaml": {
+      "sha256": "83b4ed34c2fd8549dc5a557203c9d0db7dde5fc118b1eea8476585d05afa13ef"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/rem-agent.agent.yaml": {
+      "sha256": "895ac0f7d0ce5cd006501eed7f1abfd38405ba93c30d16be9c7205bed6f335bf"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/research.agent.yaml": {
+      "sha256": "a32495c36fa076ded05b84dd04a93c2739e9be922ad77221beb519e3fb3d733a"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/rubber-duck.agent.yaml": {
+      "sha256": "eb624f30ef69f8cfd18e7f3f14bcca63e13d1a0d3e05af006372b8d537bbd15d"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/security-review.agent.yaml": {
+      "sha256": "7b6769eb585913a0ad59dadb3bf2e42cd9cfadb1540b341f23a28e5728be2d53"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/sidekick/cloud-session-search.yaml": {
+      "sha256": "0eaa7fe8f8cecb923c87c9598e22c4e338bfdc069cc9c78325eb6b589fa94bcd"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/sidekick/github-context-memory.yaml": {
+      "sha256": "22b699a6dd5b2d7964f8b2a913618ae478cf6910df2fc3ba336cf38b1be3b2ef"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/sidekick/github-context.yaml": {
+      "sha256": "9b7692e969e9ab36d7053fb2ef99ba9dd2ae78f6df75e645f54eb3cdb3fc6252"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/sidekick/session-search.yaml": {
+      "sha256": "8b6f48742fe847002e5ba6e00b05abc5339a5891387cd306790eb3b8c7dd8c11"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/sidekick/subconscious-agent.yaml": {
+      "sha256": "9fb4cb881677adc08c69818ecdde127276b1afe006817802c381a3ff5fb5887f"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/sidekick/test-sidekick-context-changed.yaml": {
+      "sha256": "117edd3750a403c6cabf7964f217ae8129b16f9d0a6d2503e09ebe79d64f9d50"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/sidekick/test-sidekick-persistent.yaml": {
+      "sha256": "a5ab1c16dd5f9a030010a375f7f26bca56aa196b212ea52ac2c5736cd80f3989"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/sidekick/test-sidekick-restart.yaml": {
+      "sha256": "21e44442b8380a758793d637a60fe94c226a6547d23c5bea3a14546f7f3e60ec"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/sidekick/test-sidekick-trigger-once.yaml": {
+      "sha256": "14a7cedf6ead133828280744b293e90402a2d47568c98a67273c1d7c3acdd53e"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/definitions/task.agent.yaml": {
+      "sha256": "1780e87f638e5c195b66173438565fd1af97eb0b9e2b1f2ebbd9d4e5b875f3af"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/index.js": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/README.md": {
+      "sha256": "ff79555febdbf1ea12b10bef4f6bdcb08812205ba2efe568b048b0ecdd127bf4"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/deps_versions.json": {
+      "sha256": "43ccda9b18ba2577033d7bf24580785fd1227828d9ab06b8011ddfeee57af8e9"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/catalog.d.ts": {
+      "sha256": "aa0db4dee8e54431e2e01d14fd7977d28cd3032f9c4940cc5b926b77d5469dd5"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/catalog.js": {
+      "sha256": "c2cb5abd5e01162186cb43e67a0a6e49d4d9a556a7382b7dc1840d6c5c2a6b6b"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/configuration.d.ts": {
+      "sha256": "900ba0e99ac907a92d07c08b179ba7d4379326fb71de2d338eb8434860338973"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/configuration.js": {
+      "sha256": "7b01b6d5e18b7a8a2e465f0d75214a0b9884ffe57df95af1b2708a5a4c4d7bc5"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/detail/coreInterop.d.ts": {
+      "sha256": "80bb839431d2ee4c935d2def128faa4993acbe8d75fa403df5b50a61c2f92ff8"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/detail/coreInterop.js": {
+      "sha256": "466e3287e579f2b4180fafcb33479549dd2bd683b687456e1b664cd84da524d1"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/detail/model.d.ts": {
+      "sha256": "8f219d0af8f00e9a0119ea8d69eb3d92bc2b5e25ce9e17ac218fcb4a8f88355c"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/detail/model.js": {
+      "sha256": "8f553a823eb0dda46eacdd53835449abd5f6e030d66d684d9a4e9c88396317ec"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/detail/modelLoadManager.d.ts": {
+      "sha256": "1a2e8b44486f02548f6d30a942f074d052175d7d14d6f5cd7918151cc1ff2552"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/detail/modelLoadManager.js": {
+      "sha256": "1a7888fe6fb620acc9b1d7ff8d17c5563139b0bd32834bdaabc4d36cc54343c2"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/detail/modelVariant.d.ts": {
+      "sha256": "a7af8a0359d36ed90322738bde975c534b9a3b69dcb0e0393cf6f88da7e1b486"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/detail/modelVariant.js": {
+      "sha256": "d62acc4da20f11fb40102f79ded6f45e3cf2f684db1f97c7888c26e84f86eef7"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/foundryLocalManager.d.ts": {
+      "sha256": "812e9e2eec43997439392d139b995793aa3839f573aea38d115e90573f986cf5"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/foundryLocalManager.js": {
+      "sha256": "bfbca8d6235ba998ce3e82ddc9970900a7e2511653341e1315786c6851c1f380"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/imodel.d.ts": {
+      "sha256": "26244ca6cdfb41849ca8e8edef23c5a6681ed18a4acfb2b714c7d2beb0f592fb"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/imodel.js": {
+      "sha256": "6ab1971ca21097ea33a2b7b423aee408c093fec343292bcbbc59971d3e253713"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/index.d.ts": {
+      "sha256": "977e345d9eb116eaf3d4db1f972222480fd0fc6e59d3ac273aef1801dbead4f0"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/index.js": {
+      "sha256": "e030b97bdb052ed99f00df928c2fc42f7ac165021d86df792290225c30c5376f"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/openai/audioClient.d.ts": {
+      "sha256": "7a0d9fe37f7e6f253be258a7938667334deadeb930c2b8872f22e517d1963762"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/openai/audioClient.js": {
+      "sha256": "04264c41f3567811940ef28b48d97684b333ccbac9829cce8b3d0db8e763b51f"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/openai/chatClient.d.ts": {
+      "sha256": "a9da4a98dc50b1425e2ace9ffb044a3aa872e678947bf035339c9b8703dd6d1e"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/openai/chatClient.js": {
+      "sha256": "c59a093318d05a3e38a2f68693f3b64a24603472c73517743302d5a507331063"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/openai/embeddingClient.d.ts": {
+      "sha256": "a1875a29cd2825fa23c6fe7bf7f4e04c4e2e574e142e0e5fb0c0291b2206528d"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/openai/embeddingClient.js": {
+      "sha256": "bd55fbceb7fea625d30144a462d1c18dd857e6a2539a4179734d3b3237656428"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/openai/liveAudioSession.d.ts": {
+      "sha256": "f2ed7df5665add334b18ad793866c814333863345f8077b8c925cb9b0aed66e4"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/openai/liveAudioSession.js": {
+      "sha256": "889d7adcb9a64858113cd881a77f56962fa85266d2a7ac58c319ecc45be745bf"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/openai/liveAudioTypes.d.ts": {
+      "sha256": "831434a52d2643186dd76bbb657c3acf2f0635cafaa94763a0ff2f728242146f"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/openai/liveAudioTypes.js": {
+      "sha256": "f78e54d6ed3b9b0fba913e7ceec41b36364279e1d93d8b006b62af55806d027c"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/openai/responsesClient.d.ts": {
+      "sha256": "3126a17df66edb893fb5d26bd6ea80a05f5bb516e47da661e927c0936e86d0d2"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/openai/responsesClient.js": {
+      "sha256": "76b477538feb61c41bc0ff7cf8f23b7dbe75bc2fda4720e29c70ff3cac9afc7f"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/types.d.ts": {
+      "sha256": "cca44657b82f9b3c0cd7528e6dbddf5f949e42f5d34afe60c0d566f28e3fc0b0"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/dist/types.js": {
+      "sha256": "ca23f484beade559e7ed612347ac8f615c2c4cc97c2e1b0a74b9c882db7f6f38"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/LICENSE": {
+      "sha256": "6bb5b2d4c07d793ca928daa63a8899c6914fafb5ac3aa04ec10cae07f3d57dca"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/README.md": {
+      "sha256": "9d05e156889b1475cdee97a13ed84a4abee0d752b2aaa28ded5359fcf45df901"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/adm-zip.js": {
+      "sha256": "c49feb0ff54bd8e1ab04dbeaca52fb34f4b543cc09180e826ec4966b4d4e3e2e"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/headers/entryHeader.js": {
+      "sha256": "cfd649eede629531c4910b0829eca60a5ea47d255bf6aa72ae174b31c2ea2184"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/headers/index.js": {
+      "sha256": "536e4b5bf009a3d9f6eccfbbc4157cb6de663d889e0826ea5f6e5fa17aaeb8bf"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/headers/mainHeader.js": {
+      "sha256": "ed5a2b3fc7c8a6937e07447eb3e55e08a0655d2f24fe04039e7008845d221a25"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/methods/deflater.js": {
+      "sha256": "6dc41b2460594cfa5136b797653c166b2f7403820a40f2fca17cca35a5de1b5f"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/methods/index.js": {
+      "sha256": "d67714f1a04be942f90be77069af3ff4214aa8ee84b26edeff3a87eb0d8e2dc0"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/methods/inflater.js": {
+      "sha256": "f8a51dcbe6d2b782a3e460d34d79a50a4f52526c078a85add0ab5d6f4424dac8"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/methods/zipcrypto.js": {
+      "sha256": "23365c7eda0ea098385dc7ec649517fc110ce2764d2e707c37bf6b528604e25a"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/package.json": {
+      "sha256": "09a8559bb31d5063ec033af457a253fbfefc485965ca4e5110343bc5771dfe95"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/types.d.ts": {
+      "sha256": "98fae6ae2e5d026a91e0316209813ce304069ab85d0471f35152d5db500d23c1"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/util/constants.js": {
+      "sha256": "208e943a2e5faad056047f3c7991cce3cde637d8e272a564f2546210ebdf2069"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/util/decoder.js": {
+      "sha256": "73a0ebb00c4dce2124f07acf0b34374cb03a4384cccd1cd6f58aee27c35953d9"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/util/errors.js": {
+      "sha256": "331816da9dcdcb6b56305b9742154b1ca582324950fa2a42dec90466fd8fda82"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/util/fattr.js": {
+      "sha256": "31c93eb386a2bfbf19ad92a6bf20d510a8f1e7e90cc71d33dd888f89da12362d"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/util/index.js": {
+      "sha256": "dc5b230ed853947ea55c0bf69f0e525fbeffefff09aa3da296d541bb8898314e"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/util/utils.js": {
+      "sha256": "4767587fd6a8f7b8a2b59f5e2253b2b21e8cfe5148c58587f5d54dfee74573cc"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/zipEntry.js": {
+      "sha256": "39b1e511560263e9a4e8c9dbb2e781082d60ddb572a4608b07c8ab0dc62892d6"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/node_modules/adm-zip/zipFile.js": {
+      "sha256": "2d031ceb4273a7481a1bf896aa443eb739504a9b2ef12a1e1789d210a5d5aa30"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/package.json": {
+      "sha256": "07d0242f84fdcfc8f4a0e601dc35f01fa153535c67f95262e0bd750ba7cfa418"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/prebuilds/darwin-arm64/foundry_local_napi.node": {
+      "sha256": "1cb33a3264bd3843f092be626ee0b4181646ef632cbf7f671b3624b1d44c283c"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/foundry-local-sdk/node_modules/foundry-local-sdk/script/install-utils.cjs": {
+      "sha256": "0831c932b10389283e805f88a204b0f6a5a8053f2ee520e56a0f0adf1352aa8b"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/index.js": {
+      "sha256": "8ebe3ca0ab8315d5fe185db9d173cbcb72d30059c184b0f151e43e43b6318268"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/npm-loader.js": {
+      "sha256": "0ea824a86be5757533fdb092eff7050871bd7a711a46babde0ffe0e44ac5ad88"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/package.json": {
+      "sha256": "5460a847ff9352d6bfb3a79c1fb63de87d2f9ac134a02927889c997da9604bd8"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/plugins/computer-use/.release-target": {
+      "sha256": "8d881856b9e9a2991794a6cb91599bddc227db867a3ff50402438c3d5a02cb57"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/plugins/computer-use/Copilot Computer Use.app/Contents/CodeResources": {
+      "sha256": "cdd2874058dbebc37dd2c284b1ebf49aca0903741483dd61946f7e2afc60e4a9"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/plugins/computer-use/Copilot Computer Use.app/Contents/Info.plist": {
+      "sha256": "68318792b18f1e92ec2784b054489023727146e03e7926a1bd3798fe95629ef3"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/plugins/computer-use/Copilot Computer Use.app/Contents/MacOS/Copilot Computer Use": {
+      "sha256": "114430b2babd63194571f060961490d4a29f39d44796557277bf49c1bb547a05"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/plugins/computer-use/Copilot Computer Use.app/Contents/PkgInfo": {
+      "sha256": "82502191c9484b04d685374f9879a0066069c49b8acae7a04b01d38d07e8eca0"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/plugins/computer-use/Copilot Computer Use.app/Contents/Resources/Assets.car": {
+      "sha256": "ce5c0f133fdae3c24ed7e93a39f51d5e133025cad44c1c89b7755e75a7f284b0"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/plugins/computer-use/Copilot Computer Use.app/Contents/Resources/icon.icns": {
+      "sha256": "44d787b9159291ec5d862d257b5d1c9178c2264d1a1aba7c21d75ae8c1e3613a"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/plugins/computer-use/Copilot Computer Use.app/Contents/_CodeSignature/CodeResources": {
+      "sha256": "e994e1e722bdf4f8ecdc7ca3e7d2d5dff4c0170f20ea43012c78b55cc27aacd8"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/plugins/computer-use/computer-use-mcp": {
+      "sha256": "d43ca16788e53034aa12737fd05d08f91d812e1398f999d3d9d863f6a411e5f8"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/plugins/computer-use/mcp.json": {
+      "sha256": "37a1f153978a85cc2b112f133eb8a430b647014991c4475b79148f28ee224fbf"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/plugins/computer-use/plugin.json": {
+      "sha256": "256f4eeb66f714ee6db8a10aba969f266094d537b9c7b273254da0b39326e834"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/prebuilds/darwin-arm64/cli-native.node": {
+      "sha256": "2e43899a48240df292ecf0f3a861973b9e8a22039f8c8c4f4da8b4be566f20c9"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/prebuilds/darwin-arm64/copilot-runtime": {
+      "sha256": "c2e6f96596f771daf9bd88eb21d3f07aedc43a127ecb96602967908904d84fea"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/prebuilds/darwin-arm64/mediaremote-adapter/LICENSE": {
+      "sha256": "a489c16a6be195584fa0b35e28fca54abc8492eb0cc05d851dd24f522f4900a2"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/prebuilds/darwin-arm64/mediaremote-adapter/MediaRemoteAdapter.framework/MediaRemoteAdapter": {
+      "sha256": "7c3433082ff0ca2dd4cc2c03207e1d38369c66529f0fda0772a258c876820653"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/prebuilds/darwin-arm64/mediaremote-adapter/mediaremote-adapter.pl": {
+      "sha256": "984d622eeebbcb17656d157a49272b02fb741593ae2ec624d1926c12d955c8a1"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/prebuilds/darwin-arm64/runtime.node": {
+      "sha256": "0e52403127983a1bcc310e8e9b0ebc417187a65cf10641912a6a5cc9a248778e"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/preloads/extension_bootstrap.mjs": {
+      "sha256": "ebf4edc7cc2195fc1b7c5c26863e08137137ec075cc73ff335331534115a1be6"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/preloads/extension_sdk_resolver.mjs": {
+      "sha256": "e57d71730c8f937315a72b66187c56cc4fa78ecbd13590795136996e2851bf19"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/pvrecorder/index.js": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/pvrecorder/node_modules/@picovoice/pvrecorder-node/README.md": {
+      "sha256": "7eb46bc4bdba8002da1165107fc729ee816f58063a8e8d6d0083a3fb81898683"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/pvrecorder/node_modules/@picovoice/pvrecorder-node/dist/errors.js": {
+      "sha256": "14b373ef00a0bf0fceb5abe86a6628f914a466b2403ba376f78b025cff05e92b"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/pvrecorder/node_modules/@picovoice/pvrecorder-node/dist/index.js": {
+      "sha256": "a99551364022401340991df2d74e1c949290e920aa9247d22c262e26b768a0f0"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/pvrecorder/node_modules/@picovoice/pvrecorder-node/dist/platforms.js": {
+      "sha256": "9eb9c4c2af151391c4966bdaf15364d15362996915e8f5fa685daca1c3f81359"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/pvrecorder/node_modules/@picovoice/pvrecorder-node/dist/pv_recorder.js": {
+      "sha256": "3323ebdbad3d524dc4330d25cb226cc17a0f7f365b738f471faf883d71de658d"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/pvrecorder/node_modules/@picovoice/pvrecorder-node/dist/pv_recorder_status_t.js": {
+      "sha256": "c7c94cd144fb0fcf5f844e76ff83d754dc6b835e45893c2cc81de5f0c3ddccbb"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/pvrecorder/node_modules/@picovoice/pvrecorder-node/dist/types/errors.d.ts": {
+      "sha256": "5250616ee995097ea36daa3285d957e3adcdd9c76a6dd13ea3d10174c38a8668"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/pvrecorder/node_modules/@picovoice/pvrecorder-node/dist/types/index.d.ts": {
+      "sha256": "6b27f29a807ef113c326fcc2139ddde257e74585cb58591ad9753dcbfd00c03f"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/pvrecorder/node_modules/@picovoice/pvrecorder-node/dist/types/platforms.d.ts": {
+      "sha256": "a11acc208b8d403db8882b97e0101f549a5dd7a1ca656ff46d9378277a100064"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/pvrecorder/node_modules/@picovoice/pvrecorder-node/dist/types/pv_recorder.d.ts": {
+      "sha256": "6b06821393cd5fbab4874a11c46634e7bb1ff91848bbf34a1e5008ccea6929bf"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/pvrecorder/node_modules/@picovoice/pvrecorder-node/dist/types/pv_recorder_status_t.d.ts": {
+      "sha256": "b35985d2b520dc2570f90f23e6db7e6ce37369db6e35c27bc532de349421175e"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/pvrecorder/node_modules/@picovoice/pvrecorder-node/lib/mac/arm64/pv_recorder.node": {
+      "sha256": "f5bc73a9e4e4506bc1882a1c3eb318f51848621c2620fb6eaa177faefc2fa648"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/pvrecorder/node_modules/@picovoice/pvrecorder-node/package.json": {
+      "sha256": "e44a9dde00f1344251f22bce37520ea1bbbde5af2965cab7e612758854ee3a99"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/bash-highlights.scm": {
+      "sha256": "77860b9f127ca82681e3691bba003e62d1d8dbced05e4fe96041d26fd8944656"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/c-highlights.scm": {
+      "sha256": "a99c4c0bf9d9b9f7de0124c529a4229fddada96d65bf5fb0c9d487266e15d483"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/cpp-highlights.scm": {
+      "sha256": "69d1dbed8d49c498e93a75db6afedfb8769fa2fed455a64d588dc347281d642f"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/csharp-highlights.scm": {
+      "sha256": "4b79059a52926e8cd08a1d80af70ba02acefb86bc8ed82315897fb104ed1a338"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/css-highlights.scm": {
+      "sha256": "6641fed120530bfbce5682ab88b2a8d14d99bfcd971ac9f78cd91738b4b0578a"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/go-highlights.scm": {
+      "sha256": "c58a7336d4834ebfbb038002c6ab033f792cd1b8d3e7e1682bdaa982bee7f6b1"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/html-highlights.scm": {
+      "sha256": "1ebb3811a8cdc054385b847a3aac6fbf7079faefd5b3dfab5bbad256cd5afdcf"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/java-highlights.scm": {
+      "sha256": "c68c0e7e9ae36d94c9e5ab06556b34c5e8568d1ce1867043d92bbe4b3b4dcf2f"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/javascript-highlights.scm": {
+      "sha256": "d3630ae6dc9b2b27b230b5f8bb92b05cd491fb12bff353dae62a0a6d780461ee"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/json-highlights.scm": {
+      "sha256": "6ab09656820f0e8dac860c96dced341221284544c05308ee337727f5db937101"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/php-highlights.scm": {
+      "sha256": "a2a7367659cff3b4be09961c8117d69a9b8703bfc266f8092e089b1760f197e9"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/python-highlights.scm": {
+      "sha256": "a6708f209381618e2b398972c8f1ccd892f0c064eab35a2a3f911c3e22e79a7e"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/ruby-highlights.scm": {
+      "sha256": "1cc8fc205e4cce4fe9e0d63bb1be903e49ea0f2eda77ae9368898a31ff98bc18"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/rust-highlights.scm": {
+      "sha256": "c649a4785322ab72af84874b9dc03c7a4f5d9a05de45a85919a60770d7d5457d"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/scala-highlights.scm": {
+      "sha256": "e9e89654a7df214f4c79c28af7bc50bdb5c6cc5abb9690e3e1ce19c35b797991"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/queries/typescript-highlights.scm": {
+      "sha256": "e0c35adb819127bfd4f853fac5419e7d8ba44760246201d04a4a5ce0228a10c5"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/ripgrep/bin/darwin-arm64/rg": {
+      "sha256": "384f8be6e387eb695a7286ee36016f5bd2c946e5c6aaf5b751c57d09aec3754c"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/schemas/api.schema.json": {
+      "sha256": "bbeb332125eb7400aa04bbf061b316ef9406712b3f67f34287c6fbbc269f00a4"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/schemas/session-events.schema.json": {
+      "sha256": "5e7b2c0c6e1a5d31d9be80d962d61e866a9a2d12f87283e3576a3a5689412305"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/sea-loader.js": {
+      "sha256": "b3366eb2c7f250106e226f4a7ba06a097a411fe9909e8dac9c37548834e59999"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tgrep/bin/darwin-arm64/tgrep": {
+      "sha256": "c66dc0921fee9a33565345bf563a59842fb9526e99387e0487ef8a2d5ec05bb3"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-bash.wasm": {
+      "sha256": "8292919c88a0f7d3fb31d0cd0253ca5a9531bc1ede82b0537f2c63dd8abe6a7a"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-c.wasm": {
+      "sha256": "c852c2a85ebf2beb636aa3b0ef7f7e70458684d74f6741b20dcb296885bed9f9"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-c_sharp.wasm": {
+      "sha256": "6f69e1cae44e1c32c1eccc170dc5a9778fb94ff716f71113fe1f8c4299aa2f40"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-cpp.wasm": {
+      "sha256": "174eb0deb75b2ec7881bcacda9f995648d8e683956e5c2267e69ab6dc503fcbf"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-css.wasm": {
+      "sha256": "8a23977fe271357cce6f254ef88c9bebf3854602d8046605aef6a45c02135c59"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-go.wasm": {
+      "sha256": "9504573f352b20be7f2f1911754d710622aedc15afff16d5ed8fb5645681aee7"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-html.wasm": {
+      "sha256": "c48fcd82c7ea8bf943180088ba7f28c48b2bb5287874179168bf9d31e394cf85"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-java.wasm": {
+      "sha256": "4fdeac4ca6ca089f06c6f7e562abcac1733cd465728cc7031ebb73c2019122c4"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-javascript.wasm": {
+      "sha256": "5fb488d0cabb4775a594bab85682de5ad6ce83c0d6ac997a9f82dd084d571240"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-json.wasm": {
+      "sha256": "d2119fb98d5912719b13f9458574f8608d2d29dfbe45f6be1f860ea1fe2a2405"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-php.wasm": {
+      "sha256": "d4df6a6ff08c87c3ec4f9cbb785fe09998a0cb570e03f57d7b19b3acfb146aa7"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-python.wasm": {
+      "sha256": "16108b50df4ee9a30168794252ab55e7c93bfc5765d7fa0aa3e335752c515f47"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-ruby.wasm": {
+      "sha256": "09a96427d7c72f0613ed470cd9812223fc4a91d6a9c025c0235cc6bd59ff96f4"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-rust.wasm": {
+      "sha256": "f65f354215611fd94ad34134b3427eb3d58cbb745df7b6509ba722184db73d57"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-scala.wasm": {
+      "sha256": "b7ec2bb29c19827abcefd18ed5cb5a43596009f96a5d53c5b9d1f9676d7521c3"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-tsx.wasm": {
+      "sha256": "79e5da75ea62855a0cd67177685f0164eac87d5f630b3cbe1e0a099751ad30f8"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter-typescript.wasm": {
+      "sha256": "778025db5a8be0e70f8ccc3671e486dfeddd048c25d9e8a70c26de2e1bf6f97d"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/tree-sitter.wasm": {
+      "sha256": "f38dcc4b43b818f9a0785bc1c6d5611a75ac4cdd428ff3f02757c34ca4e46d7f"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/voice-engine.worker.js": {
+      "sha256": "a460ac810de7c160151a1557d9ad35fe7abf680017ac0076d38dd757b18d4904"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/voice-installer.worker.js": {
+      "sha256": "4a843b379310d44f422271e75d3246ada24f567587850c3ef501f565c905b493"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/voice-server.js": {
+      "sha256": "433084ab7b8a816c74bb2b39243961a33c71000fc201134fe6361a16d1364276"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/index.js": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview-darwin-arm64/README.md": {
+      "sha256": "f7fac36538af09475752019eedaf6299ff21f36cf9e7cb4a6c676c7974afff0b"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview-darwin-arm64/package.json": {
+      "sha256": "e9241663ed145cdb282dbc65933b7c14cb30a3da2cb47a0b5f657e23d5889084"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview-darwin-arm64/webview.darwin-arm64.node": {
+      "sha256": "85089cd40b59cd4cb087ad43d448c308b3461106fae78795d5852d5eedea585f"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/LICENSE": {
+      "sha256": "9cac72e0573f14d3f9bcb8f70922d589ba07dd1051a5c12229f111e154923f0a"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/README.md": {
+      "sha256": "69c2e106db45187b981358c938e41b8bfb67fb3a451930f102a63b471c0da675"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/cli/build.mjs": {
+      "sha256": "bcb69c0cc8356b78d07c53719ccaa372f1d6b6c381973b76508681573a7b1db4"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/cli/index.mjs": {
+      "sha256": "3d6d86fc751897b67e1b94f0b1d0a667d79e6256b278a7e801467bfd67ad2689"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/cli/utils.mjs": {
+      "sha256": "fb7a2fc54e53c777de835f50c7d4483bee60d1aece0c1deddbe2f232f571d8f1"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/CNAME": {
+      "sha256": "405d5f5a242885480dc01db6227484ed4b6d723fd7c3b2547f9f36e46decac15"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/README.md": {
+      "sha256": "65578b7f73cc6c145a9d962ca6f2ee56b06153a8277eea8c3c3cadc7d602f155"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/api/application.md": {
+      "sha256": "44227367accc4a9f5b8468e19680ffd1229891d59c0652e8f45370c0872160bd"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/api/browser-window.md": {
+      "sha256": "597920a56d3ff8c87b6990473e5150a454f109bd7e639125c8a82d039ade7487"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/api/menu.md": {
+      "sha256": "838a998eba786e959bec89e148fae7d547df1b13e490b55c890d58100fd77b98"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/api/notification.md": {
+      "sha256": "8e90225a0f40ebcd2a69bc9e0b8d51c645810faa4fcaae3651101bcaa686d101"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/api/tray.md": {
+      "sha256": "f071ca7d3a5cc7cb271ceb9e2712db9c6c80d5c8ab33b4a8fc3b168e5d9dd3aa"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/api/types.md": {
+      "sha256": "e006fb8428d0e58943468f62c77ec78bcba1bb7b0bc41ce3e2258417fe51320c"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/api/web-context.md": {
+      "sha256": "92b9ed94a8868a1ff8b0f3e4ef92be2a0b2564f7beb1fc8b6107b7f1bca96429"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/api/webview.md": {
+      "sha256": "78ade1e288c7a6169678d4bb64f9e450ed4e855324c310354686c11f127bd494"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/getting-started/event-loop.md": {
+      "sha256": "28b1f847d6ff3c71c5b3fbf9f46d531b6fbd9ba585365cfbe9a2292e698171bb"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/getting-started/installation.md": {
+      "sha256": "06acf9a3d61c0d84f0dcc65153f43d288e1bb139a0e16df69253fae68c2c6c76"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/getting-started/quick-start.md": {
+      "sha256": "55cdf7992b7ad793b204ac80268c66600975ee20c474c2ca029cdd6db58073b6"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/guides/building-executables.md": {
+      "sha256": "18a1d5d2596e0e0b05758643981d7ffe5b9d9f32bf0884c84978c647bf2419e9"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/guides/cookies-and-storage.md": {
+      "sha256": "0eb9abdd246e5a2a0d4a8578c6b565781fdb9d7b99463b50c05a6851c3eed365"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/guides/custom-protocols.md": {
+      "sha256": "1c72110266d09b04f544c0d20aa7fe1f4b6ad84ffa9e171b7f6e55832d39c4c1"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/guides/ipc-messaging.md": {
+      "sha256": "d03b307d46cafe92ad0297cad0a0ee1b3af410143281be4be5ab2dbc31e2e74e"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/guides/menus.md": {
+      "sha256": "88b791fa71cbb51351cd3a220184ea54a53426cca00eab0c185acd139053fe6d"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/guides/multiple-windows.md": {
+      "sha256": "6d05fa117efc95207d4707bbf2728ae31f482bc6e9f29a8a436389fdaae003cd"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/platform/android.md": {
+      "sha256": "646dc6f1ac30a4f2bd25faec682a2d6f0262ea59193ac44490d5914cf1294cd0"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/platform/ios.md": {
+      "sha256": "b8b1c2bc59611d633971556fb94720bdb411e2de89771fb372217d1a17b53cb7"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/platform/linux.md": {
+      "sha256": "cbd1df68b7c899f826aff9e0fd2d13e9f9e19892ad16fd47a6fea5c625dc0e8b"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/platform/macos.md": {
+      "sha256": "9b5b1d9c4065d7904c02e3dc79517b6df4f8a44dd95902e30502d130cdef5d71"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/docs/platform/windows.md": {
+      "sha256": "5a84a310a20d42e0b24492472efd5512aae11c68668620f071a3d85c3583512a"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/index.d.ts": {
+      "sha256": "49610270556eaff855f8efc8026a595c354309ea325d846d33a617ad54039a39"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/index.js": {
+      "sha256": "9bce1f609372abd7da4973967276ba591c43f9b933bcd52030edb1ad6ee3b8db"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/js-bindings.d.ts": {
+      "sha256": "f2f384ab7913a7e38369155a5abda97c0af3b72db6021df341e8da2288ceceaf"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/js-bindings.js": {
+      "sha256": "e6a970a01839ed97c9a9636a01bf1c77c298a8270b3f1708c4927191856a3bcc"
+    },
+    "Library/Caches/copilot/pkg/darwin-arm64/1.0.91/webview/node_modules/@webviewjs/webview/package.json": {
+      "sha256": "0a71bc7c23521db3890aadb13763297422e1988e9a68f95ec8b8832c07d33b89"
+    }
+  },
+  "safe_environment": {
+    "COPILOT_HOME": "/private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-7h71c7yo/copilot",
+    "HOME": "/private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-7h71c7yo/home",
+    "PATH": "[personal text removed at equal byte length]xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "SB_SURVIVAL_V1_RUN_CANARY": "SB_SURVIVAL_V1_RUN_copilot-2026-10-04-02",
+    "TMPDIR": "/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/"
+  },
+  "secret_environment_variables": [
+    "COPILOT_GITHUB_TOKEN"
+  ],
+  "started_ns": 1791144959454624000
+}

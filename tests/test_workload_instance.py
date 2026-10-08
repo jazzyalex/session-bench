@@ -45,3 +45,19 @@ def test_instantiated_prompts_bind_each_helper_to_dynamic_run_canary() -> None:
         for token in action.get("argv", []):
             assert token != "--run-canary"
     assert all("--run-canary" not in " ".join(action.get("argv", [])) for action in value["actions"])
+
+
+def test_inspect_output_yields_the_checkout_source_that_matches_its_own_digest():
+    import hashlib
+    import json
+
+    from session_bench.workload_instance import inspect_checkout_source
+
+    source = "def checkout(items):\n    return 0\n"
+    payload = json.dumps({"checkout_sha256": hashlib.sha256(source.encode()).hexdigest(), "checkout_source": source, "phase": "inspect"})
+
+    assert inspect_checkout_source(f"SB_SURVIVAL_V1_HELPER_INSPECT_nonce {payload}\nexit=0\n") == source
+    assert inspect_checkout_source(f"prefix {payload}") is None  # no helper marker
+    tampered = payload.replace("return 0", "return 1")
+    assert inspect_checkout_source(f"SB_SURVIVAL_V1_HELPER_INSPECT_nonce {tampered}") is None
+    assert inspect_checkout_source(None) is None

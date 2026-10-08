@@ -61,7 +61,7 @@ def build(package: Path, output: Path) -> Path:
         raise ValueError("package is not a bound OpenCode decoder-runtime correction")
     run_root = package.parent
     private_project = str(run_root / "project")
-    replacements = {private_project: "$SYNTHETIC_PROJECT", "/Users/alexm": "$BENCH_HOME"}
+    replacements = {private_project: "$SYNTHETIC_PROJECT", str(Path.home()): "$BENCH_HOME"}
     output.mkdir(parents=True, exist_ok=False)
     receipts: dict[str, dict] = {}
     for name in PUBLIC_FILES:

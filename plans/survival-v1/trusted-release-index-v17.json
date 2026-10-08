@@ -1,0 +1,305 @@
+{
+ "configurations": [
+  {
+   "configuration_id": "claude-cli",
+   "packets": [
+    {
+     "manifest_sha256": "af1656ff798da3ad5950b475a56bea0dc607a49956b4fa973554c7a890ff819b",
+     "path": "artifacts/v1-expanded-preparation/claude-cli-public-candidates-v9/claude-cli-eval-1",
+     "run_id": "claude-cli-eval-1-r1"
+    },
+    {
+     "manifest_sha256": "64f2b185b7c3b9fca2591ddfed4e37116f64563422142d5c9b46b0f1d0f955f4",
+     "path": "artifacts/v1-expanded-preparation/claude-cli-public-candidates-v9/claude-cli-eval-2",
+     "run_id": "claude-cli-eval-2-r2"
+    },
+    {
+     "manifest_sha256": "866f850fe191c6972d038548089b76060498d73efb570eacdbc1f68cb2fe6aa2",
+     "path": "artifacts/v1-expanded-preparation/claude-cli-public-candidates-v9/claude-cli-eval-3",
+     "run_id": "claude-cli-eval-3-r3"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/claude-cli-public-candidates-v9/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/claude-cli-independent-public-review-v6/review.json",
+   "reviewer_id": "sonnet-independent-reviewer-claude-cli",
+   "trusted_review_sha256": "6e33d074fc498306db3123b21136420741d9ec218f234a1fd1c516813acc4c8c"
+  },
+  {
+   "configuration_id": "opencode-cli",
+   "packets": [
+    {
+     "manifest_sha256": "e4218d6416aa7a4c849357cd569c04b4e963a5c4b7123e6824b1cc409a19c39b",
+     "path": "artifacts/v1-expanded-preparation/opencode-1.18.31-public-candidates-v8/opencode-1-18-31-eval-1",
+     "run_id": "opencode-1-18-31-eval-1"
+    },
+    {
+     "manifest_sha256": "82c51605d9240e2e2e977c4a4c546b7ecfa4af523765cbe3ca8d8c4d5641cc97",
+     "path": "artifacts/v1-expanded-preparation/opencode-1.18.31-public-candidates-v8/opencode-1-18-31-eval-2",
+     "run_id": "opencode-1-18-31-eval-2"
+    },
+    {
+     "manifest_sha256": "9ab8cca88bddd003eef33470006e97c663a095a842fc12cb56eb4055b2c6fd86",
+     "path": "artifacts/v1-expanded-preparation/opencode-1.18.31-public-candidates-v8/opencode-1-18-31-eval-3",
+     "run_id": "opencode-1-18-31-eval-3"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/opencode-1.18.31-public-candidates-v8/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/opencode-independent-public-review-v8/review.json",
+   "reviewer_id": "sonnet-delta-reviewer-opencode-cli",
+   "trusted_review_sha256": "5949ca0a5ecd32500e661306bbe7fe09a6c6f6256c94cfd7cdaaa4e3e191f0a5"
+  },
+  {
+   "configuration_id": "deepseek-harness-cli",
+   "packets": [
+    {
+     "manifest_sha256": "6c35e29108243d19f5e58de07d71ce112c7866556861a0f9ccd88618802360b2",
+     "path": "artifacts/v1-expanded-preparation/dsh-public-score-preparation-v13/public-candidates/dsh-cal-20260929-2",
+     "run_id": "dsh-cal-20260929-2"
+    },
+    {
+     "manifest_sha256": "431923ba5d2baca49d5ff1a049b0649ea45bcca193118a7b3e7e452cdd793a94",
+     "path": "artifacts/v1-expanded-preparation/dsh-public-score-preparation-v13/public-candidates/dsh-eval-20260929-1",
+     "run_id": "dsh-eval-20260929-1"
+    },
+    {
+     "manifest_sha256": "a6738cac4b6177bdee48c9dd55d031448b4b54bc009c9f2e18184f96035d038d",
+     "path": "artifacts/v1-expanded-preparation/dsh-public-score-preparation-v13/public-candidates/dsh-eval-20260929-2",
+     "run_id": "dsh-eval-20260929-2"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/dsh-public-score-preparation-v13/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/dsh-independent-public-review-v13/review.json",
+   "reviewer_id": "sonnet-independent-reviewer-deepseek-harness-cli",
+   "trusted_review_sha256": "89b7a8a62aca8576a11d7b3e225d911b628959d7626da9bf82c02e06115ce57c"
+  },
+  {
+   "configuration_id": "pi",
+   "packets": [
+    {
+     "manifest_sha256": "30e0c128fd5fec2f3993576966135d6cbf2d8788cac4ddf2a4201b2eb1a6e0f0",
+     "path": "artifacts/v1-expanded-preparation/pi-public-score-preparation-v7/public-candidates/pi-openai-codex-2026-10-02-10",
+     "run_id": "pi-openai-codex-2026-10-02-10"
+    },
+    {
+     "manifest_sha256": "3607b3a9cf06b105cffda3b648a99f8a627609abc3516843a109c47ebfb09e4a",
+     "path": "artifacts/v1-expanded-preparation/pi-public-score-preparation-v7/public-candidates/pi-openai-codex-2026-10-02-11",
+     "run_id": "pi-openai-codex-2026-10-02-11"
+    },
+    {
+     "manifest_sha256": "43051ddd974230349690434e431281c3be96a04d8272404fc4fa353618133ac7",
+     "path": "artifacts/v1-expanded-preparation/pi-public-score-preparation-v7/public-candidates/pi-openai-codex-2026-10-02-12",
+     "run_id": "pi-openai-codex-2026-10-02-12"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/pi-public-score-preparation-v7/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/pi-independent-public-review-v7/review.json",
+   "reviewer_id": "opus-independent-reviewer-pi",
+   "trusted_review_sha256": "10c36fe169c728cd9fd2f0d7ed97e488874e3737d4c373bf9f9b7f9705f37d1a"
+  },
+  {
+   "configuration_id": "codex-cli",
+   "packets": [
+    {
+     "manifest_sha256": "567d8e79e2a3336b2e19579b4256e57aed97d95dabaa040bbc6b872f8a32db9e",
+     "path": "artifacts/v1-expanded-preparation/codex-cli-public-candidates-v8/codex-cli-eval-1",
+     "run_id": "codex-cli-eval-1"
+    },
+    {
+     "manifest_sha256": "890a1356f24b65f289c782f6251d7efb22c17bbdebf019fb59e88fcd6150ab79",
+     "path": "artifacts/v1-expanded-preparation/codex-cli-public-candidates-v8/codex-cli-eval-2",
+     "run_id": "codex-cli-eval-2"
+    },
+    {
+     "manifest_sha256": "e3f124a894e0be57fc565192ab4acd3c5a8a15a28e9d44597781b6bfcf3406f6",
+     "path": "artifacts/v1-expanded-preparation/codex-cli-public-candidates-v8/codex-cli-eval-3",
+     "run_id": "codex-cli-eval-3"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/codex-cli-public-candidates-v8/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/codex-cli-independent-public-review-v8/review.json",
+   "reviewer_id": "sonnet-independent-reviewer-codex-cli",
+   "trusted_review_sha256": "63a4a4df2f6918c18ba9ebe2898e517685584c781cb7e96023037aadce9f922b"
+  },
+  {
+   "configuration_id": "claude-desktop",
+   "packets": [
+    {
+     "manifest_sha256": "d28d3ac257412e3f56ff36e241ca4cf63fe58663735f213c6d9a508fa79da2da",
+     "path": "artifacts/v1-expanded-preparation/claude-desktop-public-candidates-v3/claude-desktop-eval-1-correction-1",
+     "run_id": "claude-desktop-eval-1-correction-1"
+    },
+    {
+     "manifest_sha256": "f4f4b3ea2465675e900dd218e57e5d13e6d427215ec013c1094825c1773a3124",
+     "path": "artifacts/v1-expanded-preparation/claude-desktop-public-candidates-v3/claude-desktop-eval-2-correction-1",
+     "run_id": "claude-desktop-eval-2-correction-1"
+    },
+    {
+     "manifest_sha256": "ce3d329cba9a9052e0a2611c1a32299f975dc9df7ceb888d2b7a5141d560b95f",
+     "path": "artifacts/v1-expanded-preparation/claude-desktop-public-candidates-v3/claude-desktop-eval-3",
+     "run_id": "claude-desktop-eval-3"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/claude-desktop-public-candidates-v3/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/claude-desktop-independent-public-review-v3/review.json",
+   "reviewer_id": "opus-independent-reviewer-claude-desktop",
+   "trusted_review_sha256": "f95923125ac4c402c22dff5919f5f029c36810508031ba51296d6e1afe0be395"
+  },
+  {
+   "configuration_id": "copilot",
+   "packets": [
+    {
+     "manifest_sha256": "63e2f2f749eb84b6896c348766d2296926f593696433e5b3b87c131146aa5ae6",
+     "path": "artifacts/v1-expanded-preparation/copilot-public-candidates-v10/copilot-2026-10-04-01",
+     "run_id": "copilot-2026-10-04-01"
+    },
+    {
+     "manifest_sha256": "d1a79c69a933681405e2ee16975dd1da641c70eac79567a808d20ee41b582ac2",
+     "path": "artifacts/v1-expanded-preparation/copilot-public-candidates-v10/copilot-2026-10-04-02",
+     "run_id": "copilot-2026-10-04-02"
+    },
+    {
+     "manifest_sha256": "91877b404bae52fe8ac5c7c8e2efc3be02f2b8a8e823c1c00e8196d1cf84662a",
+     "path": "artifacts/v1-expanded-preparation/copilot-public-candidates-v10/copilot-2026-10-04-03",
+     "run_id": "copilot-2026-10-04-03"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/copilot-public-candidates-v10/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/copilot-independent-public-review-v10/review.json",
+   "reviewer_id": "sonnet-independent-reviewer-copilot",
+   "trusted_review_sha256": "3fb55c34bf573bc832d3005acd98d46b9ab3f8379b463996e051dce9be1c4e64"
+  },
+  {
+   "configuration_id": "antigravity",
+   "packets": [
+    {
+     "manifest_sha256": "bdf2c5626c33a2c2ab68112fea6d240081daa6f392fbf344fedfac824e213382",
+     "path": "artifacts/v1-expanded-preparation/antigravity-public-candidates-v4/antigravity-2026-10-05-02",
+     "run_id": "antigravity-2026-10-05-02"
+    },
+    {
+     "manifest_sha256": "d11a7325b87cf04f19e804a4487cdd0aadc73de2fce4c242574cb199e7e72ac5",
+     "path": "artifacts/v1-expanded-preparation/antigravity-public-candidates-v4/antigravity-2026-10-05-03",
+     "run_id": "antigravity-2026-10-05-03"
+    },
+    {
+     "manifest_sha256": "9eab21a081f1b4b569b65b931739b8187b2e73f20ebba553e3ed19db0b1ab4b3",
+     "path": "artifacts/v1-expanded-preparation/antigravity-public-candidates-v4/antigravity-2026-10-05-04",
+     "run_id": "antigravity-2026-10-05-04"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/antigravity-public-candidates-v4/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/antigravity-independent-public-review-v4/review.json",
+   "reviewer_id": "opus-independent-reviewer-antigravity",
+   "trusted_review_sha256": "39d91a6f72d6059a66488c36b70f69d850378b9b667a226affa26934d26cca74"
+  },
+  {
+   "configuration_id": "cursor-cli",
+   "packets": [
+    {
+     "manifest_sha256": "8287132b019daffcf54fd1cf8c0d9be44b9102583220231cd528704121290200",
+     "path": "artifacts/v1-expanded-preparation/cursor-cli-public-candidates-v3/cursor-cli-2026-10-06-r1",
+     "run_id": "cursor-cli-2026-10-06-r1"
+    },
+    {
+     "manifest_sha256": "f860d9f342f96c424e42ded1b2a0db4d0fe400577b3cd76cdb065d95bb63bd7c",
+     "path": "artifacts/v1-expanded-preparation/cursor-cli-public-candidates-v3/cursor-cli-2026-10-06-r2",
+     "run_id": "cursor-cli-2026-10-06-r2"
+    },
+    {
+     "manifest_sha256": "7f440863095af14a7b7bfd13142105da93fc510aaff56c6472ce8cc81dd98688",
+     "path": "artifacts/v1-expanded-preparation/cursor-cli-public-candidates-v3/cursor-cli-2026-10-06-r3",
+     "run_id": "cursor-cli-2026-10-06-r3"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/cursor-cli-public-candidates-v3/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/cursor-cli-independent-public-review-v3/review.json",
+   "reviewer_id": "opus-independent-reviewer-cursor-cli",
+   "trusted_review_sha256": "67ef10da67d4a94b7a1c8e08b434f4efdc53d2624029694923554263a1b844b9"
+  },
+  {
+   "configuration_id": "hermes",
+   "packets": [
+    {
+     "manifest_sha256": "aae15f65d7ee842da83d68df42ffc4056fb270b45d6514ad39246cba6e7912b4",
+     "path": "artifacts/v1-expanded-preparation/hermes-public-candidates-v3/hermes-codex-2026-10-07-08",
+     "run_id": "hermes-codex-2026-10-07-08"
+    },
+    {
+     "manifest_sha256": "623f3bdf32972a8069a10a096134460fa81390e9c0f1c858a716c901b7d5367f",
+     "path": "artifacts/v1-expanded-preparation/hermes-public-candidates-v3/hermes-codex-2026-10-07-09",
+     "run_id": "hermes-codex-2026-10-07-09"
+    },
+    {
+     "manifest_sha256": "2c3c0b1c9c8fddd9c58a039dfec3de721318ddc08bd915d9a6a1dfc708d96a07",
+     "path": "artifacts/v1-expanded-preparation/hermes-public-candidates-v3/hermes-codex-2026-10-07-10",
+     "run_id": "hermes-codex-2026-10-07-10"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/hermes-public-candidates-v3/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/hermes-independent-public-review-v3/review.json",
+   "reviewer_id": "opus-independent-reviewer-hermes",
+   "trusted_review_sha256": "c9c6ebba9a08b5ed191c71eb898dc150e918e96fdf6644e09a32d8c0dc0c53bb"
+  },
+  {
+   "configuration_id": "openclaw",
+   "packets": [
+    {
+     "manifest_sha256": "b641977cdcffe88343d2e6b37ae3ef4ab5a8e94c3b3c809a1ac7519abfc36600",
+     "path": "artifacts/v1-expanded-preparation/openclaw-public-candidates-v6/openclaw-2026-10-07-04",
+     "run_id": "openclaw-2026-10-07-04"
+    },
+    {
+     "manifest_sha256": "5e1507ca0b6cd08d814ec92c50cf1a9a5d7c59be563bdb1ec1df417eb6f9aa6b",
+     "path": "artifacts/v1-expanded-preparation/openclaw-public-candidates-v6/openclaw-2026-10-07-07",
+     "run_id": "openclaw-2026-10-07-07"
+    },
+    {
+     "manifest_sha256": "43d88a9f20240c819e85a4ad3e52a92f8d246735983f6da00a871da8f649248c",
+     "path": "artifacts/v1-expanded-preparation/openclaw-public-candidates-v6/openclaw-2026-10-07-06",
+     "run_id": "openclaw-2026-10-07-06"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/openclaw-public-candidates-v6/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/openclaw-independent-public-review-v6/review.json",
+   "reviewer_id": "sonnet-delta-reviewer-openclaw",
+   "trusted_review_sha256": "40644d5e167dcc33c4e056b6daa48487f6bed56cb13087448cb58b46b78c9776"
+  },
+  {
+   "configuration_id": "kimi",
+   "packets": [
+    {
+     "manifest_sha256": "c8cdc7f9d5e059f2f7132b64443ddb66e9fd65239c698f235c751ef241199004",
+     "path": "artifacts/v1-expanded-preparation/kimi-public-candidates-v4/kimi-2026-10-08-01",
+     "run_id": "kimi-2026-10-08-01"
+    },
+    {
+     "manifest_sha256": "37861dd235ab3afaeb26454d89cba3a65d79175b894db75c1d49b0dcb32c0235",
+     "path": "artifacts/v1-expanded-preparation/kimi-public-candidates-v4/kimi-2026-10-08-02",
+     "run_id": "kimi-2026-10-08-02"
+    },
+    {
+     "manifest_sha256": "25bf907a0e5ace3026d3c967efc73c924d53c03c671e1777c95dc56a7ee8ab52",
+     "path": "artifacts/v1-expanded-preparation/kimi-public-candidates-v4/kimi-2026-10-08-06",
+     "run_id": "kimi-2026-10-08-06"
+    }
+   ],
+   "producer_id": "claude-takeover-root",
+   "public_inputs": "artifacts/v1-expanded-preparation/kimi-public-candidates-v4/public-inputs-candidate.json",
+   "review": "artifacts/v1-expanded-preparation/kimi-independent-public-review-v4/review.json",
+   "reviewer_id": "sonnet-delta-reviewer-kimi",
+   "trusted_review_sha256": "2a5c47b472da7b84f7c610c9a5abaf67c08371008b91b2c930531a9781bea036"
+  }
+ ],
+ "schema_version": "session-bench-trusted-release-index-v1"
+}

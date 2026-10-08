@@ -31,7 +31,7 @@
   "v0_4_preservation": {
     "generated_output": "data/leaderboard.yml",
     "sha256": {
-      "README.md": "e2609fdd8657cfa96c66d4531ce2e79faf71090b4f3a60076bb6174bfb9d720e",
+      "README.md": "f4986b3ef9bcf1a42f486bcae9f6f50f711bdd2e43f8c07cfb1eda7d5bc87608",
       "methodology.md": "507c5e20622a473042134953c01d46fdd47300773671e21e30e03188ac398e61",
       "scripts/evaluate.py": "d39856b70298e751c57b49f82c7e080fc88364962df8bee96fe3bc7df70381c5",
       "scripts/measure.py": "724b7684c050e110eb4a7d28b0ddbd366198fe1b1b97421198fe619a12372f67",
@@ -42,6 +42,7 @@
       "evidence/receipt_codex_c6c7.py": "9078bc8bd196bf646f1c365728b213d946f37a6bd5992989b04fc0e53eb1fb8e",
       "evidence/receipts-2026-08-12-codex-c6c7.md": "b8db00f1bfd43eee754d5d37094acc72431e647aa4e26ff355d9a3a205a19853",
       "evidence/receipts-2026-08-22-s4.md": "e07c2f89aca44759dbd394503424f8a32199c3930ba2c11f0dde6db550b4ffc6"
-    }
+    },
+    "readme_note": "README.md was changed on 2026-10-08 for the v1 release: a v1 section was added above the v0.4 leaderboard, which is unchanged. Every other pinned v0.4 file is unchanged."
   }
 }

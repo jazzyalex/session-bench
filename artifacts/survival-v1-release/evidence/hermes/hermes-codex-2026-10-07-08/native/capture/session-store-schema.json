@@ -1,0 +1,1212 @@
+{
+ "stores": [
+  {
+   "application_id": 1148637816,
+   "objects": [
+    {
+     "name": "idx_async_delegations_delivery",
+     "sql": "CREATE INDEX idx_async_delegations_delivery\n    ON async_delegations(delivery_state, completed_at)",
+     "tbl_name": "async_delegations",
+     "type": "index"
+    },
+    {
+     "name": "idx_compression_locks_expires",
+     "sql": "CREATE INDEX idx_compression_locks_expires ON compression_locks(expires_at)",
+     "tbl_name": "compression_locks",
+     "type": "index"
+    },
+    {
+     "name": "idx_messages_active_null",
+     "sql": "CREATE INDEX idx_messages_active_null\n    ON messages(active) WHERE active IS NULL",
+     "tbl_name": "messages",
+     "type": "index"
+    },
+    {
+     "name": "idx_messages_assistant_calls_by_session",
+     "sql": "CREATE INDEX idx_messages_assistant_calls_by_session\n    ON messages(session_id)\n    WHERE role = 'assistant' AND tool_calls IS NOT NULL",
+     "tbl_name": "messages",
+     "type": "index"
+    },
+    {
+     "name": "idx_messages_display_backfill",
+     "sql": "CREATE INDEX idx_messages_display_backfill\n    ON messages(session_id) WHERE (display_order IS NULL OR display_identity IS NULL)\n    AND (active = 1 OR compacted = 1)",
+     "tbl_name": "messages",
+     "type": "index"
+    },
+    {
+     "name": "idx_messages_display_identity",
+     "sql": "CREATE INDEX idx_messages_display_identity\n    ON messages(session_id, display_identity, display_order)\n    WHERE display_identity IS NOT NULL AND (active = 1 OR compacted = 1)",
+     "tbl_name": "messages",
+     "type": "index"
+    },
+    {
+     "name": "idx_messages_display_page",
+     "sql": "CREATE INDEX idx_messages_display_page\n    ON messages(session_id, display_order, active DESC, id DESC)\n    WHERE active = 1 OR compacted = 1",
+     "tbl_name": "messages",
+     "type": "index"
+    },
+    {
+     "name": "idx_messages_platform_msg_id",
+     "sql": "CREATE INDEX idx_messages_platform_msg_id ON messages(session_id, platform_message_id) WHERE platform_message_id IS NOT NULL",
+     "tbl_name": "messages",
+     "type": "index"
+    },
+    {
+     "name": "idx_messages_session",
+     "sql": "CREATE INDEX idx_messages_session ON messages(session_id, timestamp)",
+     "tbl_name": "messages",
+     "type": "index"
+    },
+    {
+     "name": "idx_messages_session_active",
+     "sql": "CREATE INDEX idx_messages_session_active\n    ON messages(session_id, active, timestamp)",
+     "tbl_name": "messages",
+     "type": "index"
+    },
+    {
+     "name": "idx_messages_session_id",
+     "sql": "CREATE INDEX idx_messages_session_id ON messages(session_id, id)",
+     "tbl_name": "messages",
+     "type": "index"
+    },
+    {
+     "name": "idx_session_model_usage_model",
+     "sql": "CREATE INDEX idx_session_model_usage_model ON session_model_usage(model)",
+     "tbl_name": "session_model_usage",
+     "type": "index"
+    },
+    {
+     "name": "idx_session_model_usage_session",
+     "sql": "CREATE INDEX idx_session_model_usage_session ON session_model_usage(session_id)",
+     "tbl_name": "session_model_usage",
+     "type": "index"
+    },
+    {
+     "name": "idx_session_turn_leases_expires",
+     "sql": "CREATE INDEX idx_session_turn_leases_expires ON session_turn_leases(expires_at)",
+     "tbl_name": "session_turn_leases",
+     "type": "index"
+    },
+    {
+     "name": "idx_sessions_effective_activity",
+     "sql": "CREATE INDEX idx_sessions_effective_activity\n    ON sessions(COALESCE(last_activity_at, started_at) DESC, started_at DESC)",
+     "tbl_name": "sessions",
+     "type": "index"
+    },
+    {
+     "name": "idx_sessions_gateway_peer",
+     "sql": "CREATE INDEX idx_sessions_gateway_peer\n    ON sessions(source, user_id, chat_id, chat_type, thread_id, started_at DESC)",
+     "tbl_name": "sessions",
+     "type": "index"
+    },
+    {
+     "name": "idx_sessions_handoff_state",
+     "sql": "CREATE INDEX idx_sessions_handoff_state\n    ON sessions(handoff_state, started_at)",
+     "tbl_name": "sessions",
+     "type": "index"
+    },
+    {
+     "name": "idx_sessions_parent",
+     "sql": "CREATE INDEX idx_sessions_parent ON sessions(parent_session_id)",
+     "tbl_name": "sessions",
+     "type": "index"
+    },
+    {
+     "name": "idx_sessions_session_key",
+     "sql": "CREATE INDEX idx_sessions_session_key\n    ON sessions(session_key, started_at DESC)",
+     "tbl_name": "sessions",
+     "type": "index"
+    },
+    {
+     "name": "idx_sessions_source",
+     "sql": "CREATE INDEX idx_sessions_source ON sessions(source)",
+     "tbl_name": "sessions",
+     "type": "index"
+    },
+    {
+     "name": "idx_sessions_source_id",
+     "sql": "CREATE INDEX idx_sessions_source_id ON sessions(source, id)",
+     "tbl_name": "sessions",
+     "type": "index"
+    },
+    {
+     "name": "idx_sessions_started",
+     "sql": "CREATE INDEX idx_sessions_started ON sessions(started_at DESC)",
+     "tbl_name": "sessions",
+     "type": "index"
+    },
+    {
+     "name": "idx_sessions_system_prompt_hash",
+     "sql": "CREATE INDEX idx_sessions_system_prompt_hash\n    ON sessions(system_prompt_hash)",
+     "tbl_name": "sessions",
+     "type": "index"
+    },
+    {
+     "name": "idx_sessions_title_unique",
+     "sql": "CREATE UNIQUE INDEX idx_sessions_title_unique ON sessions(title) WHERE title IS NOT NULL",
+     "tbl_name": "sessions",
+     "type": "index"
+    },
+    {
+     "name": "idx_sessions_tool_names",
+     "sql": "CREATE INDEX idx_sessions_tool_names\n    ON sessions(tool_names)",
+     "tbl_name": "sessions",
+     "type": "index"
+    },
+    {
+     "name": "sqlite_autoindex_async_delegations_1",
+     "sql": null,
+     "tbl_name": "async_delegations",
+     "type": "index"
+    },
+    {
+     "name": "sqlite_autoindex_compression_locks_1",
+     "sql": null,
+     "tbl_name": "compression_locks",
+     "type": "index"
+    },
+    {
+     "name": "sqlite_autoindex_conversation_generations_1",
+     "sql": null,
+     "tbl_name": "conversation_generations",
+     "type": "index"
+    },
+    {
+     "name": "sqlite_autoindex_gateway_heartbeats_1",
+     "sql": null,
+     "tbl_name": "gateway_heartbeats",
+     "type": "index"
+    },
+    {
+     "name": "sqlite_autoindex_gateway_hygiene_state_1",
+     "sql": null,
+     "tbl_name": "gateway_hygiene_state",
+     "type": "index"
+    },
+    {
+     "name": "sqlite_autoindex_gateway_routing_1",
+     "sql": null,
+     "tbl_name": "gateway_routing",
+     "type": "index"
+    },
+    {
+     "name": "sqlite_autoindex_session_model_usage_1",
+     "sql": null,
+     "tbl_name": "session_model_usage",
+     "type": "index"
+    },
+    {
+     "name": "sqlite_autoindex_session_turn_leases_1",
+     "sql": null,
+     "tbl_name": "session_turn_leases",
+     "type": "index"
+    },
+    {
+     "name": "sqlite_autoindex_sessions_1",
+     "sql": null,
+     "tbl_name": "sessions",
+     "type": "index"
+    },
+    {
+     "name": "sqlite_autoindex_state_meta_1",
+     "sql": null,
+     "tbl_name": "state_meta",
+     "type": "index"
+    },
+    {
+     "name": "sqlite_autoindex_system_prompts_1",
+     "sql": null,
+     "tbl_name": "system_prompts",
+     "type": "index"
+    },
+    {
+     "name": "async_delegations",
+     "sql": "CREATE TABLE async_delegations (\n            delegation_id TEXT PRIMARY KEY,\n            origin_session TEXT NOT NULL,\n            origin_ui_session_id TEXT NOT NULL DEFAULT '',\n            parent_session_id TEXT,\n            state TEXT NOT NULL,\n            dispatched_at REAL NOT NULL,\n            completed_at REAL,\n            updated_at REAL NOT NULL,\n            event_json TEXT,\n            result_json TEXT,\n            delivery_state TEXT NOT NULL DEFAULT 'pending',\n            delivery_attempts INTEGER NOT NULL DEFAULT 0,\n            delivered_at REAL,\n            owner_pid INTEGER,\n            owner_started_at INTEGER,\n            task_json TEXT,\n            delivery_claim TEXT,\n            delivery_claimed_at REAL,\n            origin_session_id TEXT NOT NULL DEFAULT ''\n        )",
+     "tbl_name": "async_delegations",
+     "type": "table"
+    },
+    {
+     "name": "compression_locks",
+     "sql": "CREATE TABLE compression_locks (\n    session_id TEXT PRIMARY KEY,\n    holder TEXT NOT NULL,\n    acquired_at REAL NOT NULL,\n    expires_at REAL NOT NULL\n)",
+     "tbl_name": "compression_locks",
+     "type": "table"
+    },
+    {
+     "name": "conversation_generations",
+     "sql": "CREATE TABLE conversation_generations (\n    source TEXT NOT NULL,\n    session_key TEXT NOT NULL,\n    generation INTEGER NOT NULL DEFAULT 0,\n    PRIMARY KEY (source, session_key)\n)",
+     "tbl_name": "conversation_generations",
+     "type": "table"
+    },
+    {
+     "name": "gateway_heartbeats",
+     "sql": "CREATE TABLE gateway_heartbeats (\n    backend_id TEXT PRIMARY KEY,\n    pid INTEGER NOT NULL,\n    started_at REAL NOT NULL,\n    last_heartbeat REAL NOT NULL,\n    profile TEXT NOT NULL DEFAULT '',\n    host TEXT NOT NULL DEFAULT ''\n)",
+     "tbl_name": "gateway_heartbeats",
+     "type": "table"
+    },
+    {
+     "name": "gateway_hygiene_state",
+     "sql": "CREATE TABLE gateway_hygiene_state (\n    session_key TEXT PRIMARY KEY,\n    failure_streak INTEGER NOT NULL DEFAULT 0\n)",
+     "tbl_name": "gateway_hygiene_state",
+     "type": "table"
+    },
+    {
+     "name": "gateway_routing",
+     "sql": "CREATE TABLE gateway_routing (\n    scope TEXT NOT NULL DEFAULT '',\n    session_key TEXT NOT NULL,\n    entry_json TEXT NOT NULL,\n    updated_at REAL NOT NULL,\n    PRIMARY KEY (scope, session_key)\n)",
+     "tbl_name": "gateway_routing",
+     "type": "table"
+    },
+    {
+     "name": "messages",
+     "sql": "CREATE TABLE messages (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    session_id TEXT NOT NULL REFERENCES sessions(id),\n    role TEXT NOT NULL,\n    content TEXT,\n    tool_call_id TEXT,\n    tool_calls TEXT,\n    tool_name TEXT,\n    timestamp REAL NOT NULL,\n    token_count INTEGER,\n    finish_reason TEXT,\n    reasoning TEXT,\n    reasoning_content TEXT,\n    reasoning_details TEXT,\n    codex_reasoning_items TEXT\n, \"codex_message_items\" TEXT, \"platform_message_id\" TEXT, \"observed\" INTEGER DEFAULT 0, \"active\" INTEGER NOT NULL DEFAULT 1, \"compacted\" INTEGER NOT NULL DEFAULT 0, \"effect_disposition\" TEXT, \"_compressed_summary\" INTEGER NOT NULL DEFAULT 0, \"api_content\" TEXT, \"display_kind\" TEXT, \"display_metadata\" TEXT, \"display_identity\" BLOB, \"display_order\" INTEGER, \"message_uid\" TEXT, \"absorbed_message_uids\" TEXT, \"tool_call_uids\" TEXT, \"tool_call_uid\" TEXT)",
+     "tbl_name": "messages",
+     "type": "table"
+    },
+    {
+     "name": "messages_fts",
+     "sql": "CREATE VIRTUAL TABLE messages_fts USING fts5(\n    content\n)",
+     "tbl_name": "messages_fts",
+     "type": "table"
+    },
+    {
+     "name": "messages_fts_config",
+     "sql": "CREATE TABLE 'messages_fts_config'(k PRIMARY KEY, v) WITHOUT ROWID",
+     "tbl_name": "messages_fts_config",
+     "type": "table"
+    },
+    {
+     "name": "messages_fts_content",
+     "sql": "CREATE TABLE 'messages_fts_content'(id INTEGER PRIMARY KEY, c0)",
+     "tbl_name": "messages_fts_content",
+     "type": "table"
+    },
+    {
+     "name": "messages_fts_data",
+     "sql": "CREATE TABLE 'messages_fts_data'(id INTEGER PRIMARY KEY, block BLOB)",
+     "tbl_name": "messages_fts_data",
+     "type": "table"
+    },
+    {
+     "name": "messages_fts_docsize",
+     "sql": "CREATE TABLE 'messages_fts_docsize'(id INTEGER PRIMARY KEY, sz BLOB)",
+     "tbl_name": "messages_fts_docsize",
+     "type": "table"
+    },
+    {
+     "name": "messages_fts_idx",
+     "sql": "CREATE TABLE 'messages_fts_idx'(segid, term, pgno, PRIMARY KEY(segid, term)) WITHOUT ROWID",
+     "tbl_name": "messages_fts_idx",
+     "type": "table"
+    },
+    {
+     "name": "messages_fts_trigram",
+     "sql": "CREATE VIRTUAL TABLE messages_fts_trigram USING fts5(\n    content,\n    tokenize='trigram'\n)",
+     "tbl_name": "messages_fts_trigram",
+     "type": "table"
+    },
+    {
+     "name": "messages_fts_trigram_config",
+     "sql": "CREATE TABLE 'messages_fts_trigram_config'(k PRIMARY KEY, v) WITHOUT ROWID",
+     "tbl_name": "messages_fts_trigram_config",
+     "type": "table"
+    },
+    {
+     "name": "messages_fts_trigram_content",
+     "sql": "CREATE TABLE 'messages_fts_trigram_content'(id INTEGER PRIMARY KEY, c0)",
+     "tbl_name": "messages_fts_trigram_content",
+     "type": "table"
+    },
+    {
+     "name": "messages_fts_trigram_data",
+     "sql": "CREATE TABLE 'messages_fts_trigram_data'(id INTEGER PRIMARY KEY, block BLOB)",
+     "tbl_name": "messages_fts_trigram_data",
+     "type": "table"
+    },
+    {
+     "name": "messages_fts_trigram_docsize",
+     "sql": "CREATE TABLE 'messages_fts_trigram_docsize'(id INTEGER PRIMARY KEY, sz BLOB)",
+     "tbl_name": "messages_fts_trigram_docsize",
+     "type": "table"
+    },
+    {
+     "name": "messages_fts_trigram_idx",
+     "sql": "CREATE TABLE 'messages_fts_trigram_idx'(segid, term, pgno, PRIMARY KEY(segid, term)) WITHOUT ROWID",
+     "tbl_name": "messages_fts_trigram_idx",
+     "type": "table"
+    },
+    {
+     "name": "schema_version",
+     "sql": "CREATE TABLE schema_version (\n    version INTEGER NOT NULL\n)",
+     "tbl_name": "schema_version",
+     "type": "table"
+    },
+    {
+     "name": "session_model_usage",
+     "sql": "CREATE TABLE session_model_usage (\n    session_id TEXT NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,\n    model TEXT NOT NULL,\n    billing_provider TEXT NOT NULL DEFAULT '',\n    billing_base_url TEXT NOT NULL DEFAULT '',\n    billing_mode TEXT NOT NULL DEFAULT '',\n    task TEXT NOT NULL DEFAULT '',\n    api_call_count INTEGER NOT NULL DEFAULT 0,\n    input_tokens INTEGER NOT NULL DEFAULT 0,\n    output_tokens INTEGER NOT NULL DEFAULT 0,\n    cache_read_tokens INTEGER NOT NULL DEFAULT 0,\n    cache_write_tokens INTEGER NOT NULL DEFAULT 0,\n    reasoning_tokens INTEGER NOT NULL DEFAULT 0,\n    estimated_cost_usd REAL NOT NULL DEFAULT 0,\n    actual_cost_usd REAL NOT NULL DEFAULT 0,\n    cost_status TEXT,\n    cost_source TEXT,\n    first_seen REAL,\n    last_seen REAL,\n    PRIMARY KEY (session_id, model, billing_provider, billing_base_url, billing_mode, task)\n)",
+     "tbl_name": "session_model_usage",
+     "type": "table"
+    },
+    {
+     "name": "session_turn_leases",
+     "sql": "CREATE TABLE session_turn_leases (\n    conversation_id TEXT PRIMARY KEY,\n    holder TEXT NOT NULL,\n    acquired_at REAL NOT NULL,\n    expires_at REAL NOT NULL\n)",
+     "tbl_name": "session_turn_leases",
+     "type": "table"
+    },
+    {
+     "name": "sessions",
+     "sql": "CREATE TABLE sessions (\n    id TEXT PRIMARY KEY,\n    source TEXT NOT NULL,\n    user_id TEXT,\n    model TEXT,\n    model_config TEXT,\n    system_prompt TEXT,\n    parent_session_id TEXT,\n    started_at REAL NOT NULL,\n    ended_at REAL,\n    end_reason TEXT,\n    message_count INTEGER DEFAULT 0,\n    tool_call_count INTEGER DEFAULT 0,\n    input_tokens INTEGER DEFAULT 0,\n    output_tokens INTEGER DEFAULT 0,\n    cache_read_tokens INTEGER DEFAULT 0,\n    cache_write_tokens INTEGER DEFAULT 0,\n    reasoning_tokens INTEGER DEFAULT 0,\n    billing_provider TEXT,\n    billing_base_url TEXT,\n    billing_mode TEXT,\n    estimated_cost_usd REAL,\n    actual_cost_usd REAL,\n    cost_status TEXT,\n    cost_source TEXT,\n    pricing_version TEXT,\n    title TEXT,\n    api_call_count INTEGER DEFAULT 0, \"handoff_state\" TEXT, \"handoff_platform\" TEXT, \"handoff_error\" TEXT, \"cwd\" TEXT, \"rewind_count\" INTEGER NOT NULL DEFAULT 0, \"archived\" INTEGER NOT NULL DEFAULT 0, \"session_key\" TEXT, \"chat_id\" TEXT, \"chat_type\" TEXT, \"thread_id\" TEXT, \"display_name\" TEXT, \"origin_json\" TEXT, \"expiry_finalized\" INTEGER DEFAULT 0, \"system_prompt_hash\" TEXT, \"git_branch\" TEXT, \"git_repo_root\" TEXT, \"git_metadata_generation\" INTEGER NOT NULL DEFAULT 0, \"title_source\" TEXT, \"last_activity_at\" REAL, \"last_activity_description\" TEXT, \"last_activity_provenance\" TEXT, \"compression_failure_cooldown_until\" REAL, \"compression_failure_error\" TEXT, \"compression_fallback_streak\" INTEGER NOT NULL DEFAULT 0, \"compression_ineffective_count\" INTEGER NOT NULL DEFAULT 0, \"compression_recovery_deadline\" REAL, \"profile_name\" TEXT, \"pinned\" INTEGER NOT NULL DEFAULT 0, \"hidden\" INTEGER NOT NULL DEFAULT 0, \"last_read_at\" REAL, \"tool_names\" TEXT, \"created_source\" TEXT, \"compression_overload_streak\" INTEGER NOT NULL DEFAULT 0, \"transport_profile\" TEXT, \"auto_archived\" INTEGER NOT NULL DEFAULT 0,\n    FOREIGN KEY (parent_session_id) REFERENCES sessions(id)\n)",
+     "tbl_name": "sessions",
+     "type": "table"
+    },
+    {
+     "name": "sqlite_sequence",
+     "sql": "CREATE TABLE sqlite_sequence(name,seq)",
+     "tbl_name": "sqlite_sequence",
+     "type": "table"
+    },
+    {
+     "name": "state_meta",
+     "sql": "CREATE TABLE state_meta (\n    key TEXT PRIMARY KEY,\n    value TEXT\n)",
+     "tbl_name": "state_meta",
+     "type": "table"
+    },
+    {
+     "name": "system_prompts",
+     "sql": "CREATE TABLE system_prompts (\n    hash TEXT PRIMARY KEY,\n    prompt TEXT NOT NULL\n)",
+     "tbl_name": "system_prompts",
+     "type": "table"
+    },
+    {
+     "name": "messages_display_identity_delete",
+     "sql": "CREATE TRIGGER messages_display_identity_delete\nAFTER DELETE ON messages WHEN old.active = 1 OR old.compacted = 1\nBEGIN\n    UPDATE messages SET display_order = (\n        SELECT MIN(peer.id) FROM messages AS peer\n        WHERE peer.session_id = old.session_id AND (peer.active = 1 OR peer.compacted = 1)\n          AND peer.display_identity = old.display_identity\n    ) WHERE session_id = old.session_id AND (active = 1 OR compacted = 1)\n      AND display_identity = old.display_identity;\nEND",
+     "tbl_name": "messages",
+     "type": "trigger"
+    },
+    {
+     "name": "messages_display_identity_update",
+     "sql": "CREATE TRIGGER messages_display_identity_update\nAFTER UPDATE OF role, content, timestamp, tool_call_id, tool_calls, tool_name,\n                display_kind ON messages\nWHEN new.role IS NOT old.role\n  OR new.content IS NOT old.content\n  OR new.timestamp IS NOT old.timestamp\n  OR new.tool_call_id IS NOT old.tool_call_id\n  OR new.tool_calls IS NOT old.tool_calls\n  OR new.tool_name IS NOT old.tool_name\n  OR new.display_kind IS NOT old.display_kind\nBEGIN\n    UPDATE messages SET display_identity = NULL, display_order = NULL\n    WHERE id = new.id OR (\n        session_id = old.session_id AND display_identity = old.display_identity\n        AND (active = 1 OR compacted = 1)\n    );\nEND",
+     "tbl_name": "messages",
+     "type": "trigger"
+    },
+    {
+     "name": "messages_display_order_insert",
+     "sql": "CREATE TRIGGER messages_display_order_insert\nAFTER INSERT ON messages WHEN new.display_order IS NULL\nBEGIN\n    UPDATE messages SET display_order = COALESCE((\n        SELECT display_order FROM messages\n        WHERE session_id = new.session_id AND id <> new.id\n          AND (active = 1 OR compacted = 1)\n          AND display_identity = new.display_identity AND display_order IS NOT NULL\n        ORDER BY display_order LIMIT 1\n    ), new.id) WHERE id = new.id;\nEND",
+     "tbl_name": "messages",
+     "type": "trigger"
+    },
+    {
+     "name": "messages_display_visibility_update",
+     "sql": "CREATE TRIGGER messages_display_visibility_update\nAFTER UPDATE OF active, compacted ON messages\nWHEN (new.active = 1 OR new.compacted = 1) <> (old.active = 1 OR old.compacted = 1)\nBEGIN\n    UPDATE messages SET display_order = MIN(new.id, COALESCE((\n        SELECT display_order FROM messages\n        WHERE session_id = new.session_id AND id <> new.id\n          AND (active = 1 OR compacted = 1)\n          AND display_identity = new.display_identity AND display_order IS NOT NULL\n        ORDER BY display_order LIMIT 1\n    ), new.id)) WHERE id = new.id\n      AND (new.active = 1 OR new.compacted = 1);\n    UPDATE messages SET display_order = (SELECT display_order FROM messages WHERE id = new.id)\n    WHERE session_id = new.session_id AND id <> new.id AND (active = 1 OR compacted = 1)\n      AND display_identity = new.display_identity\n      AND (new.active = 1 OR new.compacted = 1);\n    UPDATE messages SET display_order = (\n        SELECT MIN(peer.id) FROM messages AS peer\n        WHERE peer.session_id = old.session_id AND (peer.active = 1 OR peer.compacted = 1)\n          AND peer.display_identity = old.display_identity\n    ) WHERE session_id = old.session_id AND (active = 1 OR compacted = 1)\n      AND display_identity = old.display_identity\n      AND NOT (new.active = 1 OR new.compacted = 1);\nEND",
+     "tbl_name": "messages",
+     "type": "trigger"
+    },
+    {
+     "name": "messages_fts_delete",
+     "sql": "CREATE TRIGGER messages_fts_delete AFTER DELETE ON messages BEGIN\n    DELETE FROM messages_fts WHERE rowid = old.id;\nEND",
+     "tbl_name": "messages",
+     "type": "trigger"
+    },
+    {
+     "name": "messages_fts_insert",
+     "sql": "CREATE TRIGGER messages_fts_insert AFTER INSERT ON messages BEGIN\n    INSERT INTO messages_fts(rowid, content) VALUES (\n        new.id,\n        COALESCE(CASE WHEN new.role = 'tool'\n              AND new.id > COALESCE((SELECT CAST(value AS INTEGER)\n                                         FROM state_meta\n                                         WHERE key = 'fts_tool_full_content_high_water'), -1)\n         THEN substr(COALESCE(new.content, ''), 1, 8192)\n         ELSE new.content END, '')\n        || ' ' || COALESCE(new.tool_name, '') || ' ' || COALESCE(new.tool_calls, '')\n    );\nEND",
+     "tbl_name": "messages",
+     "type": "trigger"
+    },
+    {
+     "name": "messages_fts_trigram_delete",
+     "sql": "CREATE TRIGGER messages_fts_trigram_delete AFTER DELETE ON messages BEGIN\n    DELETE FROM messages_fts_trigram WHERE rowid = old.id;\nEND",
+     "tbl_name": "messages",
+     "type": "trigger"
+    },
+    {
+     "name": "messages_fts_trigram_insert",
+     "sql": "CREATE TRIGGER messages_fts_trigram_insert AFTER INSERT ON messages BEGIN\n    INSERT INTO messages_fts_trigram(rowid, content) VALUES (\n        new.id,\n        COALESCE(CASE WHEN new.role = 'tool'\n              AND new.id > COALESCE((SELECT CAST(value AS INTEGER)\n                                         FROM state_meta\n                                         WHERE key = 'fts_tool_full_content_high_water'), -1)\n         THEN substr(COALESCE(new.content, ''), 1, 8192)\n         ELSE new.content END, '')\n        || ' ' || COALESCE(new.tool_name, '') || ' ' || COALESCE(new.tool_calls, '')\n    );\nEND",
+     "tbl_name": "messages",
+     "type": "trigger"
+    },
+    {
+     "name": "messages_fts_trigram_update",
+     "sql": "CREATE TRIGGER messages_fts_trigram_update\nAFTER UPDATE OF content, tool_name, tool_calls, role ON messages BEGIN\n    DELETE FROM messages_fts_trigram WHERE rowid = old.id;\n    INSERT INTO messages_fts_trigram(rowid, content) VALUES (\n        new.id,\n        COALESCE(CASE WHEN new.role = 'tool'\n              AND new.id > COALESCE((SELECT CAST(value AS INTEGER)\n                                         FROM state_meta\n                                         WHERE key = 'fts_tool_full_content_high_water'), -1)\n         THEN substr(COALESCE(new.content, ''), 1, 8192)\n         ELSE new.content END, '')\n        || ' ' || COALESCE(new.tool_name, '') || ' ' || COALESCE(new.tool_calls, '')\n    );\nEND",
+     "tbl_name": "messages",
+     "type": "trigger"
+    },
+    {
+     "name": "messages_fts_update",
+     "sql": "CREATE TRIGGER messages_fts_update\nAFTER UPDATE OF content, tool_name, tool_calls, role ON messages BEGIN\n    DELETE FROM messages_fts WHERE rowid = old.id;\n    INSERT INTO messages_fts(rowid, content) VALUES (\n        new.id,\n        COALESCE(CASE WHEN new.role = 'tool'\n              AND new.id > COALESCE((SELECT CAST(value AS INTEGER)\n                                         FROM state_meta\n                                         WHERE key = 'fts_tool_full_content_high_water'), -1)\n         THEN substr(COALESCE(new.content, ''), 1, 8192)\n         ELSE new.content END, '')\n        || ' ' || COALESCE(new.tool_name, '') || ' ' || COALESCE(new.tool_calls, '')\n    );\nEND",
+     "tbl_name": "messages",
+     "type": "trigger"
+    },
+    {
+     "name": "messages_message_uid_insert",
+     "sql": "CREATE TRIGGER messages_message_uid_insert\nAFTER INSERT ON messages WHEN new.message_uid IS NULL\nBEGIN\n    -- Every row carries a message_uid, whoever wrote it: a build that predates the column binds NULL, so\n    -- the store mints one on its behalf (the current build always binds a uid; this never fires for it).\n    -- The note lives inside the body: a comment before DROP/CREATE would defeat the settled-trigger skip.\n    UPDATE messages SET message_uid = lower(hex(randomblob(16))) WHERE id = new.id;\nEND",
+     "tbl_name": "messages",
+     "type": "trigger"
+    }
+   ],
+   "store": "state.db",
+   "tables": [
+    {
+     "column_types": {
+      "completed_at": "REAL",
+      "delegation_id": "TEXT",
+      "delivered_at": "REAL",
+      "delivery_attempts": "INTEGER",
+      "delivery_claim": "TEXT",
+      "delivery_claimed_at": "REAL",
+      "delivery_state": "TEXT",
+      "dispatched_at": "REAL",
+      "event_json": "TEXT",
+      "origin_session": "TEXT",
+      "origin_session_id": "TEXT",
+      "origin_ui_session_id": "TEXT",
+      "owner_pid": "INTEGER",
+      "owner_started_at": "INTEGER",
+      "parent_session_id": "TEXT",
+      "result_json": "TEXT",
+      "state": "TEXT",
+      "task_json": "TEXT",
+      "updated_at": "REAL"
+     },
+     "columns": [
+      "delegation_id",
+      "origin_session",
+      "origin_ui_session_id",
+      "parent_session_id",
+      "state",
+      "dispatched_at",
+      "completed_at",
+      "updated_at",
+      "event_json",
+      "result_json",
+      "delivery_state",
+      "delivery_attempts",
+      "delivered_at",
+      "owner_pid",
+      "owner_started_at",
+      "task_json",
+      "delivery_claim",
+      "delivery_claimed_at",
+      "origin_session_id"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "async_delegations",
+     "primary_key": [
+      "delegation_id"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": false
+    },
+    {
+     "column_types": {
+      "acquired_at": "REAL",
+      "expires_at": "REAL",
+      "holder": "TEXT",
+      "session_id": "TEXT"
+     },
+     "columns": [
+      "session_id",
+      "holder",
+      "acquired_at",
+      "expires_at"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "compression_locks",
+     "primary_key": [
+      "session_id"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": false
+    },
+    {
+     "column_types": {
+      "generation": "INTEGER",
+      "session_key": "TEXT",
+      "source": "TEXT"
+     },
+     "columns": [
+      "source",
+      "session_key",
+      "generation"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "conversation_generations",
+     "primary_key": [
+      "source",
+      "session_key"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": false
+    },
+    {
+     "column_types": {
+      "backend_id": "TEXT",
+      "host": "TEXT",
+      "last_heartbeat": "REAL",
+      "pid": "INTEGER",
+      "profile": "TEXT",
+      "started_at": "REAL"
+     },
+     "columns": [
+      "backend_id",
+      "pid",
+      "started_at",
+      "last_heartbeat",
+      "profile",
+      "host"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "gateway_heartbeats",
+     "primary_key": [
+      "backend_id"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": false
+    },
+    {
+     "column_types": {
+      "failure_streak": "INTEGER",
+      "session_key": "TEXT"
+     },
+     "columns": [
+      "session_key",
+      "failure_streak"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "gateway_hygiene_state",
+     "primary_key": [
+      "session_key"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": false
+    },
+    {
+     "column_types": {
+      "entry_json": "TEXT",
+      "scope": "TEXT",
+      "session_key": "TEXT",
+      "updated_at": "REAL"
+     },
+     "columns": [
+      "scope",
+      "session_key",
+      "entry_json",
+      "updated_at"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "gateway_routing",
+     "primary_key": [
+      "scope",
+      "session_key"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": false
+    },
+    {
+     "column_types": {
+      "_compressed_summary": "INTEGER",
+      "absorbed_message_uids": "TEXT",
+      "active": "INTEGER",
+      "api_content": "TEXT",
+      "codex_message_items": "TEXT",
+      "codex_reasoning_items": "TEXT",
+      "compacted": "INTEGER",
+      "content": "TEXT",
+      "display_identity": "BLOB",
+      "display_kind": "TEXT",
+      "display_metadata": "TEXT",
+      "display_order": "INTEGER",
+      "effect_disposition": "TEXT",
+      "finish_reason": "TEXT",
+      "id": "INTEGER",
+      "message_uid": "TEXT",
+      "observed": "INTEGER",
+      "platform_message_id": "TEXT",
+      "reasoning": "TEXT",
+      "reasoning_content": "TEXT",
+      "reasoning_details": "TEXT",
+      "role": "TEXT",
+      "session_id": "TEXT",
+      "timestamp": "REAL",
+      "token_count": "INTEGER",
+      "tool_call_id": "TEXT",
+      "tool_call_uid": "TEXT",
+      "tool_call_uids": "TEXT",
+      "tool_calls": "TEXT",
+      "tool_name": "TEXT"
+     },
+     "columns": [
+      "id",
+      "session_id",
+      "role",
+      "content",
+      "tool_call_id",
+      "tool_calls",
+      "tool_name",
+      "timestamp",
+      "token_count",
+      "finish_reason",
+      "reasoning",
+      "reasoning_content",
+      "reasoning_details",
+      "codex_reasoning_items",
+      "codex_message_items",
+      "platform_message_id",
+      "observed",
+      "active",
+      "compacted",
+      "effect_disposition",
+      "_compressed_summary",
+      "api_content",
+      "display_kind",
+      "display_metadata",
+      "display_identity",
+      "display_order",
+      "message_uid",
+      "absorbed_message_uids",
+      "tool_call_uids",
+      "tool_call_uid"
+     ],
+     "foreign_keys": [
+      {
+       "column": "session_id",
+       "columns": 1,
+       "references_column": "id",
+       "references_table": "sessions"
+      }
+     ],
+     "has_rowid": true,
+     "name": "messages",
+     "primary_key": [
+      "id"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": false
+    },
+    {
+     "column_types": {
+      "content": ""
+     },
+     "columns": [
+      "content"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "messages_fts",
+     "primary_key": [],
+     "scan_error": null,
+     "virtual": true,
+     "virtual_shadow": false
+    },
+    {
+     "column_types": {
+      "k": "",
+      "v": ""
+     },
+     "columns": [
+      "k",
+      "v"
+     ],
+     "foreign_keys": [],
+     "has_rowid": false,
+     "name": "messages_fts_config",
+     "primary_key": [
+      "k"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": true
+    },
+    {
+     "column_types": {
+      "c0": "",
+      "id": "INTEGER"
+     },
+     "columns": [
+      "id",
+      "c0"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "messages_fts_content",
+     "primary_key": [
+      "id"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": true
+    },
+    {
+     "column_types": {
+      "block": "BLOB",
+      "id": "INTEGER"
+     },
+     "columns": [
+      "id",
+      "block"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "messages_fts_data",
+     "primary_key": [
+      "id"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": true
+    },
+    {
+     "column_types": {
+      "id": "INTEGER",
+      "sz": "BLOB"
+     },
+     "columns": [
+      "id",
+      "sz"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "messages_fts_docsize",
+     "primary_key": [
+      "id"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": true
+    },
+    {
+     "column_types": {
+      "pgno": "",
+      "segid": "",
+      "term": ""
+     },
+     "columns": [
+      "segid",
+      "term",
+      "pgno"
+     ],
+     "foreign_keys": [],
+     "has_rowid": false,
+     "name": "messages_fts_idx",
+     "primary_key": [
+      "segid",
+      "term"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": true
+    },
+    {
+     "column_types": {
+      "content": ""
+     },
+     "columns": [
+      "content"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "messages_fts_trigram",
+     "primary_key": [],
+     "scan_error": null,
+     "virtual": true,
+     "virtual_shadow": true
+    },
+    {
+     "column_types": {
+      "k": "",
+      "v": ""
+     },
+     "columns": [
+      "k",
+      "v"
+     ],
+     "foreign_keys": [],
+     "has_rowid": false,
+     "name": "messages_fts_trigram_config",
+     "primary_key": [
+      "k"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": true
+    },
+    {
+     "column_types": {
+      "c0": "",
+      "id": "INTEGER"
+     },
+     "columns": [
+      "id",
+      "c0"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "messages_fts_trigram_content",
+     "primary_key": [
+      "id"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": true
+    },
+    {
+     "column_types": {
+      "block": "BLOB",
+      "id": "INTEGER"
+     },
+     "columns": [
+      "id",
+      "block"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "messages_fts_trigram_data",
+     "primary_key": [
+      "id"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": true
+    },
+    {
+     "column_types": {
+      "id": "INTEGER",
+      "sz": "BLOB"
+     },
+     "columns": [
+      "id",
+      "sz"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "messages_fts_trigram_docsize",
+     "primary_key": [
+      "id"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": true
+    },
+    {
+     "column_types": {
+      "pgno": "",
+      "segid": "",
+      "term": ""
+     },
+     "columns": [
+      "segid",
+      "term",
+      "pgno"
+     ],
+     "foreign_keys": [],
+     "has_rowid": false,
+     "name": "messages_fts_trigram_idx",
+     "primary_key": [
+      "segid",
+      "term"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": true
+    },
+    {
+     "column_types": {
+      "version": "INTEGER"
+     },
+     "columns": [
+      "version"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "schema_version",
+     "primary_key": [],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": false
+    },
+    {
+     "column_types": {
+      "actual_cost_usd": "REAL",
+      "api_call_count": "INTEGER",
+      "billing_base_url": "TEXT",
+      "billing_mode": "TEXT",
+      "billing_provider": "TEXT",
+      "cache_read_tokens": "INTEGER",
+      "cache_write_tokens": "INTEGER",
+      "cost_source": "TEXT",
+      "cost_status": "TEXT",
+      "estimated_cost_usd": "REAL",
+      "first_seen": "REAL",
+      "input_tokens": "INTEGER",
+      "last_seen": "REAL",
+      "model": "TEXT",
+      "output_tokens": "INTEGER",
+      "reasoning_tokens": "INTEGER",
+      "session_id": "TEXT",
+      "task": "TEXT"
+     },
+     "columns": [
+      "session_id",
+      "model",
+      "billing_provider",
+      "billing_base_url",
+      "billing_mode",
+      "task",
+      "api_call_count",
+      "input_tokens",
+      "output_tokens",
+      "cache_read_tokens",
+      "cache_write_tokens",
+      "reasoning_tokens",
+      "estimated_cost_usd",
+      "actual_cost_usd",
+      "cost_status",
+      "cost_source",
+      "first_seen",
+      "last_seen"
+     ],
+     "foreign_keys": [
+      {
+       "column": "session_id",
+       "columns": 1,
+       "references_column": "id",
+       "references_table": "sessions"
+      }
+     ],
+     "has_rowid": true,
+     "name": "session_model_usage",
+     "primary_key": [
+      "session_id",
+      "model",
+      "billing_provider",
+      "billing_base_url",
+      "billing_mode",
+      "task"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": false
+    },
+    {
+     "column_types": {
+      "acquired_at": "REAL",
+      "conversation_id": "TEXT",
+      "expires_at": "REAL",
+      "holder": "TEXT"
+     },
+     "columns": [
+      "conversation_id",
+      "holder",
+      "acquired_at",
+      "expires_at"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "session_turn_leases",
+     "primary_key": [
+      "conversation_id"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": false
+    },
+    {
+     "column_types": {
+      "actual_cost_usd": "REAL",
+      "api_call_count": "INTEGER",
+      "archived": "INTEGER",
+      "auto_archived": "INTEGER",
+      "billing_base_url": "TEXT",
+      "billing_mode": "TEXT",
+      "billing_provider": "TEXT",
+      "cache_read_tokens": "INTEGER",
+      "cache_write_tokens": "INTEGER",
+      "chat_id": "TEXT",
+      "chat_type": "TEXT",
+      "compression_failure_cooldown_until": "REAL",
+      "compression_failure_error": "TEXT",
+      "compression_fallback_streak": "INTEGER",
+      "compression_ineffective_count": "INTEGER",
+      "compression_overload_streak": "INTEGER",
+      "compression_recovery_deadline": "REAL",
+      "cost_source": "TEXT",
+      "cost_status": "TEXT",
+      "created_source": "TEXT",
+      "cwd": "TEXT",
+      "display_name": "TEXT",
+      "end_reason": "TEXT",
+      "ended_at": "REAL",
+      "estimated_cost_usd": "REAL",
+      "expiry_finalized": "INTEGER",
+      "git_branch": "TEXT",
+      "git_metadata_generation": "INTEGER",
+      "git_repo_root": "TEXT",
+      "handoff_error": "TEXT",
+      "handoff_platform": "TEXT",
+      "handoff_state": "TEXT",
+      "hidden": "INTEGER",
+      "id": "TEXT",
+      "input_tokens": "INTEGER",
+      "last_activity_at": "REAL",
+      "last_activity_description": "TEXT",
+      "last_activity_provenance": "TEXT",
+      "last_read_at": "REAL",
+      "message_count": "INTEGER",
+      "model": "TEXT",
+      "model_config": "TEXT",
+      "origin_json": "TEXT",
+      "output_tokens": "INTEGER",
+      "parent_session_id": "TEXT",
+      "pinned": "INTEGER",
+      "pricing_version": "TEXT",
+      "profile_name": "TEXT",
+      "reasoning_tokens": "INTEGER",
+      "rewind_count": "INTEGER",
+      "session_key": "TEXT",
+      "source": "TEXT",
+      "started_at": "REAL",
+      "system_prompt": "TEXT",
+      "system_prompt_hash": "TEXT",
+      "thread_id": "TEXT",
+      "title": "TEXT",
+      "title_source": "TEXT",
+      "tool_call_count": "INTEGER",
+      "tool_names": "TEXT",
+      "transport_profile": "TEXT",
+      "user_id": "TEXT"
+     },
+     "columns": [
+      "id",
+      "source",
+      "user_id",
+      "model",
+      "model_config",
+      "system_prompt",
+      "parent_session_id",
+      "started_at",
+      "ended_at",
+      "end_reason",
+      "message_count",
+      "tool_call_count",
+      "input_tokens",
+      "output_tokens",
+      "cache_read_tokens",
+      "cache_write_tokens",
+      "reasoning_tokens",
+      "billing_provider",
+      "billing_base_url",
+      "billing_mode",
+      "estimated_cost_usd",
+      "actual_cost_usd",
+      "cost_status",
+      "cost_source",
+      "pricing_version",
+      "title",
+      "api_call_count",
+      "handoff_state",
+      "handoff_platform",
+      "handoff_error",
+      "cwd",
+      "rewind_count",
+      "archived",
+      "session_key",
+      "chat_id",
+      "chat_type",
+      "thread_id",
+      "display_name",
+      "origin_json",
+      "expiry_finalized",
+      "system_prompt_hash",
+      "git_branch",
+      "git_repo_root",
+      "git_metadata_generation",
+      "title_source",
+      "last_activity_at",
+      "last_activity_description",
+      "last_activity_provenance",
+      "compression_failure_cooldown_until",
+      "compression_failure_error",
+      "compression_fallback_streak",
+      "compression_ineffective_count",
+      "compression_recovery_deadline",
+      "profile_name",
+      "pinned",
+      "hidden",
+      "last_read_at",
+      "tool_names",
+      "created_source",
+      "compression_overload_streak",
+      "transport_profile",
+      "auto_archived"
+     ],
+     "foreign_keys": [
+      {
+       "column": "parent_session_id",
+       "columns": 1,
+       "references_column": "id",
+       "references_table": "sessions"
+      }
+     ],
+     "has_rowid": true,
+     "name": "sessions",
+     "primary_key": [
+      "id"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": false
+    },
+    {
+     "column_types": {
+      "key": "TEXT",
+      "value": "TEXT"
+     },
+     "columns": [
+      "key",
+      "value"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "state_meta",
+     "primary_key": [
+      "key"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": false
+    },
+    {
+     "column_types": {
+      "hash": "TEXT",
+      "prompt": "TEXT"
+     },
+     "columns": [
+      "hash",
+      "prompt"
+     ],
+     "foreign_keys": [],
+     "has_rowid": true,
+     "name": "system_prompts",
+     "primary_key": [
+      "hash"
+     ],
+     "scan_error": null,
+     "virtual": false,
+     "virtual_shadow": false
+    }
+   ],
+   "user_version": 0
+  }
+ ]
+}

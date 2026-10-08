@@ -1,0 +1,394 @@
+{
+  "accounting": {
+    "changed_entries": 49,
+    "classes_found": [
+      "session_owned",
+      "run_owned",
+      "shared_changed"
+    ],
+    "every_changed_entry_accounted": true,
+    "shared_stores_changed_content_not_read": [
+      "bin/agentapi",
+      "cache/last_conversations.json",
+      "cache/onboarding.json",
+      "cli.log",
+      "conversation_summaries.db",
+      "crashes",
+      "jetbox_summaries_proto.pb"
+    ],
+    "statement": "Metadata of the whole CLI state directory was listed before the first turn and after this turn. 49 entries were new, changed or removed and every one is accounted for: 15 session-owned files (path carries the conversation id; copied), 3 run-owned files (new log or implicit files born during the capture; copied, private only), 7 shared stores or their sidecars (changed; content not read and not copied), 25 directories. A shared store may hold records of this conversation. Its content was not read, so this receipt does not prove that it holds none.",
+    "unexplained": []
+  },
+  "after_inventory_sha256": "a013c036935ecaac3b2b3bc3fe9e4363827cade0e0358833ba5c38025ce84679",
+  "artifacts": [
+    {
+      "class": "session_owned",
+      "copied_path": "session-owned/annotations/73cde065-291b-46cf-b241-c0e0299a5b60.pbtxt",
+      "filesystem_id": "16777233:732169493",
+      "private_only": false,
+      "relative_path": "annotations/73cde065-291b-46cf-b241-c0e0299a5b60.pbtxt",
+      "role": "native-companion",
+      "sha256": "92a92a146a5c00e144de67e7633dd1ea3c1f872decf964eb555d795aabff3649",
+      "size_bytes": 33
+    },
+    {
+      "class": "session_owned",
+      "copied_path": "session-owned/brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/chunks/transcript/00000000.jsonl",
+      "filesystem_id": "16777233:732169487",
+      "private_only": false,
+      "relative_path": "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/chunks/transcript/00000000.jsonl",
+      "role": "native-companion",
+      "sha256": "333dc7fd2b2f62adbbdc93564752273b5eec5ba3ae73b540c3ba68125ec4e467",
+      "size_bytes": 16641
+    },
+    {
+      "class": "session_owned",
+      "copied_path": "session-owned/brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/chunks/transcript_full/00000000.jsonl",
+      "filesystem_id": "16777233:732169490",
+      "private_only": false,
+      "relative_path": "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/chunks/transcript_full/00000000.jsonl",
+      "role": "native-companion",
+      "sha256": "5d07e0bb3912ec5ceb6d798399a1d1146957c0f5777b12846af12e0a56ddb1a9",
+      "size_bytes": 16473
+    },
+    {
+      "class": "session_owned",
+      "copied_path": "session-owned/brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/transcript.jsonl",
+      "filesystem_id": "16777233:732169484",
+      "private_only": false,
+      "relative_path": "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/transcript.jsonl",
+      "role": "native-primary",
+      "sha256": "333dc7fd2b2f62adbbdc93564752273b5eec5ba3ae73b540c3ba68125ec4e467",
+      "size_bytes": 16641
+    },
+    {
+      "class": "session_owned",
+      "copied_path": "session-owned/brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/transcript_full.jsonl",
+      "filesystem_id": "16777233:732169488",
+      "private_only": false,
+      "relative_path": "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/transcript_full.jsonl",
+      "role": "native-companion",
+      "sha256": "5d07e0bb3912ec5ceb6d798399a1d1146957c0f5777b12846af12e0a56ddb1a9",
+      "size_bytes": 16473
+    },
+    {
+      "class": "session_owned",
+      "copied_path": "session-owned/brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/messages/a09afaa7-867b-433b-965e-6b5fe7dbeb5e.json",
+      "filesystem_id": "16777233:732169875",
+      "private_only": false,
+      "relative_path": "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/messages/a09afaa7-867b-433b-965e-6b5fe7dbeb5e.json",
+      "role": "native-companion",
+      "sha256": "969746c6b41ccc1a3d32b837462e4c8798de19c5280844f0fee8c34884dcc875",
+      "size_bytes": 478
+    },
+    {
+      "class": "session_owned",
+      "copied_path": "session-owned/brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/messages/read.json",
+      "filesystem_id": "16777233:732169878",
+      "private_only": false,
+      "relative_path": "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/messages/read.json",
+      "role": "native-companion",
+      "sha256": "5c05f30fccd8e1d92c7bc1232a9d63243f206f46bb77a51a5903cc8921638001",
+      "size_bytes": 45
+    },
+    {
+      "class": "session_owned",
+      "copied_path": "session-owned/brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/15/output.txt",
+      "filesystem_id": "16777233:732169980",
+      "private_only": false,
+      "relative_path": "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/15/output.txt",
+      "role": "native-companion",
+      "sha256": "2b88364bee703d81cc0f2dca8fdc05282475ecaa7ee74c5122a592ea8a0a32db",
+      "size_bytes": 1021
+    },
+    {
+      "class": "session_owned",
+      "copied_path": "session-owned/brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/17/output.txt",
+      "filesystem_id": "16777233:732169998",
+      "private_only": false,
+      "relative_path": "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/17/output.txt",
+      "role": "native-companion",
+      "sha256": "603cf35f3ca6aef92d9bd658c42d3a72f3ea09f7f57f2130f17106f97430b6b3",
+      "size_bytes": 301
+    },
+    {
+      "class": "session_owned",
+      "copied_path": "session-owned/brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/2/output.txt",
+      "filesystem_id": "16777233:732169507",
+      "private_only": false,
+      "relative_path": "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/2/output.txt",
+      "role": "native-companion",
+      "sha256": "ada0a9650ee9e2aa98d1617c9273d3a1543610b1d8e4d1dd5df0dc0e840bc4a1",
+      "size_bytes": 210
+    },
+    {
+      "class": "session_owned",
+      "copied_path": "session-owned/brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/4/output.txt",
+      "filesystem_id": "16777233:732169509",
+      "private_only": false,
+      "relative_path": "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/4/output.txt",
+      "role": "native-companion",
+      "sha256": "407018fa45adc1cf3f55602604fcaf347c4f7308abbec341950dd09c5ad0b859",
+      "size_bytes": 329
+    },
+    {
+      "class": "session_owned",
+      "copied_path": "session-owned/brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/6/output.txt",
+      "filesystem_id": "16777233:732169657",
+      "private_only": false,
+      "relative_path": "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/6/output.txt",
+      "role": "native-companion",
+      "sha256": "a5690cd8a0a357dbc7e5d495718ccec71ceb6bf0b908dcb04288d1d560c06726",
+      "size_bytes": 496
+    },
+    {
+      "class": "session_owned",
+      "copied_path": "session-owned/brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/8/output.txt",
+      "filesystem_id": "16777233:732169717",
+      "private_only": false,
+      "relative_path": "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/8/output.txt",
+      "role": "native-companion",
+      "sha256": "40069687843363ba1d88ece208b9c857a9f8606d157653cc333decca36af29e1",
+      "size_bytes": 312
+    },
+    {
+      "class": "session_owned",
+      "copied_path": "session-owned/conversations/73cde065-291b-46cf-b241-c0e0299a5b60.db",
+      "filesystem_id": "16777233:732169473",
+      "private_only": false,
+      "relative_path": "conversations/73cde065-291b-46cf-b241-c0e0299a5b60.db",
+      "role": "native-companion",
+      "sha256": "324d534ca8dc0c5ec1e167aeca9e8cfb598aaff9c7915968746be072e287a096",
+      "size_bytes": 589824
+    },
+    {
+      "class": "session_owned",
+      "copied_path": "session-owned/presence/73cde065-291b-46cf-b241-c0e0299a5b60.lock",
+      "filesystem_id": "16777233:732169480",
+      "private_only": false,
+      "relative_path": "presence/73cde065-291b-46cf-b241-c0e0299a5b60.lock",
+      "role": "native-companion",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "class": "run_owned",
+      "copied_path": "run-owned-private/implicit/19097c98-625d-436c-8830-cc593eef6f38.pb",
+      "filesystem_id": "16777233:732169437",
+      "private_only": true,
+      "relative_path": "implicit/19097c98-625d-436c-8830-cc593eef6f38.pb",
+      "role": "run-private",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 635
+    },
+    {
+      "class": "run_owned",
+      "copied_path": "run-owned-private/log/cli-20261005_111925.log",
+      "filesystem_id": "16777233:732169431",
+      "private_only": true,
+      "relative_path": "log/cli-20261005_111925.log",
+      "role": "run-private",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 27541
+    },
+    {
+      "class": "run_owned",
+      "copied_path": "run-owned-private/log/cli-20261005_112050.log",
+      "filesystem_id": "16777233:732169855",
+      "private_only": true,
+      "relative_path": "log/cli-20261005_112050.log",
+      "role": "run-private",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size_bytes": 25704
+    }
+  ],
+  "attempt_id": "antigravity-2026-10-05-04",
+  "before_inventory_sha256": "a83b5ce07aa5f71a4a855d49c3b1e2f99582f288ed90c4529612897d360fc3d9",
+  "classes": {
+    "directories_changed": [
+      "annotations",
+      "brain",
+      "cache",
+      "conversations",
+      "crashes",
+      "implicit",
+      "log",
+      "presence"
+    ],
+    "run_owned": [
+      "implicit/19097c98-625d-436c-8830-cc593eef6f38.pb",
+      "log/cli-20261005_111925.log",
+      "log/cli-20261005_112050.log"
+    ],
+    "session_owned": [
+      "annotations/73cde065-291b-46cf-b241-c0e0299a5b60.pbtxt",
+      "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/chunks/transcript/00000000.jsonl",
+      "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/chunks/transcript_full/00000000.jsonl",
+      "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/transcript.jsonl",
+      "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/transcript_full.jsonl",
+      "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/messages/a09afaa7-867b-433b-965e-6b5fe7dbeb5e.json",
+      "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/messages/read.json",
+      "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/15/output.txt",
+      "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/17/output.txt",
+      "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/2/output.txt",
+      "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/4/output.txt",
+      "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/6/output.txt",
+      "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/8/output.txt",
+      "conversations/73cde065-291b-46cf-b241-c0e0299a5b60.db",
+      "presence/73cde065-291b-46cf-b241-c0e0299a5b60.lock"
+    ],
+    "shared_changed": [
+      {
+        "after": {
+          "metadata_sha256": "3bd97a82ee529ba8a4c516386ccdc5e7f97999cf2746d289c141748ea6db35ec",
+          "size_bytes": 59
+        },
+        "before": {
+          "metadata_sha256": "1f493248e303953bc34b77efb407f282d6efc6015070731037ec3bc5ffb2478e",
+          "size_bytes": 59
+        },
+        "change": "modified",
+        "content_read": false,
+        "kind": "file",
+        "relative_path": "bin/agentapi"
+      },
+      {
+        "after": {
+          "metadata_sha256": "6f01a28af2d19ec570272b1073e8ba68aa48d45e745058c27f905d9b59bcdf2e",
+          "size_bytes": 2745
+        },
+        "before": {
+          "metadata_sha256": "7732937411456a33ba04d924d396426401bc48f48d769dc5fd7a0336eb2613c4",
+          "size_bytes": 2578
+        },
+        "change": "modified",
+        "content_read": false,
+        "kind": "file",
+        "relative_path": "cache/last_conversations.json"
+      },
+      {
+        "after": {
+          "metadata_sha256": "ddbb9ba2239356ee7e3a6e0910ceda74d22e38cc77b24622302c9a186ab56516",
+          "size_bytes": 111
+        },
+        "before": {
+          "metadata_sha256": "489fdf7c10d8a6cb780f4aedca320819bb90e60c1eadbff1f4eeb9b04c428a0c",
+          "size_bytes": 111
+        },
+        "change": "modified",
+        "content_read": false,
+        "kind": "file",
+        "relative_path": "cache/onboarding.json"
+      },
+      {
+        "after": {
+          "metadata_sha256": "c69370f6b5e4d8efd0db2e40eede2202ee25189365651446af6b13bb618fd510",
+          "size_bytes": 27
+        },
+        "before": {
+          "metadata_sha256": "8cdf35f34f4a17dd0568ce3c8ebc69f2f6f558f939ce90cb635986bdf38b2b3f",
+          "size_bytes": 27
+        },
+        "change": "modified",
+        "content_read": false,
+        "kind": "symlink",
+        "relative_path": "cli.log"
+      },
+      {
+        "after": {
+          "metadata_sha256": "cf99d62b0955834da468b55967368da5bda564d748e9dfca13fb8866e7919b86",
+          "size_bytes": 77824
+        },
+        "before": {
+          "metadata_sha256": "1a67b6a11c75f112072faff8bb0eb00321a2bb80e41c2cfbc4e0f0b3768bc316",
+          "size_bytes": 73728
+        },
+        "change": "modified",
+        "content_read": false,
+        "kind": "file",
+        "relative_path": "conversation_summaries.db"
+      },
+      {
+        "after": {
+          "metadata_sha256": "129b816e563dd265e928e1ae226f41005e92b7764bdc372435ec83bda269b6f7",
+          "size_bytes": 29143
+        },
+        "before": {
+          "metadata_sha256": "5eef073e8cde00aae88c83cc459fd3cdc167879d1f19d9c32530c485ebb384d9",
+          "size_bytes": 28144
+        },
+        "change": "modified",
+        "content_read": false,
+        "kind": "file",
+        "relative_path": "jetbox_summaries_proto.pb"
+      },
+      {
+        "after": {
+          "metadata_sha256": "855bb40c9f6c051acfa780814c2495224d123b6f9d17415e4ee7f28cf863f81e",
+          "size_bytes": 64
+        },
+        "before": {
+          "metadata_sha256": "ba4dd19b726993ae4e5b7280ab584c6c3e4112c1c7cf1805524b8aaed9c56a63",
+          "size_bytes": 64
+        },
+        "change": "touched_empty",
+        "content_read": false,
+        "kind": "directory",
+        "relative_path": "crashes"
+      }
+    ]
+  },
+  "conversation_id": "73cde065-291b-46cf-b241-c0e0299a5b60",
+  "metadata_only_before_after": true,
+  "preexisting_contents_opened": false,
+  "primary_path": "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/transcript.jsonl",
+  "quiescence": {
+    "interval_seconds": 0.1,
+    "inventory_sha256": [
+      "a013c036935ecaac3b2b3bc3fe9e4363827cade0e0358833ba5c38025ce84679",
+      "a013c036935ecaac3b2b3bc3fe9e4363827cade0e0358833ba5c38025ce84679"
+    ],
+    "reads": 2,
+    "required_equal_reads": 2,
+    "stable": true,
+    "unchanged_after_copy": true
+  },
+  "requested_effort": null,
+  "requested_model": "claude-sonnet-4-6",
+  "root_identity": {
+    "device": 16777233,
+    "inode": 323367750
+  },
+  "schema_version": "antigravity-state-root-v1",
+  "scope": "whole_cli_state_directory",
+  "session_directories": [
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/chunks",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/chunks/transcript",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/logs/chunks/transcript_full",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/messages",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/messages/undelivered",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/15",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/17",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/2",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/4",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/6",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.system_generated/steps/8",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/.user_uploaded",
+    "brain/73cde065-291b-46cf-b241-c0e0299a5b60/scratch"
+  ],
+  "source_root": "/Users/xxxxx/.gemini/antigravity-cli",
+  "sqlite_groups": [
+    {
+      "database": "conversations/73cde065-291b-46cf-b241-c0e0299a5b60.db",
+      "members": [
+        "conversations/73cde065-291b-46cf-b241-c0e0299a5b60.db"
+      ]
+    }
+  ],
+  "started_ns": 1791224365509107000,
+  "turn": 2
+}

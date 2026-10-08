@@ -1,0 +1,15 @@
+{
+  "capture_attempts": [
+    "dsh-cal-20260929-2",
+    "dsh-eval-20260929-1",
+    "dsh-eval-20260929-2"
+  ],
+  "claim_limit": "not a capture-time machine receipt or an independently reacquired native root",
+  "observed_at": "2026-09-30T01:54:19.907894+00:00",
+  "operator_id": "codex-root-operator",
+  "os_name": "macOS",
+  "platform_system": "Darwin",
+  "python_implementation": "CPython",
+  "schema_version": "session-bench-operator-environment-attestation-v1",
+  "scope": "post-capture observation on the same local execution host used by this ongoing operator session"
+}

@@ -1,0 +1,31 @@
+{
+  "attempt_id": "pi-openai-codex-2026-10-02-10",
+  "captured_at": "2026-10-02T03:06:05.787116Z",
+  "model_submissions": 0,
+  "network_disabled": true,
+  "pi_version": "1.0.0",
+  "rpc_request_id": "session-bench-stats-1",
+  "rpc_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "rpc_stdout_sha256": "e05d4880fc29bce55b0b77c99b1b35174f9eacd4a3088c67b09d0e4c277e7dbb",
+  "schema_version": "session-bench-pi-session-stats-v1",
+  "session_filename": "2026-10-02T03-05-25-288Z_6bce9844-71d1-4bfb-8151-0244bdee19d7.jsonl",
+  "session_id": "6bce9844-71d1-4bfb-8151-0244bdee19d7",
+  "session_sha256": "b81afe7ba4ae078710f360ce9446ca27776be80170f7a193be78bfeb1015c859",
+  "source": "pi_rpc_get_session_stats",
+  "stats": {
+    "assistantMessages": 6,
+    "cost": 0.050398000000000005,
+    "tokens": {
+      "cacheRead": 1536,
+      "cacheWrite": 0,
+      "input": 6872,
+      "output": 509,
+      "total": 8917
+    },
+    "toolCalls": 4,
+    "toolResults": 4,
+    "totalMessages": 13,
+    "userMessages": 2
+  },
+  "user_config_disabled": true
+}

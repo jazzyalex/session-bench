@@ -1,0 +1,12 @@
+{
+  "auth_route": "gh auth token -> COPILOT_GITHUB_TOKEN in-process; value not retained",
+  "cli_version": "1.0.91",
+  "controller_sha256": "f6a4d419022466b897ff53b8e354acbb87301d5585492a9f3f297d9d7b44c1ab",
+  "execution_workspace_path": "/private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-ej9alq7s/fixture_project",
+  "model_requested": "auto",
+  "run_id": "copilot-2026-10-04-03",
+  "session_id": "a3f0bfc9-fbcb-47fd-86e0-5dc91e25a1e0",
+  "status": "in_progress",
+  "surface": "copilot-cli",
+  "temporary_root_retained": "/private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-ej9alq7s"
+}

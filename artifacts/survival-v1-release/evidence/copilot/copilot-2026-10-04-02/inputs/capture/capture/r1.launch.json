@@ -1,0 +1,35 @@
+{
+  "argv": [
+    "/opt/homebrew/bin/copilot",
+    "-p",
+    "This is a synthetic Session-Bench survival-v1 coding task. Work only inside fixture_project. Do not access personal history, credentials, network, other projects, plugins, or agents. Preserve bench_check.py and .survival-observer.jsonl. Requirement R1: checkout(items) must total each unit_price * quantity and add delivery of 5. First run python3 bench_check.py inspect --run-canary SB_SURVIVAL_V1_RUN_copilot-2026-10-04-02, then python3 bench_check.py baseline --run-canary SB_SURVIVAL_V1_RUN_copilot-2026-10-04-02. Do not edit checkout.py yet. Explain the observed baseline result and stop. End your visible response with exactly SB_SURVIVAL_V1_RESPONSE_R1_cafe_\ud83d\ude42. Context marker: SB_SURVIVAL_V1_CONTEXT_cafe_\ud83d\ude42. Run canary: SB_SURVIVAL_V1_RUN_copilot-2026-10-04-02.",
+    "--model",
+    "auto",
+    "--allow-all-tools",
+    "--output-format",
+    "json",
+    "--no-custom-instructions",
+    "--no-auto-update",
+    "--no-ask-user",
+    "--no-bash-env",
+    "--no-remote-export",
+    "--secret-env-vars=COPILOT_GITHUB_TOKEN",
+    "--session-id",
+    "52d56ef1-3fd8-40ca-8724-4ee16455feb1"
+  ],
+  "copilot_home_inventory_before": {},
+  "credential_values_retained": false,
+  "cwd": "/private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-7h71c7yo/fixture_project",
+  "isolated_home_inventory_before": {},
+  "safe_environment": {
+    "COPILOT_HOME": "/private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-7h71c7yo/copilot",
+    "HOME": "/private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-7h71c7yo/home",
+    "PATH": "[personal text removed at equal byte length]xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "SB_SURVIVAL_V1_RUN_CANARY": "SB_SURVIVAL_V1_RUN_copilot-2026-10-04-02",
+    "TMPDIR": "/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/"
+  },
+  "secret_environment_variables": [
+    "COPILOT_GITHUB_TOKEN"
+  ],
+  "started_ns": 1791144946830525000
+}

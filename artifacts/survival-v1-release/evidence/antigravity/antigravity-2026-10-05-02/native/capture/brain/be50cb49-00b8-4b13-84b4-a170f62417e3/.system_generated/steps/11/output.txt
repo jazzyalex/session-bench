@@ -1,0 +1,15 @@
+The following changes were made by the replace_file_content tool to: /Users/xxxxx/Repository/session-bench/artifacts/v1-expanded-preparation/live-captures/antigravity-2026-10-05-02/workspace/fixture_project/checkout.py. If relevant, proactively run terminal commands to execute this code for the USER. Don't ask for permission.
+[diff_block_start]
+@@ -1,6 +1,6 @@
+ def checkout(items):
+     """Each item is (unit_price, quantity); delivery costs 5 below the threshold."""
+-    # Deliberate R1 defect: quantity is ignored and delivery is always charged.
+-    subtotal = sum(price for price, quantity in items)
+-    return subtotal + 5
++    subtotal = sum(price * quantity for price, quantity in items)
++    delivery = 0 if subtotal >= 50 else 5
++    return subtotal + delivery
+ 
+[diff_block_end]
+
+Please note that the above snippet only shows the MODIFIED lines from the last change. It shows up to 3 lines of unchanged lines before and after the modified lines. The actual file contents may have many more lines not shown.

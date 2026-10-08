@@ -1,0 +1,1 @@
+{"auth":{"authType":"oauth","provider":"openai-codex","status":"ready"},"auth_exit_code":0,"model_catalog_exit_code":0,"model_catalog_match":"gpt-5.5","model_catalog_sha256":"e9a67cc07c30d71c2cb44c9d3e6a3b1401a9f3df9a39cb1eeba108945b7b8f05","preflight_failure":null,"ready":true,"version":"1.0.0","version_exit_code":0}

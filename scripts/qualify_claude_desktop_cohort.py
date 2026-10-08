@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Qualify the three captured Claude Desktop repetitions as private evidence.
 
-This is an additive, offline pass over the exact finalized captures named in
-``COHORT``.  It does not discover Claude roots, open a session, change the
+This is an additive, offline pass over three explicitly selected finalized
+captures (or the historical default ``COHORT``). It does not discover Claude roots, open a session, change the
 historical finalizer output, or publish a score.  The pass binds three
 metadata-only root inventories, re-runs the persistent-family validator, and
 rebuilds the observer with the exact prompts recorded by the independent GUI
@@ -57,7 +57,6 @@ COHORT: tuple[tuple[str, int], ...] = (
     ("claude-desktop-eval-2-correction-1", 2),
     ("claude-desktop-eval-3", 3),
 )
-COHORT_IDS = {run_id for run_id, _repetition in COHORT}
 OUTPUT_NAME = "qualified-private-v1"
 ROOT_LOCATOR = (
     "CLAUDE_HOME/projects/<project-key>/<session-id>.jsonl + "
@@ -126,12 +125,44 @@ def _digest_binding(identifier: str, digest: str) -> dict[str, str]:
 
 
 def _run_root(run_id: str) -> Path:
-    if run_id not in COHORT_IDS or not RUN_ID_RE.fullmatch(run_id):
-        raise QualificationError(f"run is outside the exact Claude Desktop cohort: {run_id}")
-    root = (REPO / "artifacts" / "survival-v1-runs" / run_id).resolve()
-    if not root.is_dir() or root.is_symlink():
+    if not isinstance(run_id, str) or not RUN_ID_RE.fullmatch(run_id):
+        raise QualificationError(f"invalid Claude Desktop run ID: {run_id}")
+    root = REPO / "artifacts" / "survival-v1-runs" / run_id
+    if root.is_symlink() or not root.is_dir():
         raise QualificationError(f"run root is missing or is a symlink: {run_id}")
     return root
+
+
+def _select_cohort(run_ids: list[str]) -> tuple[tuple[str, int], ...]:
+    """Bind explicit run names to their source attempt metadata before writing."""
+    if len(run_ids) != 3 or len(set(run_ids)) != 3:
+        raise QualificationError("cohort requires three distinct run IDs")
+    selected: list[tuple[str, int]] = []
+    workload_ids: list[str | None] = []
+    for run_id in run_ids:
+        root = _run_root(run_id)
+        attempt = _load_object(root / "attempt.json")
+        repetition = attempt.get("repetition")
+        if (
+            attempt.get("attempt_id") != run_id
+            or attempt.get("configuration_id") != "claude-desktop"
+            or type(repetition) is not int
+            or repetition not in (1, 2, 3)
+        ):
+            raise QualificationError(f"{run_id} source attempt identity is invalid")
+        output = root / "capture" / OUTPUT_NAME
+        if output.exists() or output.is_symlink():
+            raise QualificationError(f"{run_id} already has additive qualification output")
+        workload_id = attempt.get("workload_id")
+        if workload_id is not None and (not isinstance(workload_id, str) or not workload_id.strip()):
+            raise QualificationError(f"{run_id} workload ID is invalid")
+        workload_ids.append(workload_id)
+        selected.append((run_id, repetition))
+    if {repetition for _, repetition in selected} != {1, 2, 3}:
+        raise QualificationError("cohort requires source attempt repetitions 1, 2, and 3")
+    if len(set(workload_ids)) != 1:
+        raise QualificationError("cohort workload IDs differ across source attempts")
+    return tuple(sorted(selected, key=lambda item: item[1]))
 
 
 def _validate_inventory(run_id: str, repetition: int, run_root: Path) -> dict[str, Any]:
@@ -302,6 +333,17 @@ def _validate_existing_capture(
     source_format = _load_object(output / "format-evidence.json")
     source_survival = _load_object(output / "survival-evidence.json")
     source_31 = _load_object(output / "evidence-31.json")
+    source_observer = _load_object(output / "observer.json")
+    if (
+        source_observer.get("run_id") != run_id
+        or source_observer.get("repetition") != repetition
+        or source_observer.get("configuration_id") != "claude-desktop"
+        or not isinstance(source_observer.get("scenario_id"), str)
+        or not source_observer["scenario_id"]
+        or not isinstance(source_survival.get("workload_version"), str)
+        or not source_survival["workload_version"]
+    ):
+        raise QualificationError(f"{run_id} finalized workload identity is invalid")
     validate_input(source_measurement)
     validate_format_evidence(source_format)
     validate_prospective_evidence_input(source_survival)
@@ -337,6 +379,7 @@ def _validate_existing_capture(
         "format": source_format,
         "survival": source_survival,
         "source_31": source_31,
+        "workload_identity": (source_observer["scenario_id"], source_survival["workload_version"]),
         "project_root": project_root,
         "before_checkout_sha256": _sha(before_checkout),
         "after_checkout_sha256": _sha(checkout),
@@ -398,36 +441,56 @@ def _qualify_measurement(source: Mapping[str, Any], *, run_id: str, repetition: 
 
 
 def _build_root_repetitions(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    if len(records) != 3 or {item.get("repetition") for item in records} != {1, 2, 3}:
-        raise QualificationError("stable-root qualification requires exactly repetitions 1, 2, and 3")
-    if len({item.get("root_locator") for item in records}) != 1:
-        raise QualificationError("stable-root locators differ across repetitions")
-    return [
-        {
-            "repetition": item["repetition"],
-            "root_locator": item["root_locator"],
-            "isolated_discovery": item["isolated_discovery"],
-            "personal_history_scanned": item["personal_history_scanned"],
-        }
-        for item in sorted(records, key=lambda row: row["repetition"])
-    ]
+    if not records or len(records) > 3:
+        raise QualificationError("stable-root qualification requires one to three run discoveries")
+    numbers = [item.get("repetition") for item in records]
+    if any(type(number) is not int or number not in (1, 2, 3) for number in numbers):
+        raise QualificationError("stable-root repetitions must be distinct and sequential")
+    ordered = sorted(records, key=lambda row: row["repetition"])
+    numbers = [item["repetition"] for item in ordered]
+    if numbers != list(range(numbers[0], numbers[0] + len(numbers))):
+        raise QualificationError("stable-root repetitions must be distinct and sequential")
+    rows = []
+    for item in ordered:
+        locator = item.get("root_locator")
+        mode = item.get("discovery_mode", "isolated" if item.get("isolated_discovery") is True else None)
+        if (not isinstance(locator, str) or not locator.strip()
+                or mode not in ("isolated", "metadata_safe_normal_root")
+                or ("discovery_mode" in item and "isolated_discovery" in item)
+                or item.get("personal_history_scanned") is not False):
+            raise QualificationError("stable-root discovery or privacy assertion is invalid")
+        row = {"repetition": item["repetition"], "root_locator": locator,
+               "personal_history_scanned": False}
+        if "discovery_mode" in item:
+            row["discovery_mode"] = mode
+        else:
+            row["isolated_discovery"] = True
+        rows.append(row)
+    if len({"isolated" if "isolated_discovery" in row else row["discovery_mode"] for row in rows}) != 1:
+        raise QualificationError("stable-root discovery modes differ across supplied runs")
+    return rows
 
 
-def _build_stable_root_proof(records: list[dict[str, Any]]) -> dict[str, Any]:
+def _build_stable_root_proof(records: list[dict[str, Any]], run_pairs: tuple[tuple[str, int], ...] | None = None) -> dict[str, Any]:
     repetitions = _build_root_repetitions(records)
+    identities = tuple((item["run_id"], item["repetition"]) for item in sorted(records, key=lambda row: row["repetition"]))
+    if run_pairs is None:
+        run_pairs = identities
+    if run_pairs != identities or len({run_id for run_id, _ in run_pairs}) != len(run_pairs):
+        raise QualificationError("stable-root proof run identities differ from source discoveries")
     return {
         "schema_version": "session-bench-claude-desktop-stable-root-proof-v1",
         "configuration_id": "claude-desktop",
-        "cohort_id": "+".join(run_id for run_id, _rep in COHORT),
+        "cohort_id": "+".join(run_id for run_id, _rep in run_pairs),
         "root_locator": ROOT_LOCATOR,
-        "same_root_locator_across_repetitions": True,
+        "same_root_locator_across_repetitions": len({item["root_locator"] for item in repetitions}) == 1,
         "repetitions": [
             {
                 "run_id": item["run_id"],
                 "repetition": item["repetition"],
                 "root_locator": item["root_locator"],
-                "isolated_discovery": True,
-                "personal_history_scanned": False,
+                **({"discovery_mode": item["discovery_mode"]} if "discovery_mode" in item else {"isolated_discovery": item["isolated_discovery"]}),
+                "personal_history_scanned": item["personal_history_scanned"],
                 "before_inventory": item["before"],
                 "after_inventory": item["after"],
                 "selected_persistent_family": {
@@ -509,8 +572,9 @@ def _helper_rows(raw: str) -> dict[str, Mapping[str, Any]]:
 
 
 def qualify(run_pairs: tuple[tuple[str, int], ...] = COHORT) -> list[dict[str, Any]]:
-    if run_pairs != COHORT:
-        raise QualificationError("only the exact captured Claude Desktop cohort is supported")
+    selected = _select_cohort([run_id for run_id, _ in run_pairs])
+    if run_pairs != selected:
+        raise QualificationError("cohort pairs must match source attempt repetitions in order")
 
     records = [_validate_existing_capture(run_id, repetition) for run_id, repetition in run_pairs]
     if [record["repetition"] for record in records] != [1, 2, 3]:
@@ -519,6 +583,10 @@ def qualify(run_pairs: tuple[tuple[str, int], ...] = COHORT) -> list[dict[str, A
         raise QualificationError("Claude Desktop CLI versions differ across repetitions")
     if len({record["family"].get("model") for record in records}) != 1:
         raise QualificationError("Claude Desktop models differ across repetitions")
+    workload = _load_object(REPO / "fixtures/scenarios/survival-v1/workload/workload.json")
+    expected_workload_identity = (workload.get("scenario_id"), workload.get("schema_version"))
+    if any(record["workload_identity"] != expected_workload_identity for record in records):
+        raise QualificationError("Claude Desktop finalized workload IDs differ from the frozen workload")
 
     stable_records = [
         {
@@ -527,10 +595,11 @@ def qualify(run_pairs: tuple[tuple[str, int], ...] = COHORT) -> list[dict[str, A
         }
         for record in records
     ]
-    stable_proof = _build_stable_root_proof(stable_records)
+    stable_proof = _build_stable_root_proof(stable_records, run_pairs)
     stable_proof_sha = _sha_bytes(_canonical(stable_proof) + b"\n")
-    root_repetitions = _build_root_repetitions(stable_records)
-
+    root_repetitions_by_run = {
+        item["run_id"]: _build_root_repetitions([item]) for item in stable_records
+    }
     prepared: list[dict[str, Any]] = []
     for record in records:
         run_id, repetition = record["run_id"], record["repetition"]
@@ -593,7 +662,7 @@ def qualify(run_pairs: tuple[tuple[str, int], ...] = COHORT) -> list[dict[str, A
             collected_on=collected_on,
             result_id=f"{run_id}-desktop-format-qualified-v1",
             complete_record_family=True,
-            root_repetitions=root_repetitions,
+            root_repetitions=root_repetitions_by_run[run_id],
         )
         validate_format_evidence(format_evidence)
 
@@ -661,7 +730,7 @@ def qualify(run_pairs: tuple[tuple[str, int], ...] = COHORT) -> list[dict[str, A
     aggregate_display = aggregate.display()
     cohort_summary = {
         "schema_version": "session-bench-claude-desktop-qualified-cohort-v1",
-        "cohort_id": "+".join(run_id for run_id, _rep in COHORT),
+        "cohort_id": "+".join(run_id for run_id, _rep in run_pairs),
         "configuration_id": "claude-desktop",
         "repetitions": [
             {
@@ -799,17 +868,14 @@ def main() -> int:
         "--run-id",
         action="append",
         dest="run_ids",
-        help="repeat only to spell the exact three-run cohort; omitted uses the canonical cohort",
+        help="repeat for three distinct Claude Desktop runs; omitted uses the historical cohort",
     )
     args = parser.parse_args()
     try:
         if args.run_ids is None:
             pairs = COHORT
         else:
-            expected = [run_id for run_id, _rep in COHORT]
-            if args.run_ids != expected:
-                raise QualificationError("--run-id must list the exact cohort in repetition order")
-            pairs = COHORT
+            pairs = _select_cohort(args.run_ids)
         qualify(pairs)
     except Exception as exc:
         print(f"qualify invalid: {type(exc).__name__}: {exc}", file=sys.stderr)

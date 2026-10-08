@@ -1,0 +1,1 @@
+{"event_types":["result","system","text","tool_result","tool_use"],"events":114,"exit_code":0,"model":"gpt-5.5","session_id":"20261006_232244_4302d2","stdout_sha256":"c8a676213a655f0ebefabcbac9ebb5270338d9fc3601c7e19e8687c7e59cbac6","tokens":{"cache_read":16384,"cache_write":0,"input":4731,"output":345,"total":21460},"tool_events":6,"tool_events_with_call_id":0}

@@ -1,0 +1,15 @@
+configuration_id,surface,evidence_kind,sample_size,coverage,overall,provisional_min,provisional_max,rank,remaining_work
+pi,Pi,verified_complete,3,3/3 verified runs; 31/31 metric states in each,96.4,,,2,
+openclaw,OpenClaw,verified_complete,3,3/3 verified runs; 31/31 metric states in each,88.1,,,7,
+claude-cli,Claude Code CLI,verified_complete,3,3/3 verified runs; 31/31 metric states in each,89.3,,,6,
+codex-cli,Codex CLI,verified_complete,3,3/3 verified runs; 31/31 metric states in each,87.5,,,8,
+kimi,Kimi Code,verified_complete,3,3/3 verified runs; 31/31 metric states in each,91.2,,,5,
+opencode-cli,OpenCode CLI,verified_complete,3,3/3 verified runs; 31/31 metric states in each,94.4,,,4,
+hermes,Hermes,verified_complete,3,3/3 verified runs; 31/31 metric states in each,86.4,,,9,
+copilot,Copilot CLI,verified_complete,3,3/3 verified runs; 31/31 metric states in each,96.0,,,3,
+antigravity,Antigravity,verified_complete,3,3/3 verified runs; 31/31 metric states in each,82.7,,,11,
+cursor-cli,Cursor CLI,verified_complete,3,3/3 verified runs; 31/31 metric states in each,78.1,,,12,
+codex-desktop,Codex Desktop,shared_format,,"Same session format as Codex CLI: the retained Desktop and CLI rollouts share all record kinds and one decoder, and a CLI thread has rows in the same state and history stores. Scored on the Codex CLI row.",,,,,"same_session_format_as_codex_cli, scored_on_the_codex_cli_row"
+claude-desktop,Claude Desktop Code (Local),verified_complete,3,3/3 verified runs; 31/31 metric states in each,85.6,,,10,
+cursor-desktop,Cursor Desktop,unqualified_capture,,"An isolated signed-in Desktop profile and a capture bracket exist. Two attempts on 2026-10-06 gave no valid run: one prompt went to the wrong window, and the Free-plan usage limit stopped the other. Earlier runs in the normal profile stay private and unqualified. The row resumes when the plan limit resets. (0/3 qualified repetitions)",,,,,"eval_2_cursor_free_quota_stopped_before_r1_completion, eval_3_two_turn_capture_private_and_native_root_unqualified, eval_4_r1_r2_two_turn_run_completed_private, eval_4_exact_global_rows_captured_but_other_native_families_unqualified, native_family_qualification_incomplete, three_score_qualified_repetitions_incomplete, eval4_private_decoder_replay_completed_but_unscored"
+deepseek-harness-cli,DeepSeek Harness CLI,verified_complete,3,3/3 verified runs; 31/31 metric states in each,96.9,,,1,

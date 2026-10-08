@@ -250,6 +250,31 @@ def test_extra_same_turn_action_does_not_become_a_contradiction() -> None:
     assert row["decoded_eligible"] == 1
 
 
+def test_matching_population_below_metric_minimum_stays_unresolved() -> None:
+    observer = _observer()
+    for event in observer["events"]:
+        if event["id"] in {"action-inspect", "result-inspect"}:
+            event["population_role"] = "supporting"
+
+    document = compare_survival_run(
+        observer,
+        _native(_observer()),
+        _receipt(),
+        configuration_id="claude-desktop",
+        repetition=1,
+    )
+
+    rows = _rows(document)
+    assert rows["work.actions"] == {
+        "id": "work.actions",
+        "state": "unresolved",
+        "correct": 3,
+        "observed_eligible": 3,
+        "decoded_eligible": 4,
+    }
+    assert rows["work.results"]["state"] == "unresolved"
+
+
 def test_unsupported_decoder_cannot_resolve_matching_records() -> None:
     observer = _observer()
     native = _native(observer)
@@ -291,11 +316,10 @@ def test_portability_rows_use_only_explicit_receipt_values() -> None:
     assert rows["portable.canonical_equality"]["state"] == "unresolved"
 
 
-def test_model_and_usage_must_match_observer_values() -> None:
+def test_model_must_match_observer_value() -> None:
     observer = _observer()
     native = _native(observer)
     native["responses"][0]["model_id"] = "wrong/model"
-    native["usage"][0]["usage"]["input_tokens"] = 999
 
     document = compare_survival_run(
         observer,
@@ -308,8 +332,79 @@ def test_model_and_usage_must_match_observer_values() -> None:
 
     assert rows["attribution.model_config"]["state"] == "measured"
     assert rows["attribution.model_config"]["correct"] == 1
+
+
+def test_model_context_window_alias_matches_native_base_model() -> None:
+    # A CLI selector such as ``model[1m]`` names a context-window variant; the
+    # native record keeps the base model identity.
+    observer = _observer()
+    native = _native(observer)
+    for event in observer["events"]:
+        if event["kind"] == "assistant_response":
+            event["fields"]["model_id"] = "vendor-model-5[1m]"
+            event["fields"]["configuration"] = "vendor-model-5[1m]"
+    for response in native["responses"]:
+        response["model_id"] = "vendor-model-5"
+        response["configuration"] = "vendor-model-5"
+
+    document = compare_survival_run(
+        observer,
+        native,
+        _receipt(),
+        configuration_id="claude-cli",
+        repetition=1,
+    )
+    row = _rows(document)["attribution.model_config"]
+
+    assert row["state"] == "measured"
+    assert row["correct"] == 2
+
+
+def test_native_model_identity_is_measured_when_the_observer_reports_no_model() -> None:
+    # Model identity is native-attested when the observer channel (for example
+    # a stdout event stream) carries no model field.
+    observer = _observer()
+    native = _native(observer)
+    for event in observer["events"]:
+        if event["kind"] == "assistant_response":
+            event["fields"].pop("model_id")
+            event["fields"].pop("configuration")
+
+    document = compare_survival_run(
+        observer,
+        native,
+        _receipt(),
+        configuration_id="codex-cli",
+        repetition=1,
+    )
+    row = _rows(document)["attribution.model_config"]
+
+    assert row["state"] == "measured"
+    assert row["correct"] == 2
+
+
+def test_usage_join_is_measured_when_observer_token_values_use_another_scope() -> None:
+    # Usage is native-attested: an observer may report a whole-turn aggregate
+    # while the native record carries the displayed response's own request.
+    observer = _observer()
+    native = _native(observer)
+    for record in native["usage"]:
+        record["usage"]["output_tokens"] += 381
+        record["usage"]["cache_read_tokens"] += 47299
+
+    document = compare_survival_run(
+        observer,
+        native,
+        _receipt(),
+        configuration_id="claude-cli",
+        repetition=1,
+    )
+    rows = _rows(document)
+
     assert rows["attribution.usage"]["state"] == "measured"
-    assert rows["attribution.usage"]["correct"] == 1
+    assert rows["attribution.usage"]["correct"] == 2
+    assert rows["attribution.token_semantics"]["state"] == "measured"
+    assert rows["attribution.token_semantics"]["correct"] == 2
 
 
 def test_usage_presence_and_response_join_are_measured_when_gui_observer_has_no_token_values() -> None:
@@ -367,16 +462,81 @@ def test_changed_file_fragments_do_not_substitute_for_whole_file_hashes() -> Non
     }
 
 
-def test_reconciliation_requires_exact_native_session_totals() -> None:
+def _reconciliation_row(observer: dict, native: dict) -> dict:
+    document = compare_survival_run(
+        observer, native, _receipt(), configuration_id="cursor-cli", repetition=1
+    )
+    return _rows(document)["attribution.reconciliation"]
+
+
+def test_reconciliation_is_a_contradiction_when_native_records_do_not_sum_to_the_native_total() -> None:
+    observer = _observer()
+    native = _native(observer)
+    native["facts"]["reconciliation"]["matches_session_totals"] = False
+
+    row = _reconciliation_row(observer, native)
+
+    assert row["state"] == "contradiction"
+    assert row["correct"] == 0
+
+
+def test_reconciliation_does_not_compare_observer_total_values() -> None:
+    # Reconciliation is native-attested.  Observers build their total in
+    # different ways (a harness-declared total, or a sum of two responses).
     observer = _observer()
     native = _native(observer)
     native["facts"]["usage"]["session_totals"]["output"] += 1
 
-    document = compare_survival_run(
-        observer, native, _receipt(), configuration_id="cursor-cli", repetition=1
-    )
+    row = _reconciliation_row(observer, native)
 
-    row = _rows(document)["attribution.reconciliation"]
+    assert row["state"] == "measured"
+    assert row["correct"] == 1
+
+
+def test_reconciliation_is_measured_without_an_observer_total_event() -> None:
+    observer = _observer()
+    native = _native(observer)
+    observer["events"] = [event for event in observer["events"] if event["kind"] != "usage_total"]
+    observer["relations"] = [
+        relation for relation in observer["relations"]
+        if "usage-total" not in (relation["from_id"], relation["to_id"])
+    ]
+
+    row = _reconciliation_row(observer, native)
+
+    assert row["state"] == "measured"
+    assert row["correct"] == 1
+
+
+def test_reconciliation_is_native_absent_when_the_native_record_declares_no_total() -> None:
+    observer = _observer()
+    native = _native(observer)
+    native["facts"] = {}
+
+    row = _reconciliation_row(observer, native)
+
+    assert row["state"] == "native_absent"
+    assert row["correct"] == 0
+
+
+def test_reconciliation_accepts_native_usage_facts_that_each_reconcile() -> None:
+    observer = _observer()
+    native = _native(observer)
+    native["facts"] = {"usage": [{"id": "usage-r1", "reconciles": True}, {"id": "usage-r2", "reconciles": True}]}
+
+    row = _reconciliation_row(observer, native)
+
+    assert row["state"] == "measured"
+    assert row["correct"] == 1
+
+
+def test_reconciliation_is_a_contradiction_when_one_native_usage_fact_does_not_reconcile() -> None:
+    observer = _observer()
+    native = _native(observer)
+    native["facts"] = {"usage": [{"id": "usage-r1", "reconciles": True}, {"id": "usage-r2", "reconciles": False}]}
+
+    row = _reconciliation_row(observer, native)
+
     assert row["state"] == "contradiction"
     assert row["correct"] == 0
 

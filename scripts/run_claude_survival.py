@@ -301,13 +301,19 @@ def _redact_argv(argv: list[str], prompt: str) -> list[str]:
     return [str(value) for value in argv[:-1]] + [f"<prompt-redacted:sha256:{_prompt_sha256(prompt)}>"]
 
 
+def _claude_executable() -> str:
+    """The installed Claude Code CLI: the user install under the home directory, else the first ``claude`` on PATH."""
+    installed = Path.home() / ".local" / "bin" / "claude"
+    return str(installed) if installed.exists() else shutil.which("claude") or str(installed)
+
+
 def _claude_argv(project_root: Path, prompt: str, session_id: str | None = None) -> list[str]:
     # ``--tools`` is a single comma-separated value so the positional prompt
     # cannot be consumed by the CLI's variadic option parser.  No CLAUDE_* root
     # override is supplied: authentication and native persistence use the
     # user's normal account root by explicit authorization.
     argv = [
-        "/Users/alexm/.local/bin/claude",
+        _claude_executable(),
         "-p",
         "--output-format",
         "stream-json",

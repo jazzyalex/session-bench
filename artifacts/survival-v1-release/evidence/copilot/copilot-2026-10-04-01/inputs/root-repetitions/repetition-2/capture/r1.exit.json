@@ -1,0 +1,47 @@
+{
+  "copilot_home_inventory_after": {
+    "config.json": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "logs/.copilot-log.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "logs/process-1791144948926-37541.log": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "session-state/.session-operation-locks/52d56ef1-3fd8-40ca-8724-4ee16455feb1.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "session-state/52d56ef1-3fd8-40ca-8724-4ee16455feb1/.workspace-fork.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "session-state/52d56ef1-3fd8-40ca-8724-4ee16455feb1/checkpoints/index.md": {
+      "sha256": "a6508da52c083afcfd134779a5b6a71a31235f9f154f2aa865ea920d68189734"
+    },
+    "session-state/52d56ef1-3fd8-40ca-8724-4ee16455feb1/events.jsonl": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "session-state/52d56ef1-3fd8-40ca-8724-4ee16455feb1/rewind-file-snapshots/tracking.json": {
+      "sha256": "0916b582e1bc5439b7454e8dee676b3d7f24d524cac8715e1d0afd44a8e66e3b"
+    },
+    "session-state/52d56ef1-3fd8-40ca-8724-4ee16455feb1/workspace.yaml": {
+      "sha256": "17a8afdbbb5f4ff951b33b376c0789d85227017b538585a40355b8e30d42c342"
+    },
+    "session-store.db": {
+      "sha256": "da63a52bdf62b3fc863995d79f497584be3ba97c1de4c55d1d301afbafab6cfc"
+    },
+    "session-store.db-shm": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "session-store.db-wal": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    },
+    "settings.json": {
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  },
+  "ended_ns": 1791144959439186000,
+  "returncode": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_sha256": "dc6ffa880d2dae1df5e8afb724cae6089667e668278b016bea04002489d9b7e5"
+}

@@ -1,0 +1,155 @@
+{
+  "schema_version": "session-bench-partial-coverage-index-v1",
+  "configurations": [
+    {
+      "configuration_id": "codex-cli",
+      "summary_path": "artifacts/v1-expanded-preparation/codex-stdout-score-replay-v2/summary.json",
+      "runs": [
+        {
+          "run_id": "codex-cli-eval-1",
+          "receipt_path": "artifacts/v1-expanded-preparation/codex-stdout-score-replay-v2/codex-cli-eval-1-receipt.json"
+        },
+        {
+          "run_id": "codex-cli-eval-2",
+          "receipt_path": "artifacts/v1-expanded-preparation/codex-stdout-score-replay-v2/codex-cli-eval-2-receipt.json"
+        },
+        {
+          "run_id": "codex-cli-eval-3",
+          "receipt_path": "artifacts/v1-expanded-preparation/codex-stdout-score-replay-v2/codex-cli-eval-3-receipt.json"
+        }
+      ]
+    },
+    {
+      "configuration_id": "codex-desktop",
+      "summary_path": "artifacts/v1-expanded-preparation/native-score-replay-v2/summary.json",
+      "runs": [
+        {
+          "run_id": "codex-desktop-eval-1",
+          "receipt_path": "artifacts/v1-expanded-preparation/native-score-replay-v2/codex-desktop-eval-1-receipt.json"
+        },
+        {
+          "run_id": "codex-desktop-eval-2",
+          "receipt_path": "artifacts/v1-expanded-preparation/native-score-replay-v2/codex-desktop-eval-2-receipt.json"
+        },
+        {
+          "run_id": "codex-desktop-eval-3",
+          "receipt_path": "artifacts/v1-expanded-preparation/native-score-replay-v2/codex-desktop-eval-3-receipt.json"
+        }
+      ]
+    },
+    {
+      "configuration_id": "claude-desktop",
+      "summary_path": "artifacts/v1-expanded-preparation/claude-desktop-root-score-replay-v3/summary.json",
+      "runs": [
+        {
+          "run_id": "claude-desktop-eval-1-correction-1",
+          "receipt_path": "artifacts/v1-expanded-preparation/claude-desktop-root-score-replay-v3/claude-desktop-eval-1-correction-1-receipt.json"
+        },
+        {
+          "run_id": "claude-desktop-eval-2-correction-1",
+          "receipt_path": "artifacts/v1-expanded-preparation/claude-desktop-root-score-replay-v3/claude-desktop-eval-2-correction-1-receipt.json"
+        },
+        {
+          "run_id": "claude-desktop-eval-3",
+          "receipt_path": "artifacts/v1-expanded-preparation/claude-desktop-root-score-replay-v3/claude-desktop-eval-3-receipt.json"
+        }
+      ]
+    },
+    {
+      "configuration_id": "copilot",
+      "summary_path": "artifacts/v1-expanded-preparation/copilot-partial-score-v2/summary.json",
+      "runs": [
+        {
+          "run_id": "copilot-live-2026-09-29-01",
+          "receipt_path": "artifacts/v1-expanded-preparation/copilot-partial-score-v2/copilot-2026-09-29-01-receipt.json"
+        },
+        {
+          "run_id": "copilot-live-2026-09-29-03",
+          "receipt_path": "artifacts/v1-expanded-preparation/copilot-partial-score-v2/copilot-2026-09-29-03-receipt.json"
+        },
+        {
+          "run_id": "copilot-2026-09-29-06",
+          "receipt_path": "artifacts/v1-expanded-preparation/copilot-partial-score-v2/copilot-2026-09-29-06-receipt.json"
+        }
+      ]
+    },
+    {
+      "configuration_id": "antigravity",
+      "summary_path": "artifacts/v1-expanded-preparation/private-score-replays/antigravity-2026-09-29/summary.json",
+      "runs": [
+        {
+          "run_id": "antigravity-2026-09-29-02",
+          "receipt_path": "artifacts/v1-expanded-preparation/private-score-replays/antigravity-2026-09-29/antigravity-2026-09-29-02-receipt.json"
+        },
+        {
+          "run_id": "antigravity-2026-09-29-03",
+          "receipt_path": "artifacts/v1-expanded-preparation/private-score-replays/antigravity-2026-09-29/antigravity-2026-09-29-03-receipt.json"
+        },
+        {
+          "run_id": "antigravity-2026-09-29-04",
+          "receipt_path": "artifacts/v1-expanded-preparation/private-score-replays/antigravity-2026-09-29/antigravity-2026-09-29-04-receipt.json"
+        }
+      ]
+    },
+    {
+      "configuration_id": "pi",
+      "summary_path": "artifacts/v1-expanded-preparation/pi-json-score-replay-v7/replay-results/summary.json",
+      "runs": [
+        {
+          "run_id": "pi-openai-codex-2026-10-01-07",
+          "receipt_path": "artifacts/v1-expanded-preparation/pi-json-score-replay-v7/replay-results/repetition-1-coverage-receipt.json"
+        },
+        {
+          "run_id": "pi-openai-codex-2026-10-01-08",
+          "receipt_path": "artifacts/v1-expanded-preparation/pi-json-score-replay-v7/replay-results/repetition-2-coverage-receipt.json"
+        },
+        {
+          "run_id": "pi-openai-codex-2026-10-01-09",
+          "receipt_path": "artifacts/v1-expanded-preparation/pi-json-score-replay-v7/replay-results/repetition-3-coverage-receipt.json"
+        }
+      ]
+    }
+  ],
+  "capture_progress": [
+    {
+      "configuration_id": "hermes",
+      "kind": "capture_only",
+      "detail": "One qualified same-session two-turn capture; native-to-score closure and two additional repetitions remain.",
+      "evaluated_captures": 1,
+      "qualified_two_turn_captures": 1,
+      "target_repetitions": 3
+    },
+    {
+      "configuration_id": "cursor-desktop",
+      "kind": "unqualified_capture",
+      "detail": "One capture was evaluated; native-family qualification is incomplete and a prior Free-plan limit interrupted collection.",
+      "evaluated_captures": 1,
+      "qualified_two_turn_captures": 0,
+      "target_repetitions": 3
+    },
+    {
+      "configuration_id": "openclaw",
+      "kind": "blocked",
+      "detail": "Isolated OAuth was unavailable; no live call or completed two-turn run exists. Shared rotating refresh credentials were not copied.",
+      "evaluated_captures": 0,
+      "qualified_two_turn_captures": 0,
+      "target_repetitions": 3
+    },
+    {
+      "configuration_id": "kimi",
+      "kind": "blocked",
+      "detail": "Attempt 05 repaired the fixture, but its final response stopped at organization RPM3; no completed two-turn run exists and credit exhaustion was not established.",
+      "evaluated_captures": 1,
+      "qualified_two_turn_captures": 0,
+      "target_repetitions": 3
+    },
+    {
+      "configuration_id": "cursor-cli",
+      "kind": "unqualified_capture",
+      "detail": "Three earlier isolated two-turn repetitions remain private and unqualified. A fresh signed-in normal-root run completed both turns and retained only the exact newly created Cursor chat and project transcript families; the offline ACP projection still leaves tool/thinking payloads and the complete semantic family unresolved.",
+      "evaluated_captures": 4,
+      "qualified_two_turn_captures": 0,
+      "target_repetitions": 3
+    }
+  ]
+}

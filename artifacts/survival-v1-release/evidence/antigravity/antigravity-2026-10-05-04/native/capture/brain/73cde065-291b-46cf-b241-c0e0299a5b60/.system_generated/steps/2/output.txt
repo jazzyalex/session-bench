@@ -1,0 +1,8 @@
+
+The command exited with code 0.
+Output:
+total 0
+drwxr-xr-x@ 3 xxxxx  staff   96 Oct  5 11:19 .
+drwxr-xr-x@ 8 xxxxx  staff  256 Oct  5 11:19 ..
+drwxr-xr-x@ 5 xxxxx  staff  160 Sep 14 17:25 fixture_project
+

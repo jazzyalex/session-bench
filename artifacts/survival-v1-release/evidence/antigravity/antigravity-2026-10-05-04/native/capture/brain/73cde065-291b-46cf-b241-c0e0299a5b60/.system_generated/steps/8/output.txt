@@ -1,0 +1,5 @@
+
+The command exited with code 1.
+Output:
+SB_SURVIVAL_V1_HELPER_BASELINE_baseline-fixture-0001 {"phase":"baseline","tests":[{"actual":20,"expected":30,"items":[[10,2],[5,1]],"passed":false},{"actual":30,"expected":50,"items":[[25,2]],"passed":false},{"actual":54,"expected":54,"items":[[49,1]],"passed":true}]}
+

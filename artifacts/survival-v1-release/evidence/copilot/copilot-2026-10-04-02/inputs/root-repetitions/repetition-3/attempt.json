@@ -1,0 +1,25 @@
+{
+  "auth_route": "gh auth token -> COPILOT_GITHUB_TOKEN in-process; value not retained",
+  "cli_version": "1.0.91",
+  "controller_sha256": "f6a4d419022466b897ff53b8e354acbb87301d5585492a9f3f297d9d7b44c1ab",
+  "evidence_copy_verified": true,
+  "execution_workspace_path": "/private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-ej9alq7s/fixture_project",
+  "exit_code": 0,
+  "model_requested": "auto",
+  "native_files": [
+    "native/a3f0bfc9-fbcb-47fd-86e0-5dc91e25a1e0/workspace.yaml",
+    "native/a3f0bfc9-fbcb-47fd-86e0-5dc91e25a1e0/events.jsonl",
+    "native/a3f0bfc9-fbcb-47fd-86e0-5dc91e25a1e0/.workspace-fork.lock",
+    "native/a3f0bfc9-fbcb-47fd-86e0-5dc91e25a1e0/rewind-file-snapshots/tracking.json",
+    "native/a3f0bfc9-fbcb-47fd-86e0-5dc91e25a1e0/rewind-file-snapshots/index.json",
+    "native/a3f0bfc9-fbcb-47fd-86e0-5dc91e25a1e0/checkpoints/index.md",
+    "native/a3f0bfc9-fbcb-47fd-86e0-5dc91e25a1e0/rewind-file-snapshots/backups/f4482bd25089ad5c521d2d8c75d17607d5dec0582b9bb687b5716c9673546401"
+  ],
+  "r1_exit_code": 0,
+  "r2_exit_code": 0,
+  "run_id": "copilot-2026-10-04-03",
+  "session_id": "a3f0bfc9-fbcb-47fd-86e0-5dc91e25a1e0",
+  "status": "completed",
+  "surface": "copilot-cli",
+  "temporary_root_retained": "/private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-ej9alq7s"
+}

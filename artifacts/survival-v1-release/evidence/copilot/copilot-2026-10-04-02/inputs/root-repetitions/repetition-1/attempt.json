@@ -1,0 +1,25 @@
+{
+  "auth_route": "gh auth token -> COPILOT_GITHUB_TOKEN in-process; value not retained",
+  "cli_version": "1.0.91",
+  "controller_sha256": "f6a4d419022466b897ff53b8e354acbb87301d5585492a9f3f297d9d7b44c1ab",
+  "evidence_copy_verified": true,
+  "execution_workspace_path": "/private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-gb60tdxy/fixture_project",
+  "exit_code": 0,
+  "model_requested": "auto",
+  "native_files": [
+    "native/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee/workspace.yaml",
+    "native/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee/events.jsonl",
+    "native/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee/.workspace-fork.lock",
+    "native/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee/rewind-file-snapshots/tracking.json",
+    "native/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee/rewind-file-snapshots/index.json",
+    "native/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee/checkpoints/index.md",
+    "native/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee/rewind-file-snapshots/backups/f4482bd25089ad5c521d2d8c75d17607d5dec0582b9bb687b5716c9673546401"
+  ],
+  "r1_exit_code": 0,
+  "r2_exit_code": 0,
+  "run_id": "copilot-2026-10-04-01",
+  "session_id": "7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee",
+  "status": "completed",
+  "surface": "copilot-cli",
+  "temporary_root_retained": "/private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-gb60tdxy"
+}

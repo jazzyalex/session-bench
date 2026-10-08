@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "snapshots": [
+    {
+      "snapshotId": "7c4dcace-1733-4a18-bc46-c8400e7e50d9",
+      "eventId": "f0523e55-29df-4cfb-9041-c5de37a1b5e5",
+      "userMessage": "Correction R2 supersedes only the delivery condition: delivery is free when subtotal is at least 50 and remains 5 below 50. Keep quantity handling from R1. Edit only fixture_project/checkout.py. Do not modify bench_check.py or .survival-observer.jsonl. Run python3 bench_check.py final --run-canary SB_SURVIVAL_V1_RUN_copilot-2026-10-04-01. Explain the actual change and test outcome. End your visible response with exactly SB_SURVIVAL_V1_RESPONSE_R2_correction_Δ. Context marker: SB_SURVIVAL_V1_CONTEXT_cafe_🙂. Run canary: SB_SURVIVAL_V1_RUN_copilot-2026-10-04-01.",
+      "timestamp": "2026-10-04T20:15:39.372Z",
+      "files": {
+        "8e1525dd02f8883ecb9d38c4f94ce944": {
+          "path": "/private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-gb60tdxy/fixture_project/checkout.py",
+          "preimage": {
+            "kind": "content",
+            "contentHash": "f4482bd25089ad5c521d2d8c75d17607d5dec0582b9bb687b5716c9673546401",
+            "backupFile": "f4482bd25089ad5c521d2d8c75d17607d5dec0582b9bb687b5716c9673546401",
+            "mode": 33188,
+            "size": 265,
+            "resolvedPath": "/private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-gb60tdxy/fixture_project/checkout.py",
+            "encodedPath": {
+              "encoding": "unix-bytes",
+              "data": "2f707269766174652f7661722f666f6c646572732f78782f7878787878787878787878787878787878787878787878787878787878782f542f73657373696f6e2d62656e63682d636f70696c6f742d67623630746478792f666978747572655f70726f6a6563742f636865636b6f75742e7079"
+            }
+          },
+          "postimage": {
+            "kind": "content",
+            "contentHash": "a020043db82bec2df47204c03e11ab40c5275139e0b122723810304d81e7050f",
+            "resolvedPath": "/private/var/folders/xx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/T/session-bench-copilot-gb60tdxy/fixture_project/checkout.py",
+            "encodedPath": {
+              "encoding": "unix-bytes",
+              "data": "2f707269766174652f7661722f666f6c646572732f78782f7878787878787878787878787878787878787878787878787878787878782f542f73657373696f6e2d62656e63682d636f70696c6f742d67623630746478792f666978747572655f70726f6a6563742f636865636b6f75742e7079"
+            }
+          },
+          "linesAdded": 3,
+          "linesRemoved": 3
+        }
+      },
+      "backupFiles": [
+        "f4482bd25089ad5c521d2d8c75d17607d5dec0582b9bb687b5716c9673546401"
+      ],
+      "fileCount": 1,
+      "linesAdded": 3,
+      "linesRemoved": 3
+    }
+  ]
+}

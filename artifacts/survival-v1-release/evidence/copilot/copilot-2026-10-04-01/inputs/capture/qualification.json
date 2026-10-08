@@ -1,0 +1,63 @@
+{
+  "cli_version": "1.0.91",
+  "configuration_id": "copilot",
+  "hashes": {
+    "native/7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee/events.jsonl": {
+      "sha256": "da2ccaf2467fdb60affdc36f8b1ec8559a2f2ca0cf0a17868a05d9a8eee6e17e",
+      "size_bytes": 154172
+    },
+    "workload_instance.json": {
+      "sha256": "cfb154dd70be5417f024f2a9eaa78a9e25de429686d820623b66a94ebb77b68f",
+      "size_bytes": 7554
+    },
+    "workspace/fixture_project/.survival-observer.jsonl": {
+      "sha256": "88202daa6f6d709a0fbf78f5b8d61e013309c22e272f98c76436c57c032d2f3f",
+      "size_bytes": 2213
+    }
+  },
+  "helper_phases": {
+    "baseline": {
+      "exit_code": 1,
+      "nonce": "baseline-fixture-0001"
+    },
+    "final": {
+      "exit_code": 0,
+      "nonce": "final-fixture-0001"
+    },
+    "inspect": {
+      "exit_code": 0,
+      "nonce": "inspect-fixture-0001"
+    }
+  },
+  "independent_reproduction": false,
+  "model_route": "auto",
+  "native_event_count": 42,
+  "native_format": "copilot-session-events-jsonl-v1",
+  "native_tool_calls": 5,
+  "native_tool_errors": 0,
+  "native_tool_results": 5,
+  "public_safe": false,
+  "run_id": "copilot-2026-10-04-01",
+  "schema_version": "session-bench-copilot-capture-qualification-v1",
+  "scope": "offline_native_observer_capture_consistency",
+  "score_eligible": false,
+  "session_id": "7c34d7cd-6391-4a3b-8f5d-5bdae4b866ee",
+  "stdout": {
+    "r1": {
+      "sha256": "da3dc3114cdcd6d863cb4008b9776cc1b005a704dc5d963e5df7dce20b509717",
+      "size_bytes": 135953
+    },
+    "r2": {
+      "sha256": "62e6443c07b82213aac40f43fa83ea977188d1feace5aebe7b217304b00bc285",
+      "size_bytes": 202580
+    }
+  },
+  "submitted_turns": 2,
+  "visible_response_canaries": [
+    "SB_SURVIVAL_V1_RESPONSE_R1_cafe_\ud83d\ude42",
+    "SB_SURVIVAL_V1_RESPONSE_R2_correction_\u0394"
+  ],
+  "workspace_changed_paths": [
+    "checkout.py"
+  ]
+}

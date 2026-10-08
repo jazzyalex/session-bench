@@ -1,0 +1,1 @@
+{"application_id":1148637816,"read":"private temporary copy only, read-only; the copy was deleted; no row of a session table was read","rows":[{"version":31}],"schema_sha256":"07b0385271e12e1ba8ee932484684337383c95b79ffc8710b7ba24222e643b8c","schema_version":"session-bench-hermes-store-version-extract-v1","store":"state.db","table":"schema_version","user_version":0}
