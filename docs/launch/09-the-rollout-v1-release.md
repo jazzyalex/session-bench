@@ -2,7 +2,7 @@
 
 ## Session-Bench v1: what twelve coding agents leave behind
 
-Status: draft for The Rollout. Not posted. Every number comes from
+Status: first draft, replaced. The published post is https://jazzyalex.github.io/agent-sessions/blog/session-bench-v1/ and its source is in `rollout-v1-post/`. One statement below is wrong: Claude Desktop does not batch tool results; its model made the edit inside a shell command. Every number comes from
 `artifacts/survival-v1-release/` (release of 2026-10-08).
 
 **Dek:** We ran the same small coding session in twelve agent harnesses, then

@@ -1,0 +1,137 @@
+<style>
+.sb1 { --sb-full:#0071e3; --sb-mid:#f0a020; --sb-low:#e5484d; --sb-soft:rgba(0,113,227,.20); --sb-track:rgba(0,0,0,.07); }
+@media (prefers-color-scheme: dark) {
+  .sb1 { --sb-full:#2997ff; --sb-mid:#ffb224; --sb-low:#ff6369; --sb-soft:rgba(41,151,255,.28); --sb-track:rgba(255,255,255,.12); }
+}
+.sb1-card { background:var(--bg-elev); border:1px solid var(--hair-strong); border-radius:18px; padding:22px 22px 18px; }
+.sb1-title { font-size:17px; font-weight:650; letter-spacing:-.01em; color:var(--ink); margin:0; }
+.sb1-sub { font-size:13.5px; color:var(--ink-2); margin:3px 0 16px; line-height:1.45; }
+.sb1 small { font-weight:400; color:var(--ink-2); }
+.sb1-num { font-variant-numeric:tabular-nums; }
+
+/* scorecard */
+.sb1-score { display:grid; grid-template-columns:22px minmax(150px,1.5fr) 62px repeat(5,minmax(58px,1fr)); column-gap:0; row-gap:0; align-items:stretch; }
+.sb1-score > * { padding:10px 14px 10px 0; border-top:1px solid var(--hair); display:flex; flex-direction:column; justify-content:center; }
+.sb1-score > .sb1-meters > * { padding:10px 14px 10px 0; border-top:1px solid var(--hair); display:flex; flex-direction:column; justify-content:center; }
+.sb1-score .sb1-h { border-top:0; padding:0 14px 8px 0; display:block; font-size:11.5px; font-weight:600; letter-spacing:.02em; text-transform:uppercase; color:var(--ink-2); }
+.sb1-score .sb1-h small { text-transform:none; letter-spacing:0; margin-left:3px; color:var(--ink-3); }
+.sb1-rank { font-size:13px; color:var(--ink-3); font-variant-numeric:tabular-nums; }
+.sb1-name { font-size:15px; font-weight:600; color:var(--ink); line-height:1.25; }
+.sb1-name { min-width:0; }
+.sb1-name small { display:block; font-size:11.5px; color:var(--ink-3); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sb1-total { font-size:21px; font-weight:700; letter-spacing:-.02em; color:var(--ink); font-variant-numeric:tabular-nums; }
+.sb1-meter { display:block; }
+.sb1-meter b { display:block; font-size:12px; font-weight:600; color:var(--ink); font-variant-numeric:tabular-nums; margin-bottom:4px; }
+.sb1-meter u { display:block; height:7px; border-radius:4px; background:var(--sb-track); overflow:hidden; text-decoration:none; }
+.sb1-meter i { display:block; height:100%; border-radius:4px; }
+.sb1-meter em { display:none; }
+.sb1-full { background:var(--sb-full); } .sb1-mid { background:var(--sb-mid); } .sb1-low { background:var(--sb-low); }
+.sb1-legend { display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:14px; font-size:12.5px; color:var(--ink-2); }
+.sb1-legend span { display:inline-flex; align-items:center; gap:6px; }
+.sb1-legend i { width:18px; height:7px; border-radius:4px; display:inline-block; }
+@media (max-width:700px) {
+  .sb1-card { padding:16px 14px 14px; border-radius:14px; }
+  .sb1-score { grid-template-columns:24px 1fr auto; }
+  .sb1-score .sb1-h { display:none; }
+  .sb1-score > .sb1-meters { grid-column:1 / -1; }
+  .sb1-score > .sb1-meters > * { border-top:0; padding:0; }
+  .sb1-meter em { display:block; font-style:normal; font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:.03em; margin-top:3px; }
+}
+.sb1-score > .sb1-meters { display:contents; }
+@media (max-width:700px) { .sb1-score > .sb1-meters { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; border-top:0; padding:0 0 12px; } }
+
+/* horizontal bar charts */
+.sb1-bars { display:grid; grid-template-columns:132px 1fr; column-gap:12px; row-gap:9px; align-items:center; }
+.sb1-bars .sb1-lab { font-size:14px; font-weight:550; color:var(--ink); text-align:right; white-space:nowrap; }
+.sb1-line { display:flex; align-items:center; gap:10px; min-width:0; position:relative; }
+.sb1-bar { display:block; height:20px; border-radius:6px; background:var(--sb-soft); overflow:hidden; flex:0 0 auto; min-width:3px; }
+.sb1-bar i { display:block; height:100%; background:var(--sb-full); border-radius:6px 0 0 6px; min-width:2px; }
+.sb1-val { font-size:13.5px; font-weight:650; color:var(--ink); white-space:nowrap; font-variant-numeric:tabular-nums; }
+.sb1-val small { font-size:12.5px; margin-left:4px; }
+.sb1-copies .sb1-line { gap:3px; }
+.sb1-block { display:block; height:20px; border-radius:4px; flex:0 0 auto; }
+.sb1-copies .sb1-val { margin-left:7px; }
+@media (max-width:700px) {
+  .sb1-bars { grid-template-columns:max-content 1fr; column-gap:9px; }
+  .sb1-block { height:18px; }
+  .sb1-bars .sb1-lab { font-size:13px; }
+  .sb1-val small { display:block; margin:0; }
+}
+
+/* capability grid */
+.sb1-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; margin:0 -6px; padding:0 6px; }
+table.sb1-grid { border-collapse:collapse; width:100%; min-width:580px; font-size:13.5px; margin:0; }
+table.sb1-grid th, table.sb1-grid td { border:0; border-top:1px solid var(--hair); padding:8px 6px; text-align:center; background:transparent; }
+table.sb1-grid thead th { border-top:0; font-size:11.5px; font-weight:600; color:var(--ink-2); line-height:1.25; vertical-align:bottom; padding-bottom:10px; }
+table.sb1-grid th:first-child, table.sb1-grid td:first-child { text-align:left; font-weight:600; color:var(--ink); white-space:nowrap; position:sticky; left:0; background:var(--bg-elev); }
+.sb1-dot { display:inline-block; width:15px; height:15px; border-radius:50%; vertical-align:middle; box-sizing:border-box; }
+.sb1-dot-full { background:var(--sb-full); }
+.sb1-dot-part { border:2px solid var(--sb-mid); background:linear-gradient(90deg, var(--sb-mid) 50%, transparent 50%); }
+.sb1-dot-none { border:2px solid var(--ink-3); opacity:.55; }
+.sb1-sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+/* small cards */
+.sb1-steps, .sb1-picks { display:grid; gap:12px; margin:22px 0; }
+.sb1-steps { grid-template-columns:repeat(auto-fit,minmax(168px,1fr)); }
+.sb1-picks { grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); }
+.sb1-step, .sb1-pick { background:var(--bg-elev); border:1px solid var(--hair-strong); border-radius:14px; padding:14px 16px; }
+.sb1-step b { display:block; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--sb-full); margin-bottom:4px; }
+.sb1-step span, .sb1-pick span { font-size:14.5px; line-height:1.45; color:var(--ink); }
+.sb1-pick b { display:block; font-size:15.5px; font-weight:650; color:var(--ink); margin-bottom:5px; }
+.sb1-pick span { color:var(--ink-2); }
+.sb1-pick span strong { color:var(--ink); font-weight:600; }
+.sb1-tl { background:var(--bg-sunken); border-radius:14px; padding:16px 18px; margin:22px 0; }
+.sb1-tl ul { margin:0; padding-left:20px; }
+.sb1-tl li { margin:5px 0; }
+</style>
+
+<figure class="post-figure sb1" id="scorecard">
+<div class="sb1-card">
+<p class="sb1-title">Session-Bench v1: twelve harnesses, the same two-prompt fix</p>
+<p class="sb1-sub">Points out of 100, mean of three runs. Blue is full marks in a category; amber and red show where the points go.</p>
+<div class="sb1-score">
+<span class="sb1-h"></span><span class="sb1-h">Harness</span><span class="sb1-h">Score</span><span class="sb1-h">Fidelity<small>30</small></span><span class="sb1-h">Causality<small>20</small></span><span class="sb1-h">Usage<small>15</small></span><span class="sb1-h">Portable<small>20</small></span><span class="sb1-h">Durable<small>15</small></span>
+{% for a in page.bench.agents %}<span class="sb1-rank">{{ a.rank }}</span><span class="sb1-name">{{ a.name }}<small>{{ a.build }} · {{ a.model }}</small></span><span class="sb1-total">{{ a.score }}</span><span class="sb1-meters">{% for c in a.cats %}<span class="sb1-meter" title="{{ c.label }}: {{ c.value }} of {{ c.max }}"><b>{{ c.value }}</b><u><i class="sb1-{{ c.tone }}" style="width:{{ c.pct }}%"></i></u><em>{{ c.abbr }}</em></span>{% endfor %}</span>
+{% endfor %}</div>
+<div class="sb1-legend"><span><i class="sb1-full"></i>full marks</span><span><i class="sb1-mid"></i>70% or more of the category</span><span><i class="sb1-low"></i>below 70%</span></div>
+</div>
+<figcaption>Every score recomputes from the published session files. Version and model are the ones in the test: the harnesses did not run the same model, and the model is not what is graded. Full version strings and the document behind each row are on <a href="{{ '/bench/v1/' | relative_url }}">the bench page</a>.</figcaption>
+</figure>
+
+<figure class="post-figure sb1" id="bytes">
+<div class="sb1-card">
+<p class="sb1-title">Bytes on disk for the same fix</p>
+<p class="sb1-sub">Everything the harness stored for the session, mean of three runs. The solid part is the session itself: prompts, replies, tool calls and results.</p>
+<div class="sb1-bars">
+{% for id in page.bench.by_size %}{% assign a = page.bench.agents | where: "id", id | first %}<span class="sb1-lab">{{ a.name }}</span><span class="sb1-line"><span class="sb1-bar" style="width:{{ a.kb_pct | times: 0.62 }}%" title="{{ a.session_kb }} KB of {{ a.kb }} KB is the session"><i style="width:{{ a.content_pct }}%"></i></span><span class="sb1-val">{{ a.kb }} KB<small>{{ a.content_pct }}% session</small></span></span>
+{% endfor %}</div>
+</div>
+<figcaption>KB is 1,000 bytes. Where sessions live in a shared database, the total counts the rows of this session. OpenClaw ran on its Codex backend, whose files for the session are 72% of its total.</figcaption>
+</figure>
+
+<figure class="post-figure sb1" id="copies">
+<div class="sb1-card">
+<p class="sb1-title">How many times each event is written</p>
+<p class="sb1-sub">Stored statements per event, read top to bottom with no knowledge of the format. One block is one copy.</p>
+<div class="sb1-bars sb1-copies">
+{% for id in page.bench.by_copies %}{% assign a = page.bench.agents | where: "id", id | first %}<span class="sb1-lab">{{ a.name }}</span><span class="sb1-line">{% for b in a.blocks %}<i class="sb1-block {% if a.once_pct == 100 %}sb1-full{% elsif a.once_pct == 0 %}sb1-low{% else %}sb1-mid{% endif %}" style="flex-basis:{{ b | times: 0.17 }}%"></i>{% endfor %}<span class="sb1-val">{{ a.copies }}×<small>{% if a.once_pct == 100 %}every event once{% elsif a.once_pct == 0 %}no event only once{% else %}{{ a.once_pct }}% of events once{% endif %}</small></span></span>
+{% endfor %}</div>
+</div>
+<figcaption>Counted on the records a reader has to open to recover the session. Blue: every event appears exactly once. Amber: some do. Red: none does.</figcaption>
+</figure>
+
+<figure class="post-figure sb1" id="grid">
+<div class="sb1-card">
+<p class="sb1-title">What you can get back from the files</p>
+<p class="sb1-sub">Filled: yes in all three runs. Half: partly. Ring: no.</p>
+<div class="sb1-scroll">
+<table class="sb1-grid">
+<thead><tr><th>Harness</th><th>Whole<br>conversation</th><th>Each event<br>once</th><th>Token<br>counts</th><th>A total<br>to check</th><th>Opens with<br>standard tools</th><th>States its<br>format version</th><th>Time on<br>every event</th></tr></thead>
+<tbody>
+{% for a in page.bench.agents %}<tr><td>{{ a.name }}</td>{% for g in a.grid %}<td><i class="sb1-dot sb1-dot-{{ g }}"></i><span class="sb1-sr">{% if g == "full" %}yes{% elsif g == "part" %}partly{% else %}no{% endif %}</span></td>{% endfor %}</tr>
+{% endfor %}</tbody>
+</table>
+</div>
+</div>
+<figcaption>From the 31 metrics. "A total to check" means the token counts of the replies add up to a total that the files state. OpenClaw's counts are per run, not per request.</figcaption>
+</figure>
