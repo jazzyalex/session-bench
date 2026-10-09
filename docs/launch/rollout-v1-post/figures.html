@@ -106,7 +106,7 @@ table.sb1-grid th:first-child, table.sb1-grid td:first-child { text-align:left; 
 {% for id in page.bench.by_size %}{% assign a = page.bench.agents | where: "id", id | first %}<span class="sb1-lab">{{ a.name }}</span><span class="sb1-line"><span class="sb1-bar" style="width:{{ a.kb_pct | times: 0.62 }}%" title="{{ a.session_kb }} KB of {{ a.kb }} KB is the session"><i style="width:{{ a.content_pct }}%"></i></span><span class="sb1-val">{{ a.kb }} KB<small>{{ a.content_pct }}% session</small></span></span>
 {% endfor %}</div>
 </div>
-<figcaption>KB is 1,000 bytes. Where sessions live in a shared database, the total counts the rows of this session. OpenClaw ran on its Codex backend, whose files for the session are 72% of its total.</figcaption>
+<figcaption>KB is 1,000 bytes. Where sessions live in a shared database, the total counts the rows of this session. OpenClaw ran on its Codex backend, whose files for the session are about 71% of its total.</figcaption>
 </figure>
 
 <figure class="post-figure sb1" id="copies">
